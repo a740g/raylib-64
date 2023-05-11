@@ -1,11 +1,13 @@
 ' A simple "Hello, World" program using raylib
 
-'$INCLUDE:'raylib.bi'
+$EXEICON:'./raylib.ico'
+
+'$INCLUDE:'./raylib.bi'
 
 DIM w AS LONG: w = 800
 DIM h AS LONG: h = 600
 
-InitWindow w, h, _OS$
+InitWindow w, h, "Hello, World!"
 
 'SetTargetFPS (60)
 
@@ -31,5 +33,5 @@ CloseWindow
 
 SYSTEM
 
-'$INCLUDE:'raylib.bas'
+'$INCLUDE:'./raylib.bas'
 

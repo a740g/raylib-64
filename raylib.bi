@@ -158,15 +158,13 @@ $IF RAYLIB_BI = UNDEFINED THEN
         AS SINGLE scaleIn0, scaleIn1 ' VR distortion scale in
     END TYPE
 
-    ' These are functions that need to be wrapped
-    DECLARE LIBRARY "./raylibc"
-        SUB GetMonitorPositionVector2 (BYVAL monitor AS LONG, v AS Vector2) ' Get specified monitor position
-        SUB GetWindowPositionVector2 (v AS Vector2) ' Get window position XY on monitor
-        SUB GetWindowScaleDPIVector2 (v AS Vector2) ' Get window scale DPI factor
+    ' These are stuff that is needed to correctly wrap some raylib functions
+    DECLARE CUSTOMTYPE LIBRARY
+        SUB __internal_memcpy ALIAS memcpy (BYVAL dst AS _OFFSET, BYVAL src AS _OFFSET, BYVAL bytes AS _OFFSET)
     END DECLARE
 
     ' These are functions that can be directly used from the dynamic library and does not need a wrapper
-    ' Stuff with leading `__` are not supposed to be called directly use the wrapper functions instead
+    ' Stuff with leading `__` are not supposed to be called directly. Use the wrapper functions instead
     ' TODO: All functions taking STRINGs must be wrapped
     $IF WINDOWS OR LINUX OR MACOSX AND 64BIT THEN
         DECLARE DYNAMIC LIBRARY "./raylib"
@@ -203,11 +201,14 @@ $IF RAYLIB_BI = UNDEFINED THEN
             FUNCTION GetRenderHeight& ' Get current render height (it considers HiDPI)
             FUNCTION GetMonitorCount& ' Get number of connected monitors
             FUNCTION GetCurrentMonitor& ' Get current connected monitor
+            FUNCTION __GetMonitorPosition&& ALIAS GetMonitorPosition (BYVAL monitor AS LONG) ' Get specified monitor position
             FUNCTION GetMonitorWidth& (BYVAL monitor AS LONG) ' Get specified monitor width (current video mode used by monitor)
             FUNCTION GetMonitorHeight& (BYVAL monitor AS LONG) ' Get specified monitor height (current video mode used by monitor)
             FUNCTION GetMonitorPhysicalWidth& (BYVAL monitor AS LONG) ' Get specified monitor physical width in millimetres
             FUNCTION GetMonitorPhysicalHeight& (BYVAL monitor AS LONG) ' Get specified monitor physical height in millimetres
             FUNCTION GetMonitorRefreshRate& (BYVAL monitor AS LONG) ' Get specified monitor refresh rate
+            FUNCTION __GetWindowPosition&& ALIAS GetWindowPosition ' Get window position XY on monitor
+            FUNCTION __GetWindowScaleDPI&& ALIAS GetWindowScaleDPI ' Get window scale DPI factor
             FUNCTION GetMonitorName%& (BYVAL monitor AS LONG) ' Get the human-readable, UTF-8 encoded name of the primary monitor
             SUB SetClipboardText (text AS STRING) ' Set clipboard text content
             FUNCTION GetClipboardText$ ' Get clipboard text content
