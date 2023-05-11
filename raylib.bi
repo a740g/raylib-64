@@ -160,7 +160,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
 
     ' These are stuff that is needed to correctly wrap some raylib functions
     DECLARE CUSTOMTYPE LIBRARY
-        SUB __internal_memcpy ALIAS memcpy (BYVAL dst AS _OFFSET, BYVAL src AS _OFFSET, BYVAL bytes AS _OFFSET)
+        SUB MemCpy ALIAS memcpy (BYVAL dst AS _OFFSET, BYVAL src AS _OFFSET, BYVAL count AS _UNSIGNED _OFFSET)
     END DECLARE
 
     ' These are functions that can be directly used from the dynamic library and does not need a wrapper
@@ -169,7 +169,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
     $IF WINDOWS OR LINUX OR MACOSX AND 64BIT THEN
         DECLARE DYNAMIC LIBRARY "./raylib"
             ' Window-related functions
-            SUB InitWindow (BYVAL w AS LONG, BYVAL h AS LONG, title AS STRING) ' Initialize window and OpenGL context
+            SUB __InitWindow ALIAS InitWindow (BYVAL w AS LONG, BYVAL h AS LONG, title AS STRING) ' Initialize window and OpenGL context
             FUNCTION WindowShouldClose%% ' Check if KEY_ESCAPE pressed or Close icon pressed
             SUB CloseWindow ' Close window and unload OpenGL context
             FUNCTION IsWindowReady%% ' Check if window has been initialized successfully
@@ -209,8 +209,8 @@ $IF RAYLIB_BI = UNDEFINED THEN
             FUNCTION GetMonitorRefreshRate& (BYVAL monitor AS LONG) ' Get specified monitor refresh rate
             FUNCTION __GetWindowPosition&& ALIAS GetWindowPosition ' Get window position XY on monitor
             FUNCTION __GetWindowScaleDPI&& ALIAS GetWindowScaleDPI ' Get window scale DPI factor
-            FUNCTION GetMonitorName%& (BYVAL monitor AS LONG) ' Get the human-readable, UTF-8 encoded name of the primary monitor
-            SUB SetClipboardText (text AS STRING) ' Set clipboard text content
+            FUNCTION GetMonitorName$ (BYVAL monitor AS LONG) ' Get the human-readable, UTF-8 encoded name of the primary monitor
+            SUB __SetClipboardText ALIAS SetClipboardText (text AS STRING) ' Set clipboard text content
             FUNCTION GetClipboardText$ ' Get clipboard text content
             SUB EnableEventWaiting ' Enable waiting for events on EndDrawing(), no automatic event polling
             SUB DisableEventWaiting ' Disable waiting for events on EndDrawing(), automatic events polling
