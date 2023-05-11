@@ -4,32 +4,36 @@ $EXEICON:'./raylib.ico'
 
 '$INCLUDE:'./raylib.bi'
 
-DIM w AS LONG: w = 800
-DIM h AS LONG: h = 600
+CONST APP_NAME = "Hello, world!"
 
-InitWindow w, h, "Hello, World!"
+CONST w = 800
+CONST h = 600
 
-'SetTargetFPS (60)
+IF InitWindow(w, h, APP_NAME) THEN
+    'SetTargetFPS (60)
 
-DO
-    BeginDrawing
+    DO
+        BeginDrawing
 
-    'ClearBackground _RGBA32(Col.r, Col.g, Col.b, Col.a)
+        'ClearBackground _RGBA32(Col.r, Col.g, Col.b, Col.a)
 
-    'DrawText "Hello World" + CHR$(0), 10, 30, 20, _RGBA32(255, 0, 0, 255)
+        'DrawText "Hello World" + CHR$(0), 10, 30, 20, _RGBA32(255, 0, 0, 255)
 
-    'IF IsKeyPressed(KEY_LEFT) THEN
-    '    DrawText "Left" + CHR$(0), 10, 60, 20, _RGBA32(255, 0, 0, 255)
-    'END IF
+        'IF IsKeyPressed(KEY_LEFT) THEN
+        '    DrawText "Left" + CHR$(0), 10, 60, 20, _RGBA32(255, 0, 0, 255)
+        'END IF
 
-    'DrawFPS 1, 1
+        'DrawFPS 1, 1
 
-    'DrawLine 10, 20, 50, 50, _RGBA32(0, 0, 255, 255)
+        'DrawLine 10, 20, 50, 50, _RGBA32(0, 0, 255, 255)
 
-    EndDrawing
-LOOP UNTIL WindowShouldClose
+        EndDrawing
+    LOOP UNTIL WindowShouldClose
 
-CloseWindow
+    CloseWindow
+ELSE
+    _MESSAGEBOX APP_NAME, "raylib initialization failed!"
+END IF
 
 SYSTEM
 

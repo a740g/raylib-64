@@ -28,7 +28,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
     ' Start array lower bound from 1. If 0 is required, then it should be explicitly specified as (0 To X)
     OPTION BASE 1
 
-    ' raylib uses it's own window. So, we force QB64-PE to generate a console only executable (that we can enable for debugging)
+    ' raylib uses it's own window. So, we force QB64-PE to generate a console only executable. The console can be used for debugging
     $CONSOLE:ONLY
 
     ' Some common and useful constants
@@ -158,20 +158,23 @@ $IF RAYLIB_BI = UNDEFINED THEN
         AS SINGLE scaleIn0, scaleIn1 ' VR distortion scale in
     END TYPE
 
-    ' These are stuff that is needed to correctly wrap some raylib functions
-    DECLARE CUSTOMTYPE LIBRARY
-        SUB MemCpy ALIAS memcpy (BYVAL dst AS _OFFSET, BYVAL src AS _OFFSET, BYVAL count AS _UNSIGNED _OFFSET)
+    ' These are funtions that wraps stuff that cannot be used directly
+    DECLARE STATIC LIBRARY "./raylib"
+        FUNCTION __init_raylib%%
+        SUB __done_raylib
+        SUB GetMonitorPosition (BYVAL monitor AS LONG, v AS Vector2)
+        SUB GetWindowPosition (v AS Vector2)
+        SUB GetWindowScaleDPI (v AS Vector2)
     END DECLARE
 
-    ' These are functions that can be directly used from the dynamic library and does not need a wrapper
+    ' These are functions that can be used directly from the dynamic library and does not need a wrapper
     ' Stuff with leading `__` are not supposed to be called directly. Use the wrapper functions instead
-    ' TODO: All functions taking STRINGs must be wrapped
     $IF WINDOWS OR LINUX OR MACOSX AND 64BIT THEN
         DECLARE DYNAMIC LIBRARY "./raylib"
             ' Window-related functions
             SUB __InitWindow ALIAS InitWindow (BYVAL w AS LONG, BYVAL h AS LONG, title AS STRING) ' Initialize window and OpenGL context
             FUNCTION WindowShouldClose%% ' Check if KEY_ESCAPE pressed or Close icon pressed
-            SUB CloseWindow ' Close window and unload OpenGL context
+            SUB __CloseWindow ALIAS CloseWindow ' Close window and unload OpenGL context
             FUNCTION IsWindowReady%% ' Check if window has been initialized successfully
             FUNCTION IsWindowFullscreen%% ' Check if window is currently fullscreen
             FUNCTION IsWindowHidden%% ' Check if window is currently hidden (only PLATFORM_DESKTOP)
@@ -188,7 +191,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
             SUB RestoreWindow ' Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
             SUB SetWindowIcon (BYVAL img AS Image) ' Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
             SUB SetWindowIcons (BYVAL images AS _OFFSET, BYVAL count AS LONG) ' Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
-            SUB SetWindowTitle (title AS STRING) ' Set title for window (only PLATFORM_DESKTOP)
+            SUB __SetWindowTitle ALIAS SetWindowTitle (title AS STRING) ' Set title for window (only PLATFORM_DESKTOP)
             SUB SetWindowPosition (BYVAL x AS LONG, BYVAL y AS LONG) ' Set window position on screen (only PLATFORM_DESKTOP)
             SUB SetWindowMonitor (BYVAL monitor AS LONG) ' Set monitor for the current window (fullscreen mode)
             SUB SetWindowMinSize (BYVAL w AS LONG, BYVAL h AS LONG) ' Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
@@ -201,14 +204,14 @@ $IF RAYLIB_BI = UNDEFINED THEN
             FUNCTION GetRenderHeight& ' Get current render height (it considers HiDPI)
             FUNCTION GetMonitorCount& ' Get number of connected monitors
             FUNCTION GetCurrentMonitor& ' Get current connected monitor
-            FUNCTION __GetMonitorPosition&& ALIAS GetMonitorPosition (BYVAL monitor AS LONG) ' Get specified monitor position
+            'RLAPI Vector2 GetMonitorPosition(int monitor); // Get specified monitor position
             FUNCTION GetMonitorWidth& (BYVAL monitor AS LONG) ' Get specified monitor width (current video mode used by monitor)
             FUNCTION GetMonitorHeight& (BYVAL monitor AS LONG) ' Get specified monitor height (current video mode used by monitor)
             FUNCTION GetMonitorPhysicalWidth& (BYVAL monitor AS LONG) ' Get specified monitor physical width in millimetres
             FUNCTION GetMonitorPhysicalHeight& (BYVAL monitor AS LONG) ' Get specified monitor physical height in millimetres
             FUNCTION GetMonitorRefreshRate& (BYVAL monitor AS LONG) ' Get specified monitor refresh rate
-            FUNCTION __GetWindowPosition&& ALIAS GetWindowPosition ' Get window position XY on monitor
-            FUNCTION __GetWindowScaleDPI&& ALIAS GetWindowScaleDPI ' Get window scale DPI factor
+            'RLAPI Vector2 GetWindowPosition(void); // Get window position XY on monitor
+            'RLAPI Vector2 GetWindowScaleDPI(void); // Get window scale DPI factor
             FUNCTION GetMonitorName$ (BYVAL monitor AS LONG) ' Get the human-readable, UTF-8 encoded name of the primary monitor
             SUB __SetClipboardText ALIAS SetClipboardText (text AS STRING) ' Set clipboard text content
             FUNCTION GetClipboardText$ ' Get clipboard text content
@@ -254,7 +257,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
             $ERROR Unsupported platform
     $END IF
 
-    SLEEP 1: _CONSOLE OFF ' hide the console by default (the sleep is needed)
+    _DELAY 0.1: _CONSOLE OFF ' hide the console by default (the delay is needed)
 
 $END IF
 

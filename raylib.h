@@ -7,41 +7,59 @@
 
 #pragma once
 
-//#define RLAPI __declspec(dllimport) // We are using the library as a Win32 shared library (.dll)
-#define RLAPI __attribute__ ((dllimport))
+#include "dylib.hpp"
 
 // Vector2, 2 components
-typedef struct Vector2
+struct Vector2
 {
     float x; // Vector x component
     float y; // Vector y component
-} Vector2;
+};
 
-// Prevents name mangling of functions
-#if defined(__cplusplus)
-extern "C"
+static dylib *raylib = nullptr; //  this is our shared lib handle
+
+static Vector2 (*_GetMonitorPosition)(int monitor) = nullptr; // Get specified monitor position
+static Vector2 (*_GetWindowPosition)() = nullptr;             // Get window position XY on monitor
+static Vector2 (*_GetWindowScaleDPI)() = nullptr;             // Get window scale DPI factor
+
+void __done_raylib()
 {
-#endif
-
-    RLAPI Vector2 GetMonitorPosition(int monitor); // Get specified monitor position
-    RLAPI Vector2 GetWindowPosition(void);         // Get window position XY on monitor
-    RLAPI Vector2 GetWindowScaleDPI(void);         // Get window scale DPI factor
-
-    void GetMonitorPositionVector2(int monitor, Vector2 *v)
-    {
-        *v = GetMonitorPosition(monitor);
-    }
-
-    void GetWindowPositionVector2(Vector2 *v)
-    {
-        *v = GetWindowPosition();
-    }
-
-    void GetWindowScaleDPIVector2(Vector2 *v)
-    {
-        *v = GetWindowScaleDPI();
-    }
-
-#if defined(__cplusplus)
+    _GetWindowScaleDPI = nullptr;
+    _GetWindowPosition = nullptr;
+    _GetMonitorPosition = nullptr;
+    delete raylib;
 }
-#endif
+
+bool __init_raylib()
+{
+    raylib = new dylib("raylib");
+    if (!raylib)
+        return false;
+
+    _GetMonitorPosition = raylib->get_function<Vector2(int)>("GetMonitorPosition");
+    _GetWindowPosition = raylib->get_function<Vector2()>("GetWindowPosition");
+    _GetWindowScaleDPI = raylib->get_function<Vector2()>("GetWindowScaleDPI");
+
+    if (!_GetMonitorPosition || !_GetWindowPosition || !_GetWindowScaleDPI)
+    {
+        __done_raylib();
+        return false;
+    }
+
+    return true;
+}
+
+inline void GetMonitorPosition(int monitor, void *v)
+{
+    *(Vector2 *)v = _GetMonitorPosition(monitor);
+}
+
+inline void GetWindowPosition(void *v)
+{
+    *(Vector2 *)v = _GetWindowPosition();
+}
+
+inline void GetWindowScaleDPI(void *v)
+{
+    *(Vector2 *)v = _GetWindowScaleDPI();
+}

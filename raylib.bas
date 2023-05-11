@@ -17,23 +17,20 @@ $IF RAYLIB_BAS = UNDEFINED THEN
         BStrToCStr = s + CHR$(NULL)
     END FUNCTION
 
-    SUB InitWindow (w AS LONG, h AS LONG, title AS STRING)
-        __InitWindow w, h, BStrToCStr(title)
+    FUNCTION InitWindow%% (w AS LONG, h AS LONG, title AS STRING)
+        IF __init_raylib THEN
+            __InitWindow w, h, BStrToCStr(title)
+            InitWindow = TRUE
+        END IF
+    END FUNCTION
+
+    SUB CloseWindow
+        __CloseWindow
+        __done_raylib
     END SUB
 
-    SUB GetMonitorPositionVector2 (monitor AS LONG, v AS Vector2)
-        DIM tmp AS _UNSIGNED _INTEGER64: tmp = __GetMonitorPosition(monitor)
-        MemCpy _OFFSET(v), _OFFSET(tmp), LEN(v)
-    END SUB
-
-    SUB GetWindowPositionVector2 (v AS Vector2)
-        DIM tmp AS _UNSIGNED _INTEGER64: tmp = __GetWindowPosition
-        MemCpy _OFFSET(v), _OFFSET(tmp), LEN(v)
-    END SUB
-
-    SUB GetWindowScaleDPIVector2 (v AS Vector2)
-        DIM tmp AS _UNSIGNED _INTEGER64: tmp = __GetWindowScaleDPI
-        MemCpy _OFFSET(v), _OFFSET(tmp), LEN(v)
+    SUB SetWindowTitle (title AS STRING)
+        __SetWindowTitle BStrToCStr(title)
     END SUB
 
     SUB SetClipboardText (text AS STRING)
