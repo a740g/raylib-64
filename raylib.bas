@@ -1,8 +1,6 @@
 '-----------------------------------------------------------------------------------------------------
 ' raylib bindings for QB64-PE
 ' Copyright (c) 2023 Samuel Gomes
-'
-' This file contains wrapper functions for stuff that cannot be used directly in QB64-PE
 '-----------------------------------------------------------------------------------------------------
 
 '$INCLUDE:'raylib.bi'
@@ -17,12 +15,9 @@ $IF RAYLIB_BAS = UNDEFINED THEN
         BStrToCStr = s + CHR$(NULL)
     END FUNCTION
 
-    FUNCTION InitWindow%% (w AS LONG, h AS LONG, title AS STRING)
-        IF __init_raylib THEN
-            __InitWindow w, h, BStrToCStr(title)
-            InitWindow = TRUE
-        END IF
-    END FUNCTION
+    SUB InitWindow (w AS LONG, h AS LONG, title AS STRING)
+        __InitWindow w, h, BStrToCStr(title)
+    END SUB
 
     SUB CloseWindow
         __CloseWindow
@@ -36,6 +31,15 @@ $IF RAYLIB_BAS = UNDEFINED THEN
     SUB SetClipboardText (text AS STRING)
         __SetClipboardText BStrToCStr(text)
     END SUB
+
+    ' TODO: QB64 does not like byval UTD in expressions. Sigh!
+    'FUNCTION GetShaderLocation& (shdr AS Shader, uniformName AS STRING)
+    '    GetShaderLocation = __GetShaderLocation(shdr, uniformName)
+    'END FUNCTION
+
+    'FUNCTION GetShaderLocationAttrib& (shdr AS Shader, attribName AS STRING)
+    '    GetShaderLocationAttrib = __GetShaderLocationAttrib(shdr, BStrToCStr(attribName))
+    'END FUNCTION
 
     $CHECKING:ON
 

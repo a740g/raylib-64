@@ -1,13 +1,13 @@
 //-----------------------------------------------------------------------------------------------------
 // raylib bindings for QB64-PE
 // Copyright (c) 2023 Samuel Gomes
-//
-// This file contains wrapper functions for stuff that cannot be used directly in QB64-PE
 //-----------------------------------------------------------------------------------------------------
 
 #pragma once
 
 #include "dylib.hpp"
+
+#define RAYLIB_DEBUG_PRINT(_fmt_, _args_...) fprintf(stderr, "DEBUG: %s:%d:%s(): " _fmt_ "\n", __FILE__, __LINE__, __func__, ##_args_)
 
 // Vector2, 2 components
 struct Vector2
@@ -16,31 +16,92 @@ struct Vector2
     float y; // Vector y component
 };
 
+// Matrix, 4x4 components, column major, OpenGL style, right-handed
+struct Matrix
+{
+    float m0, m4, m8, m12;  // Matrix first row (4 components)
+    float m1, m5, m9, m13;  // Matrix second row (4 components)
+    float m2, m6, m10, m14; // Matrix third row (4 components)
+    float m3, m7, m11, m15; // Matrix fourth row (4 components)
+};
+
+// VrDeviceInfo, Head-Mounted-Display device parameters
+struct VrDeviceInfo
+{
+    int hResolution;               // Horizontal resolution in pixels
+    int vResolution;               // Vertical resolution in pixels
+    float hScreenSize;             // Horizontal size in meters
+    float vScreenSize;             // Vertical size in meters
+    float vScreenCenter;           // Screen center in meters
+    float eyeToScreenDistance;     // Distance between eye and display in meters
+    float lensSeparationDistance;  // Lens separation distance in meters
+    float interpupillaryDistance;  // IPD (distance between pupils) in meters
+    float lensDistortionValues[4]; // Lens distortion constant parameters
+    float chromaAbCorrection[4];   // Chromatic aberration correction parameters
+};
+
+// VrStereoConfig, VR stereo rendering configuration for simulator
+struct VrStereoConfig
+{
+    Matrix projection[2];       // VR projection matrices (per eye)
+    Matrix viewOffset[2];       // VR view offset matrices (per eye)
+    float leftLensCenter[2];    // VR left lens center
+    float rightLensCenter[2];   // VR right lens center
+    float leftScreenCenter[2];  // VR left screen center
+    float rightScreenCenter[2]; // VR right screen center
+    float scale[2];             // VR distortion scale
+    float scaleIn[2];           // VR distortion scale in
+};
+
 static dylib *raylib = nullptr; //  this is our shared lib handle
 
-static Vector2 (*_GetMonitorPosition)(int monitor) = nullptr; // Get specified monitor position
-static Vector2 (*_GetWindowPosition)() = nullptr;             // Get window position XY on monitor
-static Vector2 (*_GetWindowScaleDPI)() = nullptr;             // Get window scale DPI factor
+static Vector2 (*_GetMonitorPosition)(int monitor) = nullptr;                // Get specified monitor position
+static Vector2 (*_GetWindowPosition)() = nullptr;                            // Get window position XY on monitor
+static Vector2 (*_GetWindowScaleDPI)() = nullptr;                            // Get window scale DPI factor
+static VrStereoConfig (*_LoadVrStereoConfig)(VrDeviceInfo device) = nullptr; // Load VR stereo config for VR simulator device parameters
+                                                                             // RLAPI Shader LoadShader(const char *vsFileName, const char *fsFileName); // Load shader from files and bind default locations
+                                                                             // RLAPI Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode); // Load shader from code strings and bind default locations
+                                                                             // RLAPI bool IsShaderReady(Shader shader); // Check if a shader is ready
+                                                                             // RLAPI int GetShaderLocation(Shader shader, const char *uniformName); // Get shader uniform location
+                                                                             // RLAPI int GetShaderLocationAttrib(Shader shader, const char *attribName); // Get shader attribute location
 
 void __done_raylib()
 {
+    _LoadVrStereoConfig = nullptr;
     _GetWindowScaleDPI = nullptr;
     _GetWindowPosition = nullptr;
     _GetMonitorPosition = nullptr;
     delete raylib;
+    raylib = nullptr;
 }
 
 bool __init_raylib()
 {
-    raylib = new dylib("raylib");
-    if (!raylib)
-        return false;
+    try
+    {
+        raylib = new dylib("./", "raylib");
+    }
+    catch (dylib::load_error e)
+    {
+        RAYLIB_DEBUG_PRINT("Error: %s", e.what());
+        try
+        {
+            raylib = new dylib("raylib");
+        }
+        catch (dylib::load_error e)
+        {
+            RAYLIB_DEBUG_PRINT("Error: %s", e.what());
+            if (!raylib)
+                return false;
+        }
+    }
 
     _GetMonitorPosition = raylib->get_function<Vector2(int)>("GetMonitorPosition");
     _GetWindowPosition = raylib->get_function<Vector2()>("GetWindowPosition");
     _GetWindowScaleDPI = raylib->get_function<Vector2()>("GetWindowScaleDPI");
+    _LoadVrStereoConfig = raylib->get_function<VrStereoConfig(VrDeviceInfo)>("LoadVrStereoConfig");
 
-    if (!_GetMonitorPosition || !_GetWindowPosition || !_GetWindowScaleDPI)
+    if (!_GetMonitorPosition || !_GetWindowPosition || !_GetWindowScaleDPI || !_LoadVrStereoConfig)
     {
         __done_raylib();
         return false;
@@ -62,4 +123,9 @@ inline void GetWindowPosition(void *v)
 inline void GetWindowScaleDPI(void *v)
 {
     *(Vector2 *)v = _GetWindowScaleDPI();
+}
+
+inline void LoadVrStereoConfig(VrDeviceInfo device, void *config)
+{
+    *(VrStereoConfig *)config = _LoadVrStereoConfig(device);
 }

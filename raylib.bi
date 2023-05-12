@@ -1,8 +1,6 @@
 '-----------------------------------------------------------------------------------------------------
 ' raylib bindings for QB64-PE
 ' Copyright (c) 2023 Samuel Gomes
-'
-' This file contains constant, type and function declarations that can be used directly
 '-----------------------------------------------------------------------------------------------------
 
 $IF RAYLIB_BI = UNDEFINED THEN
@@ -146,6 +144,20 @@ $IF RAYLIB_BI = UNDEFINED THEN
         locs AS _OFFSET ' Shader locations array (RL_MAX_SHADER_LOCATIONS)
     END TYPE
 
+    ' VrDeviceInfo, Head-Mounted-Display device parameters
+    TYPE VrDeviceInfo
+        hResolution AS LONG ' Horizontal resolution in pixels
+        vResolution AS LONG ' Vertical resolution in pixels
+        hScreenSize AS SINGLE ' Horizontal size in meters
+        vScreenSize AS SINGLE ' Vertical size in meters
+        vScreenCenter AS SINGLE ' Screen center in meters
+        eyeToScreenDistance AS SINGLE ' Distance between eye and display in meters
+        lensSeparationDistance AS SINGLE ' Lens separation distance in meters
+        interpupillaryDistance AS SINGLE ' IPD (distance between pupils) in meters
+        AS SINGLE lensDistortionValues0, lensDistortionValues1, lensDistortionValues2, lensDistortionValues3 ' Lens distortion constant parameters
+        AS SINGLE chromaAbCorrection0, chromaAbCorrection1, chromaAbCorrection2, chromaAbCorrection3 ' Chromatic aberration correction parameters
+    END TYPE
+
     ' VrStereoConfig, VR stereo rendering configuration for simulator
     TYPE VrStereoConfig
         AS Matrix projection0, projection1 ' VR projection matrices (per eye)
@@ -165,6 +177,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB GetMonitorPosition (BYVAL monitor AS LONG, v AS Vector2)
         SUB GetWindowPosition (v AS Vector2)
         SUB GetWindowScaleDPI (v AS Vector2)
+        SUB LoadVrStereoConfig (BYVAL device AS VrDeviceInfo, config AS VrStereoConfig)
     END DECLARE
 
     ' These are functions that can be used directly from the dynamic library and does not need a wrapper
@@ -244,7 +257,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
             SUB EndMode3D ' Ends 3D mode and returns to default 2D orthographic mode
             SUB BeginTextureMode (BYVAL target AS RenderTexture2D) ' Begin drawing to render texture
             SUB EndTextureMode ' Ends drawing to render texture
-            SUB BeginShaderMode (BYVAL shader AS Shader) ' Begin custom shader drawing
+            SUB BeginShaderMode (BYVAL shdr AS Shader) ' Begin custom shader drawing
             SUB EndShaderMode ' End custom shader drawing (use default shader)
             SUB BeginBlendMode (BYVAL mode AS LONG) ' Begin blending mode (alpha, additive, multiplied, subtract, custom)
             SUB EndBlendMode ' End blending mode (reset to default: alpha blending)
@@ -252,12 +265,37 @@ $IF RAYLIB_BI = UNDEFINED THEN
             SUB EndScissorMode ' End scissor mode
             SUB BeginVrStereoMode (BYVAL config AS VrStereoConfig) ' Begin stereo rendering (requires VR simulator)
             SUB EndVrStereoMode ' End stereo rendering (requires VR simulator)
+
+            ' VR stereo config functions for VR simulator
+            'RLAPI VrStereoConfig LoadVrStereoConfig(VrDeviceInfo device); // Load VR stereo config for VR simulator device parameters
+            SUB UnloadVrStereoConfig (BYVAL config AS VrStereoConfig) ' Unload VR stereo config
+
+            ' Shader management functions
+            ' NOTE: Shader functionality is not available on OpenGL 1.1
+            'RLAPI Shader LoadShader(const char *vsFileName, const char *fsFileName); // Load shader from files and bind default locations
+            'RLAPI Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode); // Load shader from code strings and bind default locations
+            'RLAPI bool IsShaderReady(Shader shader); // Check if a shader is ready
+            'RLAPI int GetShaderLocation(Shader shader, const char *uniformName); // Get shader uniform location
+            'RLAPI int GetShaderLocationAttrib(Shader shader, const char *attribName); // Get shader attribute location
+            SUB SetShaderValue (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL value AS _OFFSET, BYVAL uniformType AS LONG) ' Set shader uniform value
+            SUB SetShaderValueV (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL value AS _OFFSET, BYVAL uniformType AS LONG, BYVAL count AS LONG) ' Set shader uniform value vector
+            SUB SetShaderValueMatrix (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL mat AS Matrix) ' Set shader uniform value (matrix 4x4)
+            SUB SetShaderValueTexture (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL texture AS Texture2D) ' Set shader uniform value for texture (sampler2d)
+            SUB UnloadShader (BYVAL shdr AS Shader)
+
         END DECLARE
     $ELSE
             $ERROR Unsupported platform
     $END IF
 
-    _DELAY 0.1: _CONSOLE OFF ' hide the console by default (the delay is needed)
+    ' Initialize the C-side glue code
+    IF __init_raylib THEN
+        _DELAY 0.1 ' the delay is needed for the console window to appear
+        _CONSOLE OFF ' hide the console by default
+    ELSE
+        PRINT "raylib initialization failed!"
+        END 1
+    END IF
 
 $END IF
 
