@@ -19,11 +19,6 @@ $IF RAYLIB_BAS = UNDEFINED THEN
         __InitWindow w, h, BStrToCStr(title)
     END SUB
 
-    SUB CloseWindow
-        __CloseWindow
-        __done_raylib
-    END SUB
-
     SUB SetWindowTitle (title AS STRING)
         __SetWindowTitle BStrToCStr(title)
     END SUB

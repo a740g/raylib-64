@@ -55,6 +55,7 @@ struct VrStereoConfig
 
 static dylib *raylib = nullptr; //  this is our shared lib handle
 
+// RLAPI void SetWindowIcon(Image image);                            // Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
 static Vector2 (*_GetMonitorPosition)(int monitor) = nullptr;                // Get specified monitor position
 static Vector2 (*_GetWindowPosition)() = nullptr;                            // Get window position XY on monitor
 static Vector2 (*_GetWindowScaleDPI)() = nullptr;                            // Get window scale DPI factor
@@ -65,7 +66,7 @@ static VrStereoConfig (*_LoadVrStereoConfig)(VrDeviceInfo device) = nullptr; // 
                                                                              // RLAPI int GetShaderLocation(Shader shader, const char *uniformName); // Get shader uniform location
                                                                              // RLAPI int GetShaderLocationAttrib(Shader shader, const char *attribName); // Get shader attribute location
 
-void __done_raylib()
+static void __done_raylib()
 {
     _LoadVrStereoConfig = nullptr;
     _GetWindowScaleDPI = nullptr;
@@ -73,6 +74,8 @@ void __done_raylib()
     _GetMonitorPosition = nullptr;
     delete raylib;
     raylib = nullptr;
+
+    RAYLIB_DEBUG_PRINT("Shared library unloaded");
 }
 
 bool __init_raylib()
@@ -107,6 +110,10 @@ bool __init_raylib()
         return false;
     }
 
+    atexit(__done_raylib); // cleanup before the program ends
+
+    RAYLIB_DEBUG_PRINT("Shared library loaded");
+
     return true;
 }
 
@@ -125,7 +132,7 @@ inline void GetWindowScaleDPI(void *v)
     *(Vector2 *)v = _GetWindowScaleDPI();
 }
 
-inline void LoadVrStereoConfig(VrDeviceInfo device, void *config)
+inline void LoadVrStereoConfig(void *device, void *config)
 {
-    *(VrStereoConfig *)config = _LoadVrStereoConfig(device);
+    *(VrStereoConfig *)config = _LoadVrStereoConfig(*(VrDeviceInfo *)device);
 }

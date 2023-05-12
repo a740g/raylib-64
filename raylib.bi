@@ -173,11 +173,12 @@ $IF RAYLIB_BI = UNDEFINED THEN
     ' These are funtions that wraps stuff that cannot be used directly
     DECLARE STATIC LIBRARY "./raylib"
         FUNCTION __init_raylib%%
-        SUB __done_raylib
+
         SUB GetMonitorPosition (BYVAL monitor AS LONG, v AS Vector2)
         SUB GetWindowPosition (v AS Vector2)
         SUB GetWindowScaleDPI (v AS Vector2)
-        SUB LoadVrStereoConfig (BYVAL device AS VrDeviceInfo, config AS VrStereoConfig)
+
+        SUB LoadVrStereoConfig (device AS VrDeviceInfo, config AS VrStereoConfig)
     END DECLARE
 
     ' These are functions that can be used directly from the dynamic library and does not need a wrapper
@@ -187,7 +188,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
             ' Window-related functions
             SUB __InitWindow ALIAS InitWindow (BYVAL w AS LONG, BYVAL h AS LONG, title AS STRING) ' Initialize window and OpenGL context
             FUNCTION WindowShouldClose%% ' Check if KEY_ESCAPE pressed or Close icon pressed
-            SUB __CloseWindow ALIAS CloseWindow ' Close window and unload OpenGL context
+            SUB CloseWindow ' Close window and unload OpenGL context
             FUNCTION IsWindowReady%% ' Check if window has been initialized successfully
             FUNCTION IsWindowFullscreen%% ' Check if window is currently fullscreen
             FUNCTION IsWindowHidden%% ' Check if window is currently hidden (only PLATFORM_DESKTOP)
@@ -202,7 +203,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
             SUB MaximizeWindow ' Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
             SUB MinimizeWindow ' Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
             SUB RestoreWindow ' Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
-            SUB SetWindowIcon (BYVAL img AS Image) ' Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
+            'RLAPI void SetWindowIcon(Image image); // Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
             SUB SetWindowIcons (BYVAL images AS _OFFSET, BYVAL count AS LONG) ' Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
             SUB __SetWindowTitle ALIAS SetWindowTitle (title AS STRING) ' Set title for window (only PLATFORM_DESKTOP)
             SUB SetWindowPosition (BYVAL x AS LONG, BYVAL y AS LONG) ' Set window position on screen (only PLATFORM_DESKTOP)
