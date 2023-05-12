@@ -7,8 +7,9 @@ $IF RAYLIB_BI = UNDEFINED THEN
     $LET RAYLIB_BI = TRUE
 
     ' Check QB64-PE compiler version and complain if it does not meet minimum version requirement
-    $IF VERSION < 3.7 THEN
-            $ERROR This requires the latest version of QB64-PE from https://github.com/QB64-Phoenix-Edition/QB64pe/releases
+    ' We do not support 32-bit versions. Although it is trivial to add if we can find 32-bit raylib shared libraries
+    $IF VERSION < 3.7 OR 32BIT THEN
+            $ERROR This requires the latest 64-bit version of QB64-PE from https://github.com/QB64-Phoenix-Edition/QB64pe/releases
     $END IF
 
     ' All identifiers must default to long (32-bits). This results in fastest code execution on x86 & x64
@@ -170,10 +171,12 @@ $IF RAYLIB_BI = UNDEFINED THEN
         AS SINGLE scaleIn0, scaleIn1 ' VR distortion scale in
     END TYPE
 
-    ' These are funtions that wraps stuff that cannot be used directly
+    ' These are funtions that cannot be used directly from the shared library and needs a C wrapper
+    ' Stuff with leading `__` are not supposed to be called directly. Use the QB64-PE wrappers in raylib.bas instead
     DECLARE STATIC LIBRARY "./raylib"
         FUNCTION __init_raylib%%
 
+        SUB SetWindowIcon (img AS Image)
         SUB GetMonitorPosition (BYVAL monitor AS LONG, v AS Vector2)
         SUB GetWindowPosition (v AS Vector2)
         SUB GetWindowScaleDPI (v AS Vector2)
@@ -181,113 +184,109 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB LoadVrStereoConfig (device AS VrDeviceInfo, config AS VrStereoConfig)
     END DECLARE
 
-    ' These are functions that can be used directly from the dynamic library and does not need a wrapper
-    ' Stuff with leading `__` are not supposed to be called directly. Use the wrapper functions instead
-    $IF WINDOWS OR LINUX OR MACOSX AND 64BIT THEN
-        DECLARE DYNAMIC LIBRARY "./raylib"
-            ' Window-related functions
-            SUB __InitWindow ALIAS InitWindow (BYVAL w AS LONG, BYVAL h AS LONG, title AS STRING) ' Initialize window and OpenGL context
-            FUNCTION WindowShouldClose%% ' Check if KEY_ESCAPE pressed or Close icon pressed
-            SUB CloseWindow ' Close window and unload OpenGL context
-            FUNCTION IsWindowReady%% ' Check if window has been initialized successfully
-            FUNCTION IsWindowFullscreen%% ' Check if window is currently fullscreen
-            FUNCTION IsWindowHidden%% ' Check if window is currently hidden (only PLATFORM_DESKTOP)
-            FUNCTION IsWindowMinimized%% ' Check if window is currently minimized (only PLATFORM_DESKTOP)
-            FUNCTION IsWindowMaximized%% ' Check if window is currently maximized (only PLATFORM_DESKTOP)
-            FUNCTION IsWindowFocused%% ' Check if window is currently focused (only PLATFORM_DESKTOP)
-            FUNCTION IsWindowResized%% ' Check if window has been resized last frame
-            FUNCTION IsWindowState (BYVAL flag AS _UNSIGNED LONG) ' Check if one specific window flag is enabled
-            SUB SetWindowState (BYVAL flags AS _UNSIGNED LONG) ' Set window configuration state using flags (only PLATFORM_DESKTOP)
-            SUB ClearWindowState (BYVAL flags AS _UNSIGNED LONG) ' Clear window configuration state flags
-            SUB ToggleFullscreen ' Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
-            SUB MaximizeWindow ' Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
-            SUB MinimizeWindow ' Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
-            SUB RestoreWindow ' Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
-            'RLAPI void SetWindowIcon(Image image); // Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
-            SUB SetWindowIcons (BYVAL images AS _OFFSET, BYVAL count AS LONG) ' Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
-            SUB __SetWindowTitle ALIAS SetWindowTitle (title AS STRING) ' Set title for window (only PLATFORM_DESKTOP)
-            SUB SetWindowPosition (BYVAL x AS LONG, BYVAL y AS LONG) ' Set window position on screen (only PLATFORM_DESKTOP)
-            SUB SetWindowMonitor (BYVAL monitor AS LONG) ' Set monitor for the current window (fullscreen mode)
-            SUB SetWindowMinSize (BYVAL w AS LONG, BYVAL h AS LONG) ' Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
-            SUB SetWindowSize (BYVAL w AS LONG, BYVAL h AS LONG) ' Set window dimensions
-            SUB SetWindowOpacity (BYVAL opacity AS SINGLE) ' Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
-            FUNCTION GetWindowHandle%& ' Get native window handle
-            FUNCTION GetScreenWidth& ' Get current screen width
-            FUNCTION GetScreenHeight& ' Get current screen height
-            FUNCTION GetRenderWidth& ' Get current render width (it considers HiDPI)
-            FUNCTION GetRenderHeight& ' Get current render height (it considers HiDPI)
-            FUNCTION GetMonitorCount& ' Get number of connected monitors
-            FUNCTION GetCurrentMonitor& ' Get current connected monitor
-            'RLAPI Vector2 GetMonitorPosition(int monitor); // Get specified monitor position
-            FUNCTION GetMonitorWidth& (BYVAL monitor AS LONG) ' Get specified monitor width (current video mode used by monitor)
-            FUNCTION GetMonitorHeight& (BYVAL monitor AS LONG) ' Get specified monitor height (current video mode used by monitor)
-            FUNCTION GetMonitorPhysicalWidth& (BYVAL monitor AS LONG) ' Get specified monitor physical width in millimetres
-            FUNCTION GetMonitorPhysicalHeight& (BYVAL monitor AS LONG) ' Get specified monitor physical height in millimetres
-            FUNCTION GetMonitorRefreshRate& (BYVAL monitor AS LONG) ' Get specified monitor refresh rate
-            'RLAPI Vector2 GetWindowPosition(void); // Get window position XY on monitor
-            'RLAPI Vector2 GetWindowScaleDPI(void); // Get window scale DPI factor
-            FUNCTION GetMonitorName$ (BYVAL monitor AS LONG) ' Get the human-readable, UTF-8 encoded name of the primary monitor
-            SUB __SetClipboardText ALIAS SetClipboardText (text AS STRING) ' Set clipboard text content
-            FUNCTION GetClipboardText$ ' Get clipboard text content
-            SUB EnableEventWaiting ' Enable waiting for events on EndDrawing(), no automatic event polling
-            SUB DisableEventWaiting ' Disable waiting for events on EndDrawing(), automatic events polling
+    ' These are functions that can be used directly from the shared library and does not need a C wrapper
+    ' Stuff with leading `__` are not supposed to be called directly. Use the QB64-PE wrappers in raylib.bas instead
+    DECLARE DYNAMIC LIBRARY "./raylib"
+        ' Window-related functions
+        SUB __InitWindow ALIAS InitWindow (BYVAL w AS LONG, BYVAL h AS LONG, title AS STRING) ' Initialize window and OpenGL context
+        FUNCTION WindowShouldClose%% ' Check if KEY_ESCAPE pressed or Close icon pressed
+        SUB CloseWindow ' Close window and unload OpenGL context
+        FUNCTION IsWindowReady%% ' Check if window has been initialized successfully
+        FUNCTION IsWindowFullscreen%% ' Check if window is currently fullscreen
+        FUNCTION IsWindowHidden%% ' Check if window is currently hidden (only PLATFORM_DESKTOP)
+        FUNCTION IsWindowMinimized%% ' Check if window is currently minimized (only PLATFORM_DESKTOP)
+        FUNCTION IsWindowMaximized%% ' Check if window is currently maximized (only PLATFORM_DESKTOP)
+        FUNCTION IsWindowFocused%% ' Check if window is currently focused (only PLATFORM_DESKTOP)
+        FUNCTION IsWindowResized%% ' Check if window has been resized last frame
+        FUNCTION IsWindowState (BYVAL flag AS _UNSIGNED LONG) ' Check if one specific window flag is enabled
+        SUB SetWindowState (BYVAL flags AS _UNSIGNED LONG) ' Set window configuration state using flags (only PLATFORM_DESKTOP)
+        SUB ClearWindowState (BYVAL flags AS _UNSIGNED LONG) ' Clear window configuration state flags
+        SUB ToggleFullscreen ' Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+        SUB MaximizeWindow ' Set window state: maximized, if resizable (only PLATFORM_DESKTOP)
+        SUB MinimizeWindow ' Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
+        SUB RestoreWindow ' Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
+        'RLAPI void SetWindowIcon(Image image); // Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
+        SUB SetWindowIcons (BYVAL images AS _OFFSET, BYVAL count AS LONG) ' Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
+        SUB __SetWindowTitle ALIAS SetWindowTitle (title AS STRING) ' Set title for window (only PLATFORM_DESKTOP)
+        SUB SetWindowPosition (BYVAL x AS LONG, BYVAL y AS LONG) ' Set window position on screen (only PLATFORM_DESKTOP)
+        SUB SetWindowMonitor (BYVAL monitor AS LONG) ' Set monitor for the current window (fullscreen mode)
+        SUB SetWindowMinSize (BYVAL w AS LONG, BYVAL h AS LONG) ' Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+        SUB SetWindowSize (BYVAL w AS LONG, BYVAL h AS LONG) ' Set window dimensions
+        SUB SetWindowOpacity (BYVAL opacity AS SINGLE) ' Set window opacity [0.0f..1.0f] (only PLATFORM_DESKTOP)
+        FUNCTION GetWindowHandle%& ' Get native window handle
+        FUNCTION GetScreenWidth& ' Get current screen width
+        FUNCTION GetScreenHeight& ' Get current screen height
+        FUNCTION GetRenderWidth& ' Get current render width (it considers HiDPI)
+        FUNCTION GetRenderHeight& ' Get current render height (it considers HiDPI)
+        FUNCTION GetMonitorCount& ' Get number of connected monitors
+        FUNCTION GetCurrentMonitor& ' Get current connected monitor
+        'RLAPI Vector2 GetMonitorPosition(int monitor); // Get specified monitor position
+        FUNCTION GetMonitorWidth& (BYVAL monitor AS LONG) ' Get specified monitor width (current video mode used by monitor)
+        FUNCTION GetMonitorHeight& (BYVAL monitor AS LONG) ' Get specified monitor height (current video mode used by monitor)
+        FUNCTION GetMonitorPhysicalWidth& (BYVAL monitor AS LONG) ' Get specified monitor physical width in millimetres
+        FUNCTION GetMonitorPhysicalHeight& (BYVAL monitor AS LONG) ' Get specified monitor physical height in millimetres
+        FUNCTION GetMonitorRefreshRate& (BYVAL monitor AS LONG) ' Get specified monitor refresh rate
+        'RLAPI Vector2 GetWindowPosition(void); // Get window position XY on monitor
+        'RLAPI Vector2 GetWindowScaleDPI(void); // Get window scale DPI factor
+        FUNCTION GetMonitorName$ (BYVAL monitor AS LONG) ' Get the human-readable, UTF-8 encoded name of the primary monitor
+        SUB __SetClipboardText ALIAS SetClipboardText (text AS STRING) ' Set clipboard text content
+        FUNCTION GetClipboardText$ ' Get clipboard text content
+        SUB EnableEventWaiting ' Enable waiting for events on EndDrawing(), no automatic event polling
+        SUB DisableEventWaiting ' Disable waiting for events on EndDrawing(), automatic events polling
 
-            ' Custom frame control functions
-            ' NOTE: Those functions are intended for advance users that want full control over the frame processing
-            ' By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timing + PollInputEvents()
-            ' To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
-            SUB SwapScreenBuffer ' Swap back buffer with front buffer (screen drawing)
-            SUB PollInputEvents ' Register all input events
-            SUB WaitTime (BYVAL seconds AS DOUBLE) ' Wait for some time (halt program execution)
+        ' Custom frame control functions
+        ' NOTE: Those functions are intended for advance users that want full control over the frame processing
+        ' By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timing + PollInputEvents()
+        ' To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
+        SUB SwapScreenBuffer ' Swap back buffer with front buffer (screen drawing)
+        SUB PollInputEvents ' Register all input events
+        SUB WaitTime (BYVAL seconds AS DOUBLE) ' Wait for some time (halt program execution)
 
-            ' Cursor-related functions
-            SUB ShowCursor ' Shows cursor
-            SUB HideCursor ' Hides cursor
-            FUNCTION IsCursorHidden%% ' Check if cursor is not visible
-            SUB EnableCursor ' Enables cursor (unlock cursor)
-            SUB DisableCursor ' Disables cursor (lock cursor)
-            FUNCTION IsCursorOnScreen%% ' Check if cursor is on the screen
+        ' Cursor-related functions
+        SUB ShowCursor ' Shows cursor
+        SUB HideCursor ' Hides cursor
+        FUNCTION IsCursorHidden%% ' Check if cursor is not visible
+        SUB EnableCursor ' Enables cursor (unlock cursor)
+        SUB DisableCursor ' Disables cursor (lock cursor)
+        FUNCTION IsCursorOnScreen%% ' Check if cursor is on the screen
 
-            ' Drawing-related functions
-            SUB ClearBackground (BYVAL c AS RColor) ' Set background color (framebuffer clear color)
-            SUB BeginDrawing ' Setup canvas (framebuffer) to start drawing
-            SUB EndDrawing ' End canvas drawing and swap buffers (double buffering)
-            SUB BeginMode2D (BYVAL camera AS Camera2D) ' Begin 2D mode with custom camera (2D)
-            SUB EndMode2D ' Ends 2D mode with custom camera
-            SUB BeginMode3D (BYVAL camera AS Camera3D) ' Begin 3D mode with custom camera (3D)
-            SUB EndMode3D ' Ends 3D mode and returns to default 2D orthographic mode
-            SUB BeginTextureMode (BYVAL target AS RenderTexture2D) ' Begin drawing to render texture
-            SUB EndTextureMode ' Ends drawing to render texture
-            SUB BeginShaderMode (BYVAL shdr AS Shader) ' Begin custom shader drawing
-            SUB EndShaderMode ' End custom shader drawing (use default shader)
-            SUB BeginBlendMode (BYVAL mode AS LONG) ' Begin blending mode (alpha, additive, multiplied, subtract, custom)
-            SUB EndBlendMode ' End blending mode (reset to default: alpha blending)
-            SUB BeginScissorMode (BYVAL x AS LONG, BYVAL y AS LONG, BYVAL w AS LONG, BYVAL h AS LONG) ' Begin scissor mode (define screen area for following drawing)
-            SUB EndScissorMode ' End scissor mode
-            SUB BeginVrStereoMode (BYVAL config AS VrStereoConfig) ' Begin stereo rendering (requires VR simulator)
-            SUB EndVrStereoMode ' End stereo rendering (requires VR simulator)
+        ' Drawing-related functions
+        SUB ClearBackground (BYVAL c AS RColor) ' Set background color (framebuffer clear color)
+        SUB BeginDrawing ' Setup canvas (framebuffer) to start drawing
+        SUB EndDrawing ' End canvas drawing and swap buffers (double buffering)
+        SUB BeginMode2D (BYVAL camera AS Camera2D) ' Begin 2D mode with custom camera (2D)
+        SUB EndMode2D ' Ends 2D mode with custom camera
+        SUB BeginMode3D (BYVAL camera AS Camera3D) ' Begin 3D mode with custom camera (3D)
+        SUB EndMode3D ' Ends 3D mode and returns to default 2D orthographic mode
+        SUB BeginTextureMode (BYVAL target AS RenderTexture2D) ' Begin drawing to render texture
+        SUB EndTextureMode ' Ends drawing to render texture
+        SUB BeginShaderMode (BYVAL shdr AS Shader) ' Begin custom shader drawing
+        SUB EndShaderMode ' End custom shader drawing (use default shader)
+        SUB BeginBlendMode (BYVAL mode AS LONG) ' Begin blending mode (alpha, additive, multiplied, subtract, custom)
+        SUB EndBlendMode ' End blending mode (reset to default: alpha blending)
+        SUB BeginScissorMode (BYVAL x AS LONG, BYVAL y AS LONG, BYVAL w AS LONG, BYVAL h AS LONG) ' Begin scissor mode (define screen area for following drawing)
+        SUB EndScissorMode ' End scissor mode
+        SUB BeginVrStereoMode (BYVAL config AS VrStereoConfig) ' Begin stereo rendering (requires VR simulator)
+        SUB EndVrStereoMode ' End stereo rendering (requires VR simulator)
 
-            ' VR stereo config functions for VR simulator
-            'RLAPI VrStereoConfig LoadVrStereoConfig(VrDeviceInfo device); // Load VR stereo config for VR simulator device parameters
-            SUB UnloadVrStereoConfig (BYVAL config AS VrStereoConfig) ' Unload VR stereo config
+        ' VR stereo config functions for VR simulator
+        'RLAPI VrStereoConfig LoadVrStereoConfig(VrDeviceInfo device); // Load VR stereo config for VR simulator device parameters
+        SUB UnloadVrStereoConfig (BYVAL config AS VrStereoConfig) ' Unload VR stereo config
 
-            ' Shader management functions
-            ' NOTE: Shader functionality is not available on OpenGL 1.1
-            'RLAPI Shader LoadShader(const char *vsFileName, const char *fsFileName); // Load shader from files and bind default locations
-            'RLAPI Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode); // Load shader from code strings and bind default locations
-            'RLAPI bool IsShaderReady(Shader shader); // Check if a shader is ready
-            'RLAPI int GetShaderLocation(Shader shader, const char *uniformName); // Get shader uniform location
-            'RLAPI int GetShaderLocationAttrib(Shader shader, const char *attribName); // Get shader attribute location
-            SUB SetShaderValue (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL value AS _OFFSET, BYVAL uniformType AS LONG) ' Set shader uniform value
-            SUB SetShaderValueV (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL value AS _OFFSET, BYVAL uniformType AS LONG, BYVAL count AS LONG) ' Set shader uniform value vector
-            SUB SetShaderValueMatrix (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL mat AS Matrix) ' Set shader uniform value (matrix 4x4)
-            SUB SetShaderValueTexture (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL texture AS Texture2D) ' Set shader uniform value for texture (sampler2d)
-            SUB UnloadShader (BYVAL shdr AS Shader)
+        ' Shader management functions
+        ' NOTE: Shader functionality is not available on OpenGL 1.1
+        'RLAPI Shader LoadShader(const char *vsFileName, const char *fsFileName); // Load shader from files and bind default locations
+        'RLAPI Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode); // Load shader from code strings and bind default locations
+        'RLAPI bool IsShaderReady(Shader shader); // Check if a shader is ready
+        'RLAPI int GetShaderLocation(Shader shader, const char *uniformName); // Get shader uniform location
+        'RLAPI int GetShaderLocationAttrib(Shader shader, const char *attribName); // Get shader attribute location
+        SUB SetShaderValue (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL value AS _OFFSET, BYVAL uniformType AS LONG) ' Set shader uniform value
+        SUB SetShaderValueV (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL value AS _OFFSET, BYVAL uniformType AS LONG, BYVAL count AS LONG) ' Set shader uniform value vector
+        SUB SetShaderValueMatrix (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL mat AS Matrix) ' Set shader uniform value (matrix 4x4)
+        SUB SetShaderValueTexture (BYVAL shdr AS Shader, BYVAL locIndex AS LONG, BYVAL texture AS Texture2D) ' Set shader uniform value for texture (sampler2d)
+        SUB UnloadShader (BYVAL shdr AS Shader)
 
-        END DECLARE
-    $ELSE
-            $ERROR Unsupported platform
-    $END IF
+    END DECLARE
 
     ' Initialize the C-side glue code
     IF __init_raylib THEN

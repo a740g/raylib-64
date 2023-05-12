@@ -25,6 +25,23 @@ struct Matrix
     float m3, m7, m11, m15; // Matrix fourth row (4 components)
 };
 
+// Image, pixel data stored in CPU memory (RAM)
+struct Image
+{
+    void *data;  // Image raw data
+    int width;   // Image base width
+    int height;  // Image base height
+    int mipmaps; // Mipmap levels, 1 by default
+    int format;  // Data format (PixelFormat type)
+};
+
+// Shader
+struct Shader
+{
+    unsigned int id; // Shader program id
+    int *locs;       // Shader locations array (RL_MAX_SHADER_LOCATIONS)
+};
+
 // VrDeviceInfo, Head-Mounted-Display device parameters
 struct VrDeviceInfo
 {
@@ -55,23 +72,29 @@ struct VrStereoConfig
 
 static dylib *raylib = nullptr; //  this is our shared lib handle
 
-// RLAPI void SetWindowIcon(Image image);                            // Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
-static Vector2 (*_GetMonitorPosition)(int monitor) = nullptr;                // Get specified monitor position
-static Vector2 (*_GetWindowPosition)() = nullptr;                            // Get window position XY on monitor
-static Vector2 (*_GetWindowScaleDPI)() = nullptr;                            // Get window scale DPI factor
-static VrStereoConfig (*_LoadVrStereoConfig)(VrDeviceInfo device) = nullptr; // Load VR stereo config for VR simulator device parameters
-                                                                             // RLAPI Shader LoadShader(const char *vsFileName, const char *fsFileName); // Load shader from files and bind default locations
-                                                                             // RLAPI Shader LoadShaderFromMemory(const char *vsCode, const char *fsCode); // Load shader from code strings and bind default locations
-                                                                             // RLAPI bool IsShaderReady(Shader shader); // Check if a shader is ready
-                                                                             // RLAPI int GetShaderLocation(Shader shader, const char *uniformName); // Get shader uniform location
-                                                                             // RLAPI int GetShaderLocationAttrib(Shader shader, const char *attribName); // Get shader attribute location
+static void (*_SetWindowIcon)(Image image) = nullptr;                                     // Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
+static Vector2 (*_GetMonitorPosition)(int monitor) = nullptr;                             // Get specified monitor position
+static Vector2 (*_GetWindowPosition)() = nullptr;                                         // Get window position XY on monitor
+static Vector2 (*_GetWindowScaleDPI)() = nullptr;                                         // Get window scale DPI factor
+static VrStereoConfig (*_LoadVrStereoConfig)(VrDeviceInfo device) = nullptr;              // Load VR stereo config for VR simulator device parameters
+static Shader (*_LoadShader)(const char *vsFileName, const char *fsFileName) = nullptr;   // Load shader from files and bind default locations
+static Shader (*_LoadShaderFromMemory)(const char *vsCode, const char *fsCode) = nullptr; // Load shader from code strings and bind default locations
+static bool (*_IsShaderReady)(Shader shader) = nullptr;                                   // Check if a shader is ready
+static int (*_GetShaderLocation)(Shader shader, const char *uniformName) = nullptr;       // Get shader uniform location
+static int (*_GetShaderLocationAttrib)(Shader shader, const char *attribName) = nullptr;  // Get shader attribute location
 
 static void __done_raylib()
 {
+    _GetShaderLocationAttrib = nullptr;
+    _GetShaderLocation = nullptr;
+    _IsShaderReady = nullptr;
+    _LoadShaderFromMemory = nullptr;
+    _LoadShader = nullptr;
     _LoadVrStereoConfig = nullptr;
     _GetWindowScaleDPI = nullptr;
     _GetWindowPosition = nullptr;
     _GetMonitorPosition = nullptr;
+    _SetWindowIcon = nullptr;
     delete raylib;
     raylib = nullptr;
 
@@ -99,12 +122,19 @@ bool __init_raylib()
         }
     }
 
+    _SetWindowIcon = raylib->get_function<void(Image)>("SetWindowIcon");
     _GetMonitorPosition = raylib->get_function<Vector2(int)>("GetMonitorPosition");
     _GetWindowPosition = raylib->get_function<Vector2()>("GetWindowPosition");
     _GetWindowScaleDPI = raylib->get_function<Vector2()>("GetWindowScaleDPI");
     _LoadVrStereoConfig = raylib->get_function<VrStereoConfig(VrDeviceInfo)>("LoadVrStereoConfig");
+    _LoadShader = raylib->get_function<Shader(const char *, const char *)>("LoadShader");
+    _LoadShaderFromMemory = raylib->get_function<Shader(const char *, const char *)>("LoadShaderFromMemory");
+    _IsShaderReady = raylib->get_function<bool(Shader)>("IsShaderReady");
+    _GetShaderLocation = raylib->get_function<int(Shader, const char *)>("GetShaderLocation");
+    _GetShaderLocationAttrib = raylib->get_function<int(Shader, const char *)>("GetShaderLocationAttrib");
 
-    if (!_GetMonitorPosition || !_GetWindowPosition || !_GetWindowScaleDPI || !_LoadVrStereoConfig)
+    if (!_SetWindowIcon || !_GetMonitorPosition || !_GetWindowPosition || !_GetWindowScaleDPI || !_LoadVrStereoConfig ||
+        !_LoadShader || !_LoadShaderFromMemory || !_IsShaderReady || !_GetShaderLocation || !_GetShaderLocationAttrib)
     {
         __done_raylib();
         return false;
@@ -115,6 +145,11 @@ bool __init_raylib()
     RAYLIB_DEBUG_PRINT("Shared library loaded");
 
     return true;
+}
+
+inline void SetWindowIcon(void *image)
+{
+    _SetWindowIcon(*(Image *)image);
 }
 
 inline void GetMonitorPosition(int monitor, void *v)
@@ -135,4 +170,29 @@ inline void GetWindowScaleDPI(void *v)
 inline void LoadVrStereoConfig(void *device, void *config)
 {
     *(VrStereoConfig *)config = _LoadVrStereoConfig(*(VrDeviceInfo *)device);
+}
+
+inline void LoadShader(char *vsFileName, char *fsFileName, void *shader)
+{
+    *(Shader *)shader = _LoadShader(vsFileName, fsFileName);
+}
+
+inline void LoadShaderFromMemory(char *vsCode, char *fsCode, void *shader)
+{
+    *(Shader *)shader = _LoadShaderFromMemory(vsCode, fsCode);
+}
+
+inline bool IsShaderReady(void *shader)
+{
+    return _IsShaderReady(*(Shader *)shader);
+}
+
+inline int GetShaderLocation(void *shader, char *uniformName)
+{
+    return _GetShaderLocation(*(Shader *)shader, uniformName);
+}
+
+inline int GetShaderLocationAttrib(void *shader, char *attribName)
+{
+    return _GetShaderLocationAttrib(*(Shader *)shader, attribName);
 }
