@@ -21,7 +21,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
     ' Force all variables to be defined
     OPTION _EXPLICIT
 
-    ' All arrays should be static. If dynamic arrays are required use "ReDim"
+    ' All arrays should be static. If dynamic arrays are required use "REDIM"
     '$STATIC
 
     ' Start array lower bound from 1. If 0 is required, then it should be explicitly specified as (0 To X)
