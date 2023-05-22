@@ -19,6 +19,12 @@ $IF RAYLIB_BAS = UNDEFINED THEN
         __InitWindow w, h, BStrToCStr(title)
     END SUB
 
+    SUB SetWindowIcons (imgs() AS Image, count AS LONG)
+        DIM lb AS LONG: lb = LBOUND(imgs)
+        DIM ct AS LONG: ct = 1 + UBOUND(imgs) - lb: IF ct > count THEN ct = count
+        __SetWindowIcons _OFFSET(imgs(lb)), ct
+    END SUB
+
     SUB SetWindowTitle (title AS STRING)
         __SetWindowTitle BStrToCStr(title)
     END SUB

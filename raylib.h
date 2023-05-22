@@ -5,9 +5,20 @@
 
 #pragma once
 
+#include <cstdint>
 #include "dylib.hpp"
 
-#define RAYLIB_DEBUG_PRINT(_fmt_, _args_...) fprintf(stderr, "DEBUG: %s:%d:%s(): " _fmt_ "\n", __FILE__, __LINE__, __func__, ##_args_)
+#define RAYLIB_DEBUG_PRINT(_fmt_, _args_...) fprintf(stderr, "\e[1;37mDEBUG: %s:%d:%s(): \e[1;33m" _fmt_ "\n", __FILE__, __LINE__, __func__, ##_args_)
+#define RAYLIB_DEBUG_CHECK(_exp_) \
+    if (!(_exp_))                 \
+    RAYLIB_DEBUG_PRINT("\e[0;31mCondition (%s) failed", #_exp_)
+
+// QB64 false is 0 and true is -1 (sad, but true XD)
+enum qb_bool : int8_t
+{
+    QB_TRUE = -1,
+    QB_FALSE = 0
+};
 
 // Vector2, 2 components
 struct Vector2
@@ -70,7 +81,7 @@ struct VrStereoConfig
     float scaleIn[2];           // VR distortion scale in
 };
 
-static dylib *raylib = nullptr; //  this is our shared lib handle
+static dylib *raylib = nullptr; //  this is our shared lib object
 
 static void (*_SetWindowIcon)(Image image) = nullptr;                                     // Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
 static Vector2 (*_GetMonitorPosition)(int monitor) = nullptr;                             // Get specified monitor position
@@ -82,6 +93,11 @@ static Shader (*_LoadShaderFromMemory)(const char *vsCode, const char *fsCode) =
 static bool (*_IsShaderReady)(Shader shader) = nullptr;                                   // Check if a shader is ready
 static int (*_GetShaderLocation)(Shader shader, const char *uniformName) = nullptr;       // Get shader uniform location
 static int (*_GetShaderLocationAttrib)(Shader shader, const char *attribName) = nullptr;  // Get shader attribute location
+
+inline qb_bool __to_qb_bool(int expression)
+{
+    return expression ? qb_bool::QB_TRUE : qb_bool::QB_FALSE;
+}
 
 static void __done_raylib()
 {
@@ -98,7 +114,7 @@ static void __done_raylib()
     delete raylib;
     raylib = nullptr;
 
-    RAYLIB_DEBUG_PRINT("Shared library unloaded");
+    RAYLIB_DEBUG_PRINT("Shared library closed");
 }
 
 bool __init_raylib()
@@ -142,7 +158,7 @@ bool __init_raylib()
 
     atexit(__done_raylib); // cleanup before the program ends
 
-    RAYLIB_DEBUG_PRINT("Shared library loaded");
+    RAYLIB_DEBUG_PRINT("Shared library opened");
 
     return true;
 }

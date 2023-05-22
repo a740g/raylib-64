@@ -174,6 +174,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
     ' These are funtions that cannot be used directly from the shared library and needs a C wrapper
     ' Stuff with leading `__` are not supposed to be called directly. Use the QB64-PE wrappers in raylib.bas instead
     DECLARE STATIC LIBRARY "./raylib"
+        FUNCTION __to_qb_bool%% (BYVAL expression AS LONG)
         FUNCTION __init_raylib%%
 
         SUB SetWindowIcon (img AS Image)
@@ -206,7 +207,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB MinimizeWindow ' Set window state: minimized, if resizable (only PLATFORM_DESKTOP)
         SUB RestoreWindow ' Set window state: not minimized/maximized (only PLATFORM_DESKTOP)
         'RLAPI void SetWindowIcon(Image image); // Set icon for window (single image, RGBA 32bit, only PLATFORM_DESKTOP)
-        SUB SetWindowIcons (BYVAL images AS _OFFSET, BYVAL count AS LONG) ' Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
+        SUB __SetWindowIcons ALIAS SetWindowIcons (BYVAL images AS _OFFSET, BYVAL count AS LONG) ' Set icon for window (multiple images, RGBA 32bit, only PLATFORM_DESKTOP)
         SUB __SetWindowTitle ALIAS SetWindowTitle (title AS STRING) ' Set title for window (only PLATFORM_DESKTOP)
         SUB SetWindowPosition (BYVAL x AS LONG, BYVAL y AS LONG) ' Set window position on screen (only PLATFORM_DESKTOP)
         SUB SetWindowMonitor (BYVAL monitor AS LONG) ' Set monitor for the current window (fullscreen mode)

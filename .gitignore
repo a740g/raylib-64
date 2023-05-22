@@ -6,3 +6,5 @@
 !*/
 # Ignore all exe files
 *.exe
+# Ignore .vscode dir
+.vscode
