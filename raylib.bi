@@ -174,7 +174,6 @@ $IF RAYLIB_BI = UNDEFINED THEN
     ' These are funtions that cannot be used directly from the shared library and needs a C wrapper
     ' Stuff with leading `__` are not supposed to be called directly. Use the QB64-PE wrappers in raylib.bas instead
     DECLARE STATIC LIBRARY "./raylib"
-        FUNCTION __to_qb_bool%% (BYVAL expression AS LONG)
         FUNCTION __init_raylib%%
 
         SUB SetWindowIcon (img AS Image)

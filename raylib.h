@@ -20,6 +20,8 @@ enum qb_bool : int8_t
     QB_FALSE = 0
 };
 
+#define TO_QB_BOOL(_exp_) ((_exp_) ? QB_TRUE : QB_FALSE)
+
 // Vector2, 2 components
 struct Vector2
 {
@@ -93,11 +95,6 @@ static Shader (*_LoadShaderFromMemory)(const char *vsCode, const char *fsCode) =
 static bool (*_IsShaderReady)(Shader shader) = nullptr;                                   // Check if a shader is ready
 static int (*_GetShaderLocation)(Shader shader, const char *uniformName) = nullptr;       // Get shader uniform location
 static int (*_GetShaderLocationAttrib)(Shader shader, const char *attribName) = nullptr;  // Get shader attribute location
-
-inline qb_bool __to_qb_bool(int expression)
-{
-    return expression ? qb_bool::QB_TRUE : qb_bool::QB_FALSE;
-}
 
 static void __done_raylib()
 {
