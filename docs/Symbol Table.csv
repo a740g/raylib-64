@@ -1,0 +1,518 @@
+Function Name,Function Pointer Declaration,Function Template
+InitWindow,"void (*InitWindow)(int width, int height, const char *title)","<void(int, int, const char*)>"
+WindowShouldClose,bool (*WindowShouldClose)(void),<bool(void)>
+CloseWindow,void (*CloseWindow)(void),<void(void)>
+IsWindowReady,bool (*IsWindowReady)(void),<bool(void)>
+IsWindowFullscreen,bool (*IsWindowFullscreen)(void),<bool(void)>
+IsWindowHidden,bool (*IsWindowHidden)(void),<bool(void)>
+IsWindowMinimized,bool (*IsWindowMinimized)(void),<bool(void)>
+IsWindowMaximized,bool (*IsWindowMaximized)(void),<bool(void)>
+IsWindowFocused,bool (*IsWindowFocused)(void),<bool(void)>
+IsWindowResized,bool (*IsWindowResized)(void),<bool(void)>
+IsWindowState,bool (*IsWindowState)(unsigned int flag),<bool(unsigned int)>
+SetWindowState,void (*SetWindowState)(unsigned int flags),<void(unsigned int)>
+ClearWindowState,void (*ClearWindowState)(unsigned int flags),<void(unsigned int)>
+ToggleFullscreen,void (*ToggleFullscreen)(void),<void(void)>
+MaximizeWindow,void (*MaximizeWindow)(void),<void(void)>
+MinimizeWindow,void (*MinimizeWindow)(void),<void(void)>
+RestoreWindow,void (*RestoreWindow)(void),<void(void)>
+SetWindowIcon,void (*SetWindowIcon)(Image image),<void(Image)>
+SetWindowIcons,"void (*SetWindowIcons)(Image *images, int count)","<void(Image*, int)>"
+SetWindowTitle,void (*SetWindowTitle)(const char *title),<void(const char*)>
+SetWindowPosition,"void (*SetWindowPosition)(int x, int y)","<void(int, int)>"
+SetWindowMonitor,void (*SetWindowMonitor)(int monitor),<void(int)>
+SetWindowMinSize,"void (*SetWindowMinSize)(int width, int height)","<void(int, int)>"
+SetWindowSize,"void (*SetWindowSize)(int width, int height)","<void(int, int)>"
+SetWindowOpacity,void (*SetWindowOpacity)(float opacity),<void(float)>
+GetWindowHandle,void *(*GetWindowHandle)(void),<void*(void)>
+GetScreenWidth,int (*GetScreenWidth)(void),<int(void)>
+GetScreenHeight,int (*GetScreenHeight)(void),<int(void)>
+GetRenderWidth,int (*GetRenderWidth)(void),<int(void)>
+GetRenderHeight,int (*GetRenderHeight)(void),<int(void)>
+GetMonitorCount,int (*GetMonitorCount)(void),<int(void)>
+GetCurrentMonitor,int (*GetCurrentMonitor)(void),<int(void)>
+GetMonitorPosition,Vector2 (*GetMonitorPosition)(int monitor),<Vector2(int)>
+GetMonitorWidth,int (*GetMonitorWidth)(int monitor),<int(int)>
+GetMonitorHeight,int (*GetMonitorHeight)(int monitor),<int(int)>
+GetMonitorPhysicalWidth,int (*GetMonitorPhysicalWidth)(int monitor),<int(int)>
+GetMonitorPhysicalHeight,int (*GetMonitorPhysicalHeight)(int monitor),<int(int)>
+GetMonitorRefreshRate,int (*GetMonitorRefreshRate)(int monitor),<int(int)>
+GetWindowPosition,Vector2 (*GetWindowPosition)(void),<Vector2(void)>
+GetWindowScaleDPI,Vector2 (*GetWindowScaleDPI)(void),<Vector2(void)>
+GetMonitorName,const char *(*GetMonitorName)(int monitor),<const char*(int)>
+SetClipboardText,void (*SetClipboardText)(const char *text),<void(const char*)>
+GetClipboardText,const char *(*GetClipboardText)(void),<const char*(void)>
+EnableEventWaiting,void (*EnableEventWaiting)(void),<void(void)>
+DisableEventWaiting,void (*DisableEventWaiting)(void),<void(void)>
+SwapScreenBuffer,void (*SwapScreenBuffer)(void),<void(void)>
+PollInputEvents,void (*PollInputEvents)(void),<void(void)>
+WaitTime,void (*WaitTime)(double seconds),<void(double)>
+ShowCursor,void (*ShowCursor)(void),<void(void)>
+HideCursor,void (*HideCursor)(void),<void(void)>
+IsCursorHidden,bool (*IsCursorHidden)(void),<bool(void)>
+EnableCursor,void (*EnableCursor)(void),<void(void)>
+DisableCursor,void (*DisableCursor)(void),<void(void)>
+IsCursorOnScreen,bool (*IsCursorOnScreen)(void),<bool(void)>
+ClearBackground,void (*ClearBackground)(Color color),<void(Color)>
+BeginDrawing,void (*BeginDrawing)(void),<void(void)>
+EndDrawing,void (*EndDrawing)(void),<void(void)>
+BeginMode2D,void (*BeginMode2D)(Camera2D camera),<void(Camera2D)>
+EndMode2D,void (*EndMode2D)(void),<void(void)>
+BeginMode3D,void (*BeginMode3D)(Camera3D camera),<void(Camera3D)>
+EndMode3D,void (*EndMode3D)(void),<void(void)>
+BeginTextureMode,void (*BeginTextureMode)(RenderTexture2D target),<void(RenderTexture2D)>
+EndTextureMode,void (*EndTextureMode)(void),<void(void)>
+BeginShaderMode,void (*BeginShaderMode)(Shader shader),<void(Shader)>
+EndShaderMode,void (*EndShaderMode)(void),<void(void)>
+BeginBlendMode,void (*BeginBlendMode)(int mode),<void(int)>
+EndBlendMode,void (*EndBlendMode)(void),<void(void)>
+BeginScissorMode,"void (*BeginScissorMode)(int x, int y, int width, int height)","<void(int, int, int, int)>"
+EndScissorMode,void (*EndScissorMode)(void),<void(void)>
+BeginVrStereoMode,void (*BeginVrStereoMode)(VrStereoConfig config),<void(VrStereoConfig)>
+EndVrStereoMode,void (*EndVrStereoMode)(void),<void(void)>
+LoadVrStereoConfig,VrStereoConfig (*LoadVrStereoConfig)(VrDeviceInfo device),<VrStereoConfig(VrDeviceInfo)>
+UnloadVrStereoConfig,void (*UnloadVrStereoConfig)(VrStereoConfig config),<void(VrStereoConfig)>
+LoadShader,"Shader (*LoadShader)(const char *vsFileName, const char *fsFileName)","<Shader(const char*, const char*)>"
+LoadShaderFromMemory,"Shader (*LoadShaderFromMemory)(const char *vsCode, const char *fsCode)","<Shader(const char*, const char*)>"
+IsShaderReady,bool (*IsShaderReady)(Shader shader),<bool(Shader)>
+GetShaderLocation,"int (*GetShaderLocation)(Shader shader, const char *uniformName)","<int(Shader, const char*)>"
+GetShaderLocationAttrib,"int (*GetShaderLocationAttrib)(Shader shader, const char *attribName)","<int(Shader, const char*)>"
+SetShaderValue,"void (*SetShaderValue)(Shader shader, int locIndex, const void *value, int uniformType)","<void(Shader, int, const void*, int)>"
+SetShaderValueV,"void (*SetShaderValueV)(Shader shader, int locIndex, const void *value, int uniformType, int count)","<void(Shader, int, const void*, int, int)>"
+SetShaderValueMatrix,"void (*SetShaderValueMatrix)(Shader shader, int locIndex, Matrix mat)","<void(Shader, int, Matrix)>"
+SetShaderValueTexture,"void (*SetShaderValueTexture)(Shader shader, int locIndex, Texture2D texture)","<void(Shader, int, Texture2D)>"
+UnloadShader,void (*UnloadShader)(Shader shader),<void(Shader)>
+GetMouseRay,"Ray (*GetMouseRay)(Vector2 mousePosition, Camera camera)","<Ray(Vector2, Camera)>"
+GetCameraMatrix,Matrix (*GetCameraMatrix)(Camera camera),<Matrix(Camera)>
+GetCameraMatrix2D,Matrix (*GetCameraMatrix2D)(Camera2D camera),<Matrix(Camera2D)>
+GetWorldToScreen,"Vector2 (*GetWorldToScreen)(Vector3 position, Camera camera)","<Vector2(Vector3, Camera)>"
+GetScreenToWorld2D,"Vector2 (*GetScreenToWorld2D)(Vector2 position, Camera2D camera)","<Vector2(Vector2, Camera2D)>"
+GetWorldToScreenEx,"Vector2 (*GetWorldToScreenEx)(Vector3 position, Camera camera, int width, int height)","<Vector2(Vector3, Camera, int, int)>"
+GetWorldToScreen2D,"Vector2 (*GetWorldToScreen2D)(Vector2 position, Camera2D camera)","<Vector2(Vector2, Camera2D)>"
+SetTargetFPS,void (*SetTargetFPS)(int fps),<void(int)>
+GetFPS,int (*GetFPS)(void),<int(void)>
+GetFrameTime,float (*GetFrameTime)(void),<float(void)>
+GetTime,double (*GetTime)(void),<double(void)>
+GetRandomValue,"int (*GetRandomValue)(int min, int max)","<int(int, int)>"
+SetRandomSeed,void (*SetRandomSeed)(unsigned int seed),<void(unsigned int)>
+TakeScreenshot,void (*TakeScreenshot)(const char *fileName),<void(const char*)>
+SetConfigFlags,void (*SetConfigFlags)(unsigned int flags),<void(unsigned int)>
+TraceLog,"void (*TraceLog)(int logLevel, const char *text, ...)","<void(int, const char*, ...)>"
+SetTraceLogLevel,void (*SetTraceLogLevel)(int logLevel),<void(int)>
+MemAlloc,void* (*MemAlloc)(unsigned int size),<void*(unsigned int)>
+MemRealloc,"void* (*MemRealloc)(void *ptr, unsigned int size)","<void*(void*, unsigned int)>"
+MemFree,void (*MemFree)(void *ptr),<void(void*)>
+OpenURL,void (*OpenURL)(const char *url),<void(const char*)>
+SetTraceLogCallback,void (*SetTraceLogCallback)(TraceLogCallback callback),<void(TraceLogCallback)>
+SetLoadFileDataCallback,void (*SetLoadFileDataCallback)(LoadFileDataCallback callback),<void(LoadFileDataCallback)>
+SetSaveFileDataCallback,void (*SetSaveFileDataCallback)(SaveFileDataCallback callback),<void(SaveFileDataCallback)>
+SetLoadFileTextCallback,void (*SetLoadFileTextCallback)(LoadFileTextCallback callback),<void(LoadFileTextCallback)>
+SetSaveFileTextCallback,void (*SetSaveFileTextCallback)(SaveFileTextCallback callback),<void(SaveFileTextCallback)
+LoadFileData,"unsigned char *(*LoadFileData)(const char *fileName, unsigned int *bytesRead)","<unsigned char*(const char*, unsigned int*)>"
+UnloadFileData,void (*UnloadFileData)(unsigned char *data),<void(unsigned char*)>
+SaveFileData,"bool (*SaveFileData)(const char *fileName, void *data, unsigned int bytesToWrite)","<bool(const char*, void*, unsigned int)>"
+ExportDataAsCode,"bool (*ExportDataAsCode)(const unsigned char *data, unsigned int size, const char *fileName)","<bool(const unsigned char*, unsigned int, const char*)>"
+LoadFileText,char *(*LoadFileText)(const char *fileName),<char*(const char*)>
+UnloadFileText,void (*UnloadFileText)(char *text),<void(char*)>
+SaveFileText,"bool (*SaveFileText)(const char *fileName, char *text)","<bool(const char*, char*)>"
+FileExists,bool (*FileExists)(const char *fileName),<bool(const char*)>
+DirectoryExists,bool (*DirectoryExists)(const char *dirPath),<bool(const char*)>
+IsFileExtension,"bool (*IsFileExtension)(const char *fileName, const char *ext)","<bool(const char*, const char*)>"
+GetFileLength,int (*GetFileLength)(const char *fileName),<int(const char*)>
+GetFileExtension,const char *(*GetFileExtension)(const char *fileName),<const char*(const char*)>
+GetFileName,const char *(*GetFileName)(const char *filePath),<const char*(const char*)>
+GetFileNameWithoutExt,const char *(*GetFileNameWithoutExt)(const char *filePath),<const char*(const char*)>
+GetDirectoryPath,const char *(*GetDirectoryPath)(const char *filePath),<const char*(const char*)>
+GetPrevDirectoryPath,const char *(*GetPrevDirectoryPath)(const char *dirPath),<const char*(const char*)>
+GetWorkingDirectory,const char *(*GetWorkingDirectory)(void),<const char*(void)>
+GetApplicationDirectory,const char *(*GetApplicationDirectory)(void),<const char*(void)>
+ChangeDirectory,bool (*ChangeDirectory)(const char *dir),<bool(const char*)>
+IsPathFile,bool (*IsPathFile)(const char *path),<bool(const char*)>
+LoadDirectoryFiles,FilePathList (*LoadDirectoryFiles)(const char *dirPath),<FilePathList(const char*)>
+LoadDirectoryFilesEx,"FilePathList (*LoadDirectoryFilesEx)(const char *basePath, const char *filter, bool scanSubdirs)","<FilePathList(const char*, const char*, bool)>"
+UnloadDirectoryFiles,void (*UnloadDirectoryFiles)(FilePathList files),<void(FilePathList)>
+IsFileDropped,bool (*IsFileDropped)(void),<bool(void)>
+LoadDroppedFiles,FilePathList (*LoadDroppedFiles)(void),<FilePathList(void)>
+UnloadDroppedFiles,void (*UnloadDroppedFiles)(FilePathList files),<void(FilePathList)>
+GetFileModTime,long (*GetFileModTime)(const char *fileName),<long(const char*)>
+CompressData,"unsigned char *(*CompressData)(const unsigned char *data, int dataSize, int *compDataSize)","<unsigned char*(const unsigned char*, int, int*)>"
+DecompressData,"unsigned char *(*DecompressData)(const unsigned char *compData, int compDataSize, int *dataSize)","<unsigned char*(const unsigned char*, int, int*)>"
+EncodeDataBase64,"char *(*EncodeDataBase64)(const unsigned char *data, int dataSize, int *outputSize)","<char*(const unsigned char*, int, int*)>"
+DecodeDataBase64,"unsigned char *(*DecodeDataBase64)(const unsigned char *data, int *outputSize)","<unsigned char*(const unsigned char*, int*)>"
+IsKeyPressed,bool (*IsKeyPressed)(int key),<bool(int)>
+IsKeyDown,bool (*IsKeyDown)(int key),<bool(int)>
+IsKeyReleased,bool (*IsKeyReleased)(int key),<bool(int)>
+IsKeyUp,bool (*IsKeyUp)(int key),<bool(int)>
+SetExitKey,void (*SetExitKey)(int key),<void(int)>
+GetKeyPressed,int (*GetKeyPressed)(void),<int(void)>
+GetCharPressed,int (*GetCharPressed)(void),<int(void)>
+IsGamepadAvailable,bool (*IsGamepadAvailable)(int gamepad),<bool(int)>
+GetGamepadName,const char *(*GetGamepadName)(int gamepad),<const char*(int)>
+IsGamepadButtonPressed,"bool (*IsGamepadButtonPressed)(int gamepad, int button)","<bool(int, int)>"
+IsGamepadButtonDown,"bool (*IsGamepadButtonDown)(int gamepad, int button)","<bool(int, int)>"
+IsGamepadButtonReleased,"bool (*IsGamepadButtonReleased)(int gamepad, int button)","<bool(int, int)>"
+IsGamepadButtonUp,"bool (*IsGamepadButtonUp)(int gamepad, int button)","<bool(int, int)>"
+GetGamepadButtonPressed,int (*GetGamepadButtonPressed)(void),<int(void)>
+GetGamepadAxisCount,int (*GetGamepadAxisCount)(int gamepad),<int(int)>
+GetGamepadAxisMovement,"float (*GetGamepadAxisMovement)(int gamepad, int axis)","<float(int, int)>"
+SetGamepadMappings,int (*SetGamepadMappings)(const char *mappings),<int(const char*)>
+IsMouseButtonPressed,bool (*IsMouseButtonPressed)(int button),<bool(int)>
+IsMouseButtonDown,bool (*IsMouseButtonDown)(int button),<bool(int)>
+IsMouseButtonReleased,bool (*IsMouseButtonReleased)(int button),<bool(int)>
+IsMouseButtonUp,bool (*IsMouseButtonUp)(int button),<bool(int)>
+GetMouseX,int (*GetMouseX)(void),<int(void)>
+GetMouseY,int (*GetMouseY)(void),<int(void)>
+GetMousePosition,Vector2 (*GetMousePosition)(void),<Vector2(void)>
+GetMouseDelta,Vector2 (*GetMouseDelta)(void),<Vector2(void)>
+SetMousePosition,"void (*SetMousePosition)(int x, int y)","<void(int, int)>"
+SetMouseOffset,"void (*SetMouseOffset)(int offsetX, int offsetY)","<void(int, int)>"
+SetMouseScale,"void (*SetMouseScale)(float scaleX, float scaleY)","<void(float, float)>"
+GetMouseWheelMove,float (*GetMouseWheelMove)(void),<float(void)>
+GetMouseWheelMoveV,Vector2 (*GetMouseWheelMoveV)(void),<Vector2(void)>
+SetMouseCursor,void (*SetMouseCursor)(int cursor),<void(int)>
+GetTouchX,int (*GetTouchX)(void),<int(void)>
+GetTouchY,int (*GetTouchY)(void),<int(void)>
+GetTouchPosition,Vector2 (*GetTouchPosition)(int index),<Vector2(int)>
+GetTouchPointId,int (*GetTouchPointId)(int index),<int(int)>
+GetTouchPointCount,int (*GetTouchPointCount)(void),<int(void)>
+SetGesturesEnabled,void (*SetGesturesEnabled)(unsigned int flags),<void(unsigned int)>
+IsGestureDetected,bool (*IsGestureDetected)(int gesture),<bool(int)>
+GetGestureDetected,int (*GetGestureDetected)(void),<int(void)>
+GetGestureHoldDuration,float (*GetGestureHoldDuration)(void),<float(void)>
+GetGestureDragVector,Vector2 (*GetGestureDragVector)(void),<Vector2(void)>
+GetGestureDragAngle,float (*GetGestureDragAngle)(void),<float(void)>
+GetGesturePinchVector,Vector2 (*GetGesturePinchVector)(void),<Vector2(void)>
+GetGesturePinchAngle,float (*GetGesturePinchAngle)(void),<float(void)>
+UpdateCamera,"void (*UpdateCamera)(Camera *camera, int mode)","<void(Camera*, int)>"
+UpdateCameraPro,"void (*UpdateCameraPro)(Camera *camera, Vector3 movement, Vector3 rotation, float zoom)","<void(Camera*, Vector3, Vector3, float)>"
+SetShapesTexture,"void (*SetShapesTexture)(Texture2D texture, Rectangle source)","<void(Texture2D, Rectangle)>"
+DrawPixel,"void (*DrawPixel)(int posX, int posY, Color color)","<void(int, int, Color)>"
+DrawPixelV,"void (*DrawPixelV)(Vector2 position, Color color)","<void(Vector2, Color)>"
+DrawLine,"void (*DrawLine)(int startPosX, int startPosY, int endPosX, int endPosY, Color color)","<void(int, int, int, int, Color)>"
+DrawLineV,"void (*DrawLineV)(Vector2 startPos, Vector2 endPos, Color color)","<void(Vector2, Vector2, Color)>"
+DrawLineEx,"void (*DrawLineEx)(Vector2 startPos, Vector2 endPos, float thick, Color color)","<void(Vector2, Vector2, float, Color)>"
+DrawLineBezier,"void (*DrawLineBezier)(Vector2 startPos, Vector2 endPos, float thick, Color color)","<void(Vector2, Vector2, float, Color)>"
+DrawLineBezierQuad,"void (*DrawLineBezierQuad)(Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thick, Color color)","<void(Vector2, Vector2, Vector2, float, Color)>"
+DrawLineBezierCubic,"void (*DrawLineBezierCubic)(Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thick, Color color)","<void(Vector2, Vector2, Vector2, Vector2, float, Color)>"
+DrawLineStrip,"void (*DrawLineStrip)(Vector2 *points, int pointCount, Color color)","<void(Vector2*, int, Color)>"
+DrawCircle,"void (*DrawCircle)(int centerX, int centerY, float radius, Color color)","<void(int, int, float, Color)>"
+DrawCircleSector,"void (*DrawCircleSector)(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color)","<void(Vector2, float, float, float, int, Color)>"
+DrawCircleSectorLines,"void (*DrawCircleSectorLines)(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color)","<void(Vector2, float, float, float, int, Color)>"
+DrawCircleGradient,"void (*DrawCircleGradient)(int centerX, int centerY, float radius, Color color1, Color color2)","<void(int, int, float, Color, Color)>"
+DrawCircleV,"void (*DrawCircleV)(Vector2 center, float radius, Color color)","<void(Vector2, float, Color)>"
+DrawCircleLines,"void (*DrawCircleLines)(int centerX, int centerY, float radius, Color color)","<void(int, int, float, Color)>"
+DrawEllipse,"void (*DrawEllipse)(int centerX, int centerY, float radiusH, float radiusV, Color color)","<void(int, int, float, float, Color)>"
+DrawEllipseLines,"void (*DrawEllipseLines)(int centerX, int centerY, float radiusH, float radiusV, Color color)","<void(int, int, float, float, Color)>"
+DrawRing,"void (*DrawRing)(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color)","<void(Vector2, float, float, float, float, int, Color)>"
+DrawRingLines,"void (*DrawRingLines)(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color)","<void(Vector2, float, float, float, float, int, Color)>"
+DrawRectangle,"void (*DrawRectangle)(int posX, int posY, int width, int height, Color color)","<void(int, int, int, int, Color)>"
+DrawRectangleV,"void (*DrawRectangleV)(Vector2 position, Vector2 size, Color color)","<void(Vector2, Vector2, Color)>"
+DrawRectangleRec,"void (*DrawRectangleRec)(Rectangle rec, Color color)","<void(Rectangle, Color)>"
+DrawRectanglePro,"void (*DrawRectanglePro)(Rectangle rec, Vector2 origin, float rotation, Color color)","<void(Rectangle, Vector2, float, Color)>"
+DrawRectangleGradientV,"void (*DrawRectangleGradientV)(int posX, int posY, int width, int height, Color color1, Color color2)","<void(int, int, int, int, Color, Color)>"
+DrawRectangleGradientH,"void (*DrawRectangleGradientH)(int posX, int posY, int width, int height, Color color1, Color color2)","<void(int, int, int, int, Color, Color)>"
+DrawRectangleGradientEx,"void (*DrawRectangleGradientEx)(Rectangle rec, Color col1, Color col2, Color col3, Color col4)","<void(Rectangle, Color, Color, Color, Color)>"
+DrawRectangleLines,"void (*DrawRectangleLines)(int posX, int posY, int width, int height, Color color)","<void(int, int, int, int, Color)>"
+DrawRectangleLinesEx,"void (*DrawRectangleLinesEx)(Rectangle rec, float lineThick, Color color)","<void(Rectangle, float, Color)>"
+DrawRectangleRounded,"void (*DrawRectangleRounded)(Rectangle rec, float roundness, int segments, Color color)","<void(Rectangle, float, int, Color)>"
+DrawRectangleRoundedLines,"void (*DrawRectangleRoundedLines)(Rectangle rec, float roundness, int segments, float lineThick, Color color)","<void(Rectangle, float, int, float, Color)>"
+DrawTriangle,"void (*DrawTriangle)(Vector2 v1, Vector2 v2, Vector2 v3, Color color)","<void(Vector2, Vector2, Vector2, Color)>"
+DrawTriangleLines,"void (*DrawTriangleLines)(Vector2 v1, Vector2 v2, Vector2 v3, Color color)","<void(Vector2, Vector2, Vector2, Color)>"
+DrawTriangleFan,"void (*DrawTriangleFan)(Vector2 *points, int pointCount, Color color)","<void(Vector2*, int, Color)>"
+DrawTriangleStrip,"void (*DrawTriangleStrip)(Vector2 *points, int pointCount, Color color)","<void(Vector2*, int, Color)>"
+DrawPoly,"void (*DrawPoly)(Vector2 center, int sides, float radius, float rotation, Color color)","<void(Vector2, int, float, float, Color)>"
+DrawPolyLines,"void (*DrawPolyLines)(Vector2 center, int sides, float radius, float rotation, Color color)","<void(Vector2, int, float, float, Color)>"
+DrawPolyLinesEx,"void (*DrawPolyLinesEx)(Vector2 center, int sides, float radius, float rotation, float lineThick, Color color)","<void(Vector2, int, float, float, float, Color)>"
+CheckCollisionRecs,"bool (*CheckCollisionRecs)(Rectangle rec1, Rectangle rec2)","<bool(Rectangle, Rectangle)>"
+CheckCollisionCircles,"bool (*CheckCollisionCircles)(Vector2 center1, float radius1, Vector2 center2, float radius2)","<bool(Vector2, float, Vector2, float)>"
+CheckCollisionCircleRec,"bool (*CheckCollisionCircleRec)(Vector2 center, float radius, Rectangle rec)","<bool(Vector2, float, Rectangle)>"
+CheckCollisionPointRec,"bool (*CheckCollisionPointRec)(Vector2 point, Rectangle rec)","<bool(Vector2, Rectangle)>"
+CheckCollisionPointCircle,"bool (*CheckCollisionPointCircle)(Vector2 point, Vector2 center, float radius)","<bool(Vector2, Vector2, float)>"
+CheckCollisionPointTriangle,"bool (*CheckCollisionPointTriangle)(Vector2 point, Vector2 p1, Vector2 p2, Vector2 p3)","<bool(Vector2, Vector2, Vector2, Vector2)>"
+CheckCollisionPointPoly,"bool (*CheckCollisionPointPoly)(Vector2 point, Vector2 *points, int pointCount)","<bool(Vector2, Vector2*, int)>"
+CheckCollisionLines,"bool (*CheckCollisionLines)(Vector2 startPos1, Vector2 endPos1, Vector2 startPos2, Vector2 endPos2, Vector2 *collisionPoint)","<bool(Vector2, Vector2, Vector2, Vector2, Vector2*)>"
+CheckCollisionPointLine,"bool (*CheckCollisionPointLine)(Vector2 point, Vector2 p1, Vector2 p2, int threshold)","<bool(Vector2, Vector2, Vector2, int)>"
+GetCollisionRec,"Rectangle (*GetCollisionRec)(Rectangle rec1, Rectangle rec2)","<Rectangle(Rectangle, Rectangle)>"
+LoadImage,Image (*LoadImage)(const char *fileName),<Image(const char*)>
+LoadImageRaw,"Image (*LoadImageRaw)(const char *fileName, int width, int height, int format, int headerSize)","<Image(const char*, int, int, int, int)>"
+LoadImageAnim,"Image (*LoadImageAnim)(const char *fileName, int *frames)","<Image(const char*, int*)>"
+LoadImageFromMemory,"Image (*LoadImageFromMemory)(const char *fileType, const unsigned char *fileData, int dataSize)","<Image(const char*, const unsigned char*, int)>"
+LoadImageFromTexture,Image (*LoadImageFromTexture)(Texture2D texture),<Image(Texture2D)>
+LoadImageFromScreen,Image (*LoadImageFromScreen)(void),<Image()>
+IsImageReady,bool (*IsImageReady)(Image image),<bool(Image)>
+UnloadImage,void (*UnloadImage)(Image image),<void(Image)>
+ExportImage,"bool (*ExportImage)(Image image, const char *fileName)","<bool(Image, const char*)>"
+ExportImageAsCode,"bool (*ExportImageAsCode)(Image image, const char *fileName)","<bool(Image, const char*)>"
+GenImageColor,"Image (*GenImageColor)(int width, int height, Color color)","<Image(int, int, Color)>"
+GenImageGradientV,"Image (*GenImageGradientV)(int width, int height, Color top, Color bottom)","<Image(int, int, Color, Color)>"
+GenImageGradientH,"Image (*GenImageGradientH)(int width, int height, Color left, Color right)","<Image(int, int, Color, Color)>"
+GenImageGradientRadial,"Image (*GenImageGradientRadial)(int width, int height, float density, Color inner, Color outer)","<Image(int, int, float, Color, Color)>"
+GenImageChecked,"Image (*GenImageChecked)(int width, int height, int checksX, int checksY, Color col1, Color col2)","<Image(int, int, int, int, Color, Color)>"
+GenImageWhiteNoise,"Image (*GenImageWhiteNoise)(int width, int height, float factor)","<Image(int, int, float)>"
+GenImagePerlinNoise,"Image (*GenImagePerlinNoise)(int width, int height, int offsetX, int offsetY, float scale)","<Image(int, int, int, int, float)>"
+GenImageCellular,"Image (*GenImageCellular)(int width, int height, int tileSize)","<Image(int, int, int)>"
+GenImageText,"Image (*GenImageText)(int width, int height, const char *text)","<Image(int, int, const char*)>"
+ImageCopy,Image (*ImageCopy)(Image image),<Image(Image)>
+ImageFromImage,"Image (*ImageFromImage)(Image image, Rectangle rec)","<Image(Image, Rectangle)>"
+ImageText,"Image (*ImageText)(const char *text, int fontSize, Color color)","<Image(const char*, int, Color)>"
+ImageTextEx,"Image (*ImageTextEx)(Font font, const char *text, float fontSize, float spacing, Color tint)","<Image(Font, const char*, float, float, Color)>"
+ImageFormat,"void (*ImageFormat)(Image *image, int newFormat)","<void(Image*, int)>"
+ImageToPOT,"void (*ImageToPOT)(Image *image, Color fill)","<void(Image*, Color)>"
+ImageCrop,"void (*ImageCrop)(Image *image, Rectangle crop)","<void(Image*, Rectangle)>"
+ImageAlphaCrop,"void (*ImageAlphaCrop)(Image *image, float threshold)","<void(Image*, float)>"
+ImageAlphaClear,"void (*ImageAlphaClear)(Image *image, Color color, float threshold)","<void(Image*, Color, float)>"
+ImageAlphaMask,"void (*ImageAlphaMask)(Image *image, Image alphaMask)","<void(Image*, Image)>"
+ImageAlphaPremultiply,void (*ImageAlphaPremultiply)(Image *image),<void(Image*)>
+ImageBlurGaussian,"void (*ImageBlurGaussian)(Image *image, int blurSize)","<void(Image*, int)>"
+ImageResize,"void (*ImageResize)(Image *image, int newWidth, int newHeight)","<void(Image*, int, int)>"
+ImageResizeNN,"void (*ImageResizeNN)(Image *image, int newWidth, int newHeight)","<void(Image*, int, int)>"
+ImageResizeCanvas,"void (*ImageResizeCanvas)(Image *image, int newWidth, int newHeight, int offsetX, int offsetY, Color fill)","<void(Image*, int, int, int, int, Color)>"
+ImageMipmaps,void (*ImageMipmaps)(Image *image),<void(Image*)>
+ImageDither,"void (*ImageDither)(Image *image, int rBpp, int gBpp, int bBpp, int aBpp)","<void(Image*, int, int, int, int)>"
+ImageFlipVertical,void (*ImageFlipVertical)(Image *image),<void(Image*)>
+ImageFlipHorizontal,void (*ImageFlipHorizontal)(Image *image),<void(Image*)>
+ImageRotateCW,void (*ImageRotateCW)(Image *image),<void(Image*)>
+ImageRotateCCW,void (*ImageRotateCCW)(Image *image),<void(Image*)>
+ImageColorTint,"void (*ImageColorTint)(Image *image, Color color)","<void(Image*, Color)>"
+ImageColorInvert,void (*ImageColorInvert)(Image *image),<void(Image*)>
+ImageColorGrayscale,void (*ImageColorGrayscale)(Image *image),<void(Image*)>
+ImageColorContrast,"void (*ImageColorContrast)(Image *image, float contrast)","<void(Image*, float)>"
+ImageColorBrightness,"void (*ImageColorBrightness)(Image *image, int brightness)","<void(Image*, int)>"
+ImageColorReplace,"void (*ImageColorReplace)(Image *image, Color color, Color replace)","<void(Image*, Color, Color)>"
+LoadImageColors,Color (_LoadImageColors)(Image image),<Color*(Image)>
+LoadImagePalette,"Color (_LoadImagePalette)(Image image, int maxPaletteSize, int *colorCount)","<Color*(Image, int, int*)>"
+UnloadImageColors,void (*UnloadImageColors)(Color *colors),<void(Color*)>
+UnloadImagePalette,void (*UnloadImagePalette)(Color *colors),<void(Color*)>
+GetImageAlphaBorder,"Rectangle (*GetImageAlphaBorder)(Image image, float threshold)","<Rectangle(Image, float)>"
+GetImageColor,"Color (*GetImageColor)(Image image, int x, int y)","<Color(Image, int, int)>"
+ImageClearBackground,"void (*ImageClearBackground)(Image *dst, Color color)","<void(Image*, Color)>"
+ImageDrawPixel,"void (*ImageDrawPixel)(Image *dst, int posX, int posY, Color color)","<void(Image*, int, int, Color)>"
+ImageDrawPixelV,"void (*ImageDrawPixelV)(Image *dst, Vector2 position, Color color)","<void(Image*, Vector2, Color)>"
+ImageDrawLine,"void (*ImageDrawLine)(Image *dst, int startPosX, int startPosY, int endPosX, int endPosY, Color color)","<void(Image*, int, int, int, int, Color)>"
+ImageDrawLineV,"void (*ImageDrawLineV)(Image *dst, Vector2 start, Vector2 end, Color color)","<void(Image*, Vector2, Vector2, Color)>"
+ImageDrawCircle,"void (*ImageDrawCircle)(Image *dst, int centerX, int centerY, int radius, Color color)","<void(Image*, int, int, int, Color)>"
+ImageDrawCircleV,"void (*ImageDrawCircleV)(Image *dst, Vector2 center, int radius, Color color)","<void(Image*, Vector2, int, Color)>"
+ImageDrawCircleLines,"void (*ImageDrawCircleLines)(Image *dst, int centerX, int centerY, int radius, Color color)","<void(Image*, int, int, int, Color)>"
+ImageDrawCircleLinesV,"void (*ImageDrawCircleLinesV)(Image *dst, Vector2 center, int radius, Color color)","<void(Image*, Vector2, int, Color)>"
+ImageDrawRectangle,"void (*ImageDrawRectangle)(Image *dst, int posX, int posY, int width, int height, Color color)","<void(Image*, int, int, int, int, Color)>"
+ImageDrawRectangleV,"void (*ImageDrawRectangleV)(Image *dst, Vector2 position, Vector2 size, Color color)","<void(Image*, Vector2, Vector2, Color)>"
+ImageDrawRectangleRec,"void (*ImageDrawRectangleRec)(Image *dst, Rectangle rec, Color color)","<void(Image*, Rectangle, Color)>"
+ImageDrawRectangleLines,"void (*ImageDrawRectangleLines)(Image *dst, Rectangle rec, int thick, Color color)","<void(Image*, Rectangle, int, Color)>"
+ImageDraw,"void (*ImageDraw)(Image *dst, Image src, Rectangle srcRec, Rectangle dstRec, Color tint)","<void(Image*, Image, Rectangle, Rectangle, Color)>"
+ImageDrawText,"void (*ImageDrawText)(Image *dst, const char *text, int posX, int posY, int fontSize, Color color)","<void(Image*, const char*, int, int, int, Color)>"
+ImageDrawTextEx,"void (*ImageDrawTextEx)(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint)","<void(Image*, Font, const char*, Vector2, float, float, Color)>"
+LoadTexture,Texture2D (*LoadTexture)(const char *fileName),<Texture2D(const char*)>
+LoadTextureFromImage,Texture2D (*LoadTextureFromImage)(Image image),<Texture2D(Image)>
+LoadTextureCubemap,"TextureCubemap (*LoadTextureCubemap)(Image image, int layout)","<TextureCubemap(Image, int)>"
+LoadRenderTexture,"RenderTexture2D (*LoadRenderTexture)(int width, int height)","<RenderTexture2D(int, int)>"
+IsTextureReady,bool (*IsTextureReady)(Texture2D texture),<bool(Texture2D)>
+UnloadTexture,void (*UnloadTexture)(Texture2D texture),<void(Texture2D)>
+IsRenderTextureReady,bool (*IsRenderTextureReady)(RenderTexture2D target),<bool(RenderTexture2D)>
+UnloadRenderTexture,void (*UnloadRenderTexture)(RenderTexture2D target),<void(RenderTexture2D)>
+UpdateTexture,"void (*UpdateTexture)(Texture2D texture, const void *pixels)","<void(Texture2D, const void*)>"
+UpdateTextureRec,"void (*UpdateTextureRec)(Texture2D texture, Rectangle rec, const void *pixels)","<void(Texture2D, Rectangle, const void*)>"
+GenTextureMipmaps,void (*GenTextureMipmaps)(Texture2D *texture),<void(Texture2D*)>
+SetTextureFilter,"void (*SetTextureFilter)(Texture2D texture, int filter)","<void(Texture2D, int)>"
+SetTextureWrap,"void (*SetTextureWrap)(Texture2D texture, int wrap)","<void(Texture2D, int)>"
+DrawTexture,"void (*DrawTexture)(Texture2D texture, int posX, int posY, Color tint)","<void(Texture2D, int, int, Color)>"
+DrawTextureV,"void (*DrawTextureV)(Texture2D texture, Vector2 position, Color tint)","<void(Texture2D, Vector2, Color)>"
+DrawTextureEx,"void (*DrawTextureEx)(Texture2D texture, Vector2 position, float rotation, float scale, Color tint)","<void(Texture2D, Vector2, float, float, Color)>"
+DrawTextureRec,"void (*DrawTextureRec)(Texture2D texture, Rectangle source, Vector2 position, Color tint)","<void(Texture2D, Rectangle, Vector2, Color)>"
+DrawTexturePro,"void (*DrawTexturePro)(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint)","<void(Texture2D, Rectangle, Rectangle, Vector2, float, Color)>"
+DrawTextureNPatch,"void (*DrawTextureNPatch)(Texture2D texture, NPatchInfo nPatchInfo, Rectangle dest, Vector2 origin, float rotation, Color tint)","<void(Texture2D, NPatchInfo, Rectangle, Vector2, float, Color)>"
+Fade,"Color (*Fade)(Color color, float alpha)","<Color(Color, float)>"
+ColorToInt,int (*ColorToInt)(Color color),<int(Color)>
+ColorNormalize,Vector4 (*ColorNormalize)(Color color),<Vector4(Color)>
+ColorFromNormalized,Color (*ColorFromNormalized)(Vector4 normalized),<Color(Vector4)>
+ColorToHSV,Vector3 (*ColorToHSV)(Color color),<Vector3(Color)>
+ColorFromHSV,"Color (*ColorFromHSV)(float hue, float saturation, float value)","<Color(float, float, float)>"
+ColorTint,"Color (*ColorTint)(Color color, Color tint)","<Color(Color, Color)>"
+ColorBrightness,"Color (*ColorBrightness)(Color color, float factor)","<Color(Color, float)>"
+ColorContrast,"Color (*ColorContrast)(Color color, float contrast)","<Color(Color, float)>"
+ColorAlpha,"Color (*ColorAlpha)(Color color, float alpha)","<Color(Color, float)>"
+ColorAlphaBlend,"Color (*ColorAlphaBlend)(Color dst, Color src, Color tint)","<Color(Color, Color, Color)>"
+GetColor,Color (*GetColor)(unsigned int hexValue),<Color(unsigned int)>
+GetPixelColor,"Color (*GetPixelColor)(void *srcPtr, int format)","<Color(void*, int)>"
+SetPixelColor,"void (*SetPixelColor)(void *dstPtr, Color color, int format)","<void(void*, Color, int)>"
+GetPixelDataSize,"int (*GetPixelDataSize)(int width, int height, int format)","<int(int, int, int)>"
+GetFontDefault,Font (*GetFontDefault)(void),<Font(void)>
+LoadFont,Font (*LoadFont)(const char *fileName),<Font(const char*)>
+LoadFontEx,"Font (*LoadFontEx)(const char *fileName, int fontSize, int *fontChars, int glyphCount)","<Font(const char*, int, int*, int)>"
+LoadFontFromImage,"Font (*LoadFontFromImage)(Image image, Color key, int firstChar)","<Font(Image, Color, int)>"
+LoadFontFromMemory,"Font (*LoadFontFromMemory)(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount)","<Font(const char*, const unsigned char*, int, int, int*, int)>"
+IsFontReady,bool (*IsFontReady)(Font font),<bool(Font)>
+LoadFontData,"GlyphInfo (_LoadFontData)(const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, int type)","<GlyphInfo*(const unsigned char*, int, int, int*, int, int)>"
+GenImageFontAtlas,"Image (*GenImageFontAtlas)(const GlyphInfo *chars, Rectangle **recs, int glyphCount, int fontSize, int padding, int packMethod)","<Image(const GlyphInfo*, Rectangle**, int, int, int, int)>"
+UnloadFontData,"void (*UnloadFontData)(GlyphInfo *chars, int glyphCount)","<void(GlyphInfo*, int)>"
+UnloadFont,void (*UnloadFont)(Font font),<void(Font)>
+ExportFontAsCode,"bool (*ExportFontAsCode)(Font font, const char *fileName)","<bool(Font, const char*)>"
+DrawFPS,"void (*DrawFPS)(int posX, int posY)","<void(int, int)>"
+DrawText,"void (*DrawText)(const char *text, int posX, int posY, int fontSize, Color color)","<void(const char*, int, int, int, Color)>"
+DrawTextEx,"void (*DrawTextEx)(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint)","<void(Font, const char*, Vector2, float, float, Color)>"
+DrawTextPro,"void (*DrawTextPro)(Font font, const char *text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint)","<void(Font, const char*, Vector2, Vector2, float, float, float, Color)>"
+DrawTextCodepoint,"void (*DrawTextCodepoint)(Font font, int codepoint, Vector2 position, float fontSize, Color tint)","<void(Font, int, Vector2, float, Color)>"
+DrawTextCodepoints,"void (*DrawTextCodepoints)(Font font, const int *codepoints, int count, Vector2 position, float fontSize, float spacing, Color tint)","<void(Font, const int*, int, Vector2, float, float, Color)>"
+MeasureText,"int (*MeasureText)(const char *text, int fontSize)","<int(const char*, int)>"
+MeasureTextEx,"Vector2 (*MeasureTextEx)(Font font, const char *text, float fontSize, float spacing)","<Vector2(Font, const char*, float, float)>"
+GetGlyphIndex,"int (*GetGlyphIndex)(Font font, int codepoint)","<int(Font, int)>"
+GetGlyphInfo,"GlyphInfo (*GetGlyphInfo)(Font font, int codepoint)","<GlyphInfo(Font, int)>"
+GetGlyphAtlasRec,"Rectangle (*GetGlyphAtlasRec)(Font font, int codepoint)","<Rectangle(Font, int)>"
+LoadUTF8,"char (_LoadUTF8)(const int *codepoints, int length)","<char*(const int*, int)>"
+UnloadUTF8,void (*UnloadUTF8)(char *text),<void(char*)>
+LoadCodepoints,"int (_LoadCodepoints)(const char *text, int *count)","<int*(const char*, int*)>"
+UnloadCodepoints,void (*UnloadCodepoints)(int *codepoints),<void(int*)>
+GetCodepointCount,int (*GetCodepointCount)(const char *text),<int(const char*)>
+GetCodepoint,"int (*GetCodepoint)(const char *text, int *codepointSize)","<int(const char*, int*)>"
+GetCodepointNext,"int (*GetCodepointNext)(const char *text, int *codepointSize)","<int(const char*, int*)>"
+GetCodepointPrevious,"int (*GetCodepointPrevious)(const char *text, int *codepointSize)","<int(const char*, int*)>"
+CodepointToUTF8,"const char (_CodepointToUTF8)(int codepoint, int *utf8Size)","<const char*(int, int*)>"
+TextCopy,"int (*TextCopy)(char *dst, const char *src)","<int(char*, const char*)>"
+TextIsEqual,"bool (*TextIsEqual)(const char *text1, const char *text2)","<bool(const char*, const char*)>"
+TextLength,unsigned int (*TextLength)(const char *text),<unsigned int(const char*)>
+TextFormat,"const char *(*TextFormat)(const char *text, ...)","<const char*(const char*, ...)>"
+TextSubtext,"const char *(*TextSubtext)(const char *text, int position, int length)","<const char*(const char*, int, int)>"
+TextReplace,"char *(*TextReplace)(char *text, const char *replace, const char *by)","<char*(char*, const char*, const char*)>"
+TextInsert,"char *(*TextInsert)(const char *text, const char *insert, int position)","<char*(const char*, const char*, int)>"
+TextJoin,"const char *(*TextJoin)(const char **textList, int count, const char *delimiter)","<const char*(const char**, int, const char*)>"
+TextSplit,"const char **(*TextSplit)(const char *text, char delimiter, int *count)","<const char**>(const char*, char, int*)"
+TextAppend,"void (*TextAppend)(char *text, const char *append, int *position)","<void(char*, const char*, int*)>"
+TextFindIndex,"int (*TextFindIndex)(const char *text, const char *find)","<int(const char*, const char*)>"
+TextToUpper,const char *(*TextToUpper)(const char *text),<const char*(const char*)>
+TextToLower,const char *(*TextToLower)(const char *text),<const char*(const char*)>
+TextToPascal,const char *(*TextToPascal)(const char *text),<const char*(const char*)>
+TextToInteger,int (*TextToInteger)(const char *text),<int(const char*)>
+DrawLine3D,"void (*DrawLine3D)(Vector3 startPos, Vector3 endPos, Color color)","<void(Vector3, Vector3, Color)>"
+DrawPoint3D,"void (*DrawPoint3D)(Vector3 position, Color color)","<void(Vector3, Color)>"
+DrawCircle3D,"void (*DrawCircle3D)(Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color)","<void(Vector3, float, Vector3, float, Color)>"
+DrawTriangle3D,"void (*DrawTriangle3D)(Vector3 v1, Vector3 v2, Vector3 v3, Color color)","<void(Vector3, Vector3, Vector3, Color)>"
+DrawTriangleStrip3D,"void (*DrawTriangleStrip3D)(Vector3 *points, int pointCount, Color color)","<void(Vector3*, int, Color)>"
+DrawCube,"void (*DrawCube)(Vector3 position, float width, float height, float length, Color color)","<void(Vector3, float, float, float, Color)>"
+DrawCubeV,"void (*DrawCubeV)(Vector3 position, Vector3 size, Color color)","<void(Vector3, Vector3, Color)>"
+DrawCubeWires,"void (*DrawCubeWires)(Vector3 position, float width, float height, float length, Color color)","<void(Vector3, float, float, float, Color)>"
+DrawCubeWiresV,"void (*DrawCubeWiresV)(Vector3 position, Vector3 size, Color color)","<void(Vector3, Vector3, Color)>"
+DrawSphere,"void (*DrawSphere)(Vector3 centerPos, float radius, Color color)","<void(Vector3, float, Color)>"
+DrawSphereEx,"void (*DrawSphereEx)(Vector3 centerPos, float radius, int rings, int slices, Color color)","<void(Vector3, float, int, int, Color)>"
+DrawSphereWires,"void (*DrawSphereWires)(Vector3 centerPos, float radius, int rings, int slices, Color color)","<void(Vector3, float, int, int, Color)>"
+DrawCylinder,"void (*DrawCylinder)(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color)","<void(Vector3, float, float, float, int, Color)>"
+DrawCylinderEx,"void (*DrawCylinderEx)(Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color)","<void(Vector3, Vector3, float, float, int, Color)>"
+DrawCylinderWires,"void (*DrawCylinderWires)(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color)","<void(Vector3, float, float, float, int, Color)>"
+DrawCylinderWiresEx,"void (*DrawCylinderWiresEx)(Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color)","<void(Vector3, Vector3, float, float, int, Color)>"
+DrawCapsule,"void (*DrawCapsule)(Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color)","<void(Vector3, Vector3, float, int, int, Color)>"
+DrawCapsuleWires,"void (*DrawCapsuleWires)(Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color)","<void(Vector3, Vector3, float, int, int, Color)>"
+DrawPlane,"void (*DrawPlane)(Vector3 centerPos, Vector2 size, Color color)","<void(Vector3, Vector2, Color)>"
+DrawRay,"void (*DrawRay)(Ray ray, Color color)","<void(Ray, Color)>"
+DrawGrid,"void (*DrawGrid)(int slices, float spacing)","<void(int, float)>"
+LoadModel,Model (*LoadModel)(const char *fileName),<Model(const char*)>
+LoadModelFromMesh,Model (*LoadModelFromMesh)(Mesh mesh),<Model(Mesh)>
+IsModelReady,bool (*IsModelReady)(Model model),<bool(Model)>
+UnloadModel,void (*UnloadModel)(Model model),<void(Model)>
+GetModelBoundingBox,BoundingBox (*GetModelBoundingBox)(Model model),<BoundingBox(Model)>
+DrawModel,"void (*DrawModel)(Model model, Vector3 position, float scale, Color tint)","<void(Model, Vector3, float, Color)>"
+DrawModelEx,"void (*DrawModelEx)(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint)","<void(Model, Vector3, Vector3, float, Vector3, Color)>"
+DrawModelWires,"void (*DrawModelWires)(Model model, Vector3 position, float scale, Color tint)","<void(Model, Vector3, float, Color)>"
+DrawModelWiresEx,"void (*DrawModelWiresEx)(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint)","<void(Model, Vector3, Vector3, float, Vector3, Color)>"
+DrawBoundingBox,"void (*DrawBoundingBox)(BoundingBox box, Color color)","<void(BoundingBox, Color)>"
+DrawBillboard,"void (*DrawBillboard)(Camera camera, Texture2D texture, Vector3 position, float size, Color tint)","<void(Camera, Texture2D, Vector3, float, Color)>"
+DrawBillboardRec,"void (*DrawBillboardRec)(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector2 size, Color tint)","<void(Camera, Texture2D, Rectangle, Vector3, Vector2, Color)>"
+DrawBillboardPro,"void (*DrawBillboardPro)(Camera camera, Texture2D texture, Rectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint)","<void(Camera, Texture2D, Rectangle, Vector3, Vector3, Vector2, Vector2, float, Color)>"
+UploadMesh,"void (*UploadMesh)(Mesh *mesh, bool dynamic)","<void(Mesh*, bool)>"
+UpdateMeshBuffer,"void (*UpdateMeshBuffer)(Mesh mesh, int index, const void *data, int dataSize, int offset)","<void(Mesh, int, const void*, int, int)>"
+UnloadMesh,void (*UnloadMesh)(Mesh mesh),<void(Mesh)>
+DrawMesh,"void (*DrawMesh)(Mesh mesh, Material material, Matrix transform)","<void(Mesh, Material, Matrix)>"
+DrawMeshInstanced,"void (*DrawMeshInstanced)(Mesh mesh, Material material, const Matrix *transforms, int instances)","<void(Mesh, Material, const Matrix*, int)>"
+ExportMesh,"bool (*ExportMesh)(Mesh mesh, const char *fileName)","<bool(Mesh, const char*)>"
+GetMeshBoundingBox,BoundingBox (*GetMeshBoundingBox)(Mesh mesh),<BoundingBox(Mesh)>
+GenMeshTangents,void (*GenMeshTangents)(Mesh *mesh),<void(Mesh*)>
+GenMeshPoly,"Mesh (*GenMeshPoly)(int sides, float radius)","<Mesh(int, float)>"
+GenMeshPlane,"Mesh (*GenMeshPlane)(float width, float length, int resX, int resZ)","<Mesh(float, float, int, int)>"
+GenMeshCube,"Mesh (*GenMeshCube)(float width, float height, float length)","<Mesh(float, float, float)>"
+GenMeshSphere,"Mesh (*GenMeshSphere)(float radius, int rings, int slices)","<Mesh(float, int, int)>"
+GenMeshHemiSphere,"Mesh (*GenMeshHemiSphere)(float radius, int rings, int slices)","<Mesh(float, int, int)>"
+GenMeshCylinder,"Mesh (*GenMeshCylinder)(float radius, float height, int slices)","<Mesh(float, float, int)>"
+GenMeshCone,"Mesh (*GenMeshCone)(float radius, float height, int slices)","<Mesh(float, float, int)>"
+GenMeshTorus,"Mesh (*GenMeshTorus)(float radius, float size, int radSeg, int sides)","<Mesh(float, float, int, int)>"
+GenMeshKnot,"Mesh (*GenMeshKnot)(float radius, float size, int radSeg, int sides)","<Mesh(float, float, int, int)>"
+GenMeshHeightmap,"Mesh (*GenMeshHeightmap)(Image heightmap, Vector3 size)","<Mesh(Image, Vector3)>"
+GenMeshCubicmap,"Mesh (*GenMeshCubicmap)(Image cubicmap, Vector3 cubeSize)","<Mesh(Image, Vector3)>"
+LoadMaterials,"Material *(*LoadMaterials)(const char *fileName, int *materialCount)","<Material*(const char*, int*)>"
+LoadMaterialDefault,Material (*LoadMaterialDefault)(void),<Material(void)>
+IsMaterialReady,bool (*IsMaterialReady)(Material material),<bool(Material)>
+UnloadMaterial,void (*UnloadMaterial)(Material material),<void(Material)>
+SetMaterialTexture,"void (*SetMaterialTexture)(Material *material, int mapType, Texture2D texture)","<void(Material*, int, Texture2D)>"
+SetModelMeshMaterial,"void (*SetModelMeshMaterial)(Model *model, int meshId, int materialId)","<void(Model*, int, int)>"
+LoadModelAnimations,"ModelAnimation *(*LoadModelAnimations)(const char *fileName, unsigned int *animCount)","<ModelAnimation*(const char*, unsigned int*)>"
+UpdateModelAnimation,"void (*UpdateModelAnimation)(Model model, ModelAnimation anim, int frame)","<void(Model, ModelAnimation, int)>"
+UnloadModelAnimation,void (*UnloadModelAnimation)(ModelAnimation anim),<void(ModelAnimation)>
+UnloadModelAnimations,"void (*UnloadModelAnimations)(ModelAnimation *animations, unsigned int count)","<void(ModelAnimation*, unsigned int)>"
+IsModelAnimationValid,"bool (*IsModelAnimationValid)(Model model, ModelAnimation anim)","<bool(Model, ModelAnimation)>"
+CheckCollisionSpheres,"bool (*CheckCollisionSpheres)(Vector3 center1, float radius1, Vector3 center2, float radius2)","<bool(Vector3, float, Vector3, float)>"
+CheckCollisionBoxes,"bool (*CheckCollisionBoxes)(BoundingBox box1, BoundingBox box2)","<bool(BoundingBox, BoundingBox)>"
+CheckCollisionBoxSphere,"bool (*CheckCollisionBoxSphere)(BoundingBox box, Vector3 center, float radius)","<bool(BoundingBox, Vector3, float)>"
+GetRayCollisionSphere,"RayCollision (*GetRayCollisionSphere)(Ray ray, Vector3 center, float radius)","<RayCollision(Ray, Vector3, float)>"
+GetRayCollisionBox,"RayCollision (*GetRayCollisionBox)(Ray ray, BoundingBox box)","<RayCollision(Ray, BoundingBox)>"
+GetRayCollisionMesh,"RayCollision (*GetRayCollisionMesh)(Ray ray, Mesh mesh, Matrix transform)","<RayCollision(Ray, Mesh, Matrix)>"
+GetRayCollisionTriangle,"RayCollision (*GetRayCollisionTriangle)(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3)","<RayCollision(Ray, Vector3, Vector3, Vector3)>"
+GetRayCollisionQuad,"RayCollision (*GetRayCollisionQuad)(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, Vector3 p4)","<RayCollision(Ray, Vector3, Vector3, Vector3, Vector3)>"
+InitAudioDevice,void (*InitAudioDevice)(void),<void(void)>
+CloseAudioDevice,void (*CloseAudioDevice)(void),<void(void)>
+IsAudioDeviceReady,bool (*IsAudioDeviceReady)(void),<bool(void)>
+SetMasterVolume,void (*SetMasterVolume)(float volume),<void(float)>
+LoadWave,Wave (*LoadWave)(const char *fileName),<Wave(const char*)>
+LoadWaveFromMemory,"Wave (*LoadWaveFromMemory)(const char *fileType, const unsigned char *fileData, int dataSize)","<Wave(const char*, const unsigned char*, int)>"
+IsWaveReady,bool (*IsWaveReady)(Wave wave),<bool(Wave)>
+LoadSound,Sound (*LoadSound)(const char *fileName),<Sound(const char*)>
+LoadSoundFromWave,Sound (*LoadSoundFromWave)(Wave wave),<Sound(Wave)>
+IsSoundReady,bool (*IsSoundReady)(Sound sound),<bool(Sound)>
+UpdateSound,"void (*UpdateSound)(Sound sound, const void *data, int sampleCount)","<void(Sound, const void*, int)>"
+UnloadWave,void (*UnloadWave)(Wave wave),<void(Wave)>
+UnloadSound,void (*UnloadSound)(Sound sound),<void(Sound)>
+ExportWave,"bool (*ExportWave)(Wave wave, const char *fileName)","<bool(Wave, const char*)>"
+ExportWaveAsCode,"bool (*ExportWaveAsCode)(Wave wave, const char *fileName)","<bool(Wave, const char*)>"
+PlaySound,void (*PlaySound)(Sound sound),<void(Sound)>
+StopSound,void (*StopSound)(Sound sound),<void(Sound)>
+PauseSound,void (*PauseSound)(Sound sound),<void(Sound)>
+ResumeSound,void (*ResumeSound)(Sound sound),<void(Sound)>
+IsSoundPlaying,bool (*IsSoundPlaying)(Sound sound),<bool(Sound)>
+SetSoundVolume,"void (*SetSoundVolume)(Sound sound, float volume)","<void(Sound, float)>"
+SetSoundPitch,"void (*SetSoundPitch)(Sound sound, float pitch)","<void(Sound, float)>"
+SetSoundPan,"void (*SetSoundPan)(Sound sound, float pan)","<void(Sound, float)>"
+WaveCopy,Wave (*WaveCopy)(Wave wave),<Wave(Wave)>
+WaveCrop,"void (*WaveCrop)(Wave *wave, int initSample, int finalSample)","<void(Wave*, int, int)>"
+WaveFormat,"void (*WaveFormat)(Wave *wave, int sampleRate, int sampleSize, int channels)","<void(Wave*, int, int, int)>"
+LoadWaveSamples,float *(*LoadWaveSamples)(Wave wave),<float*(Wave)>
+UnloadWaveSamples,void (*UnloadWaveSamples)(float *samples),<void(float*)>
+LoadMusicStream,Music (*LoadMusicStream)(const char *fileName),<Music(const char*)>
+LoadMusicStreamFromMemory,"Music (*LoadMusicStreamFromMemory)(const char *fileType, const unsigned char *data, int dataSize)","<Music(const char*, const unsigned char*, int)>"
+IsMusicReady,bool (*IsMusicReady)(Music music),<bool(Music)>
+UnloadMusicStream,void (*UnloadMusicStream)(Music music),<void(Music)>
+PlayMusicStream,void (*PlayMusicStream)(Music music),<void(Music)>
+IsMusicStreamPlaying,bool (*IsMusicStreamPlaying)(Music music),<bool(Music)>
+UpdateMusicStream,void (*UpdateMusicStream)(Music music),<void(Music)>
+StopMusicStream,void (*StopMusicStream)(Music music),<void(Music)>
+PauseMusicStream,void (*PauseMusicStream)(Music music),<void(Music)>
+ResumeMusicStream,void (*ResumeMusicStream)(Music music),<void(Music)>
+SeekMusicStream,"void (*SeekMusicStream)(Music music, float position)","<void(Music, float)>"
+SetMusicVolume,"void (*SetMusicVolume)(Music music, float volume)","<void(Music, float)>"
+SetMusicPitch,"void (*SetMusicPitch)(Music music, float pitch)","<void(Music, float)>"
+SetMusicPan,"void (*SetMusicPan)(Music music, float pan)","<void(Music, float)>"
+GetMusicTimeLength,float (*GetMusicTimeLength)(Music music),<float(Music)>
+GetMusicTimePlayed,float (*GetMusicTimePlayed)(Music music),<float(Music)>
+LoadAudioStream,"AudioStream (*LoadAudioStream)(unsigned int sampleRate, unsigned int sampleSize, unsigned int channels)","<AudioStream(unsigned int, unsigned int, unsigned int)>"
+IsAudioStreamReady,bool (*IsAudioStreamReady)(AudioStream stream),<bool(AudioStream)>
+UnloadAudioStream,void (*UnloadAudioStream)(AudioStream stream),<void(AudioStream)>
+UpdateAudioStream,"void (*UpdateAudioStream)(AudioStream stream, const void *data, int frameCount)","<void(AudioStream, const void*, int)>"
+IsAudioStreamProcessed,bool (*IsAudioStreamProcessed)(AudioStream stream),<bool(AudioStream)>
+PlayAudioStream,void (*PlayAudioStream)(AudioStream stream),<void(AudioStream)>
+PauseAudioStream,void (*PauseAudioStream)(AudioStream stream),<void(AudioStream)>
+ResumeAudioStream,void (*ResumeAudioStream)(AudioStream stream),<void(AudioStream)>
+IsAudioStreamPlaying,bool (*IsAudioStreamPlaying)(AudioStream stream),<bool(AudioStream)>
+StopAudioStream,void (*StopAudioStream)(AudioStream stream),<void(AudioStream)>
+SetAudioStreamVolume,"void (*SetAudioStreamVolume)(AudioStream stream, float volume)","<void(AudioStream, float)>"
+SetAudioStreamPitch,"void (*SetAudioStreamPitch)(AudioStream stream, float pitch)","<void(AudioStream, float)>"
+SetAudioStreamPan,"void (*SetAudioStreamPan)(AudioStream stream, float pan)","<void(AudioStream, float)>"
+SetAudioStreamBufferSizeDefault,void (*SetAudioStreamBufferSizeDefault)(int size),<void(int)>
+SetAudioStreamCallback,"void (*SetAudioStreamCallback)(AudioStream stream, AudioCallback callback)","<void(AudioStream, AudioCallback)>"
+AttachAudioStreamProcessor,"void (*AttachAudioStreamProcessor)(AudioStream stream, AudioCallback processor)","<void(AudioStream, AudioCallback)>"
+DetachAudioStreamProcessor,"void (*DetachAudioStreamProcessor)(AudioStream stream, AudioCallback processor)","<void(AudioStream, AudioCallback)>"
+AttachAudioMixedProcessor,void (*AttachAudioMixedProcessor)(AudioCallback processor),<void(AudioCallback)>
+DetachAudioMixedProcessor,void (*DetachAudioMixedProcessor)(AudioCallback processor),<void(AudioCallback)>
