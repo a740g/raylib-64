@@ -1,6 +1,6 @@
 # raylib for QB64-PE
 
-![raylib](/raylib_logo_animation.gif)
+![raylib](/assets/logo/raylib_logo_animation.gif)
 
 **raylib is a simple and easy-to-use library to enjoy videogames programming.**
 
