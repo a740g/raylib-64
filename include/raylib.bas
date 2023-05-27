@@ -15,14 +15,8 @@ $If RAYLIB_BAS = UNDEFINED Then
         BStrToCStr = s + Chr$(NULL)
     End Function
 
-    Sub InitWindow (w As Long, h As Long, title As String)
-        __InitWindow w, h, BStrToCStr(title)
-    End Sub
-
-    Sub SetWindowIcons (imgs() As Image, count As Long)
-        Dim lb As Long: lb = LBound(imgs)
-        Dim ct As Long: ct = 1 + UBound(imgs) - lb: If ct > count Then ct = count
-        __SetWindowIcons _Offset(imgs(lb)), ct
+    Sub InitWindow (W As Long, H As Long, caption As String)
+        __InitWindow W, H, BStrToCStr(caption)
     End Sub
 
     Sub SetWindowTitle (title As String)

@@ -25,6 +25,21 @@ enum qb_bool : int8_t
 // This one is just for safety just in case someone is doing _exp_ == 1 inside raylib
 #define TO_C_BOOL(_exp_) ((_exp_) != 0)
 
+// Macro to create a packed RGBA value from individual component values
+#define MAKE_RGBA(_r_, _g_, _b_, _a_) ((uint32_t)(((uint8_t)(_a_) << 24) | ((uint8_t)(_b_) << 16) | ((uint8_t)(_g_) << 8) | (uint8_t)(_r_)))
+// Macro to extract the red component from a packed RGBA value
+#define GET_RGBA_R(_rgba_) ((uint8_t)((uint32_t)(_rgba_) & 0xFF))
+// Macro to extract the green component from a packed RGBA value
+#define GET_RGBA_G(_rgba_) ((uint8_t)(((uint32_t)(_rgba_) >> 8) & 0xFF))
+// Macro to extract the blue component from a packed RGBA value
+#define GET_RGBA_B(_rgba_) ((uint8_t)(((uint32_t)(_rgba_) >> 16) & 0xFF))
+// Macro to extract the alpha component from a packed RGBA value
+#define GET_RGBA_A(_rgba_) ((uint8_t)(((uint32_t)(_rgba_) >> 24) & 0xFF))
+// Macro to extract the RGB value (ignoring the alpha component) from a packed RGBA value
+#define GET_RGBA_RGB(_rgba_) ((uint32_t)((uint32_t)(_rgba_) & 0xFFFFFF))
+// Macro to convert BGRA to RGBA
+#define CONVERT_BGRA_TO_RGBA(_bgra_) ((((uint32_t)(_bgra_) & 0xFF) << 16) | (((uint32_t)(_bgra_) & 0xFF00) << 8) | (((uint32_t)(_bgra_) >> 16) & 0xFF) | ((uint32_t)(_bgra_) & 0xFF000000))
+
 // Vector2, 2 components
 struct Vector2
 {
@@ -59,15 +74,6 @@ struct Matrix
     float m1, m5, m9, m13;  // Matrix second row (4 components)
     float m2, m6, m10, m14; // Matrix third row (4 components)
     float m3, m7, m11, m15; // Matrix fourth row (4 components)
-};
-
-// Color, 4 components, R8G8B8A8 (32bit)
-struct Color
-{
-    unsigned char r; // Color red value
-    unsigned char g; // Color green value
-    unsigned char b; // Color blue value
-    unsigned char a; // Color alpha value
 };
 
 // Rectangle, 4 components
@@ -206,7 +212,7 @@ struct Shader
 struct MaterialMap
 {
     Texture2D texture; // Material map texture
-    Color color;       // Material map color
+    uint32_t color;    // Material map color
     float value;       // Material map value
 };
 
@@ -430,7 +436,7 @@ static bool (*_IsCursorHidden)(void) = nullptr;
 static void (*_EnableCursor)(void) = nullptr;
 static void (*_DisableCursor)(void) = nullptr;
 static bool (*_IsCursorOnScreen)(void) = nullptr;
-static void (*_ClearBackground)(Color color) = nullptr;
+static void (*_ClearBackground)(uint32_t color) = nullptr;
 static void (*_BeginDrawing)(void) = nullptr;
 static void (*_EndDrawing)(void) = nullptr;
 static void (*_BeginMode2D)(Camera2D camera) = nullptr;
@@ -563,43 +569,43 @@ static float (*_GetGesturePinchAngle)(void) = nullptr;
 static void (*_UpdateCamera)(Camera *camera, int mode) = nullptr;
 static void (*_UpdateCameraPro)(Camera *camera, Vector3 movement, Vector3 rotation, float zoom) = nullptr;
 static void (*_SetShapesTexture)(Texture2D texture, RRectangle source) = nullptr;
-static void (*_DrawPixel)(int posX, int posY, Color color) = nullptr;
-static void (*_DrawPixelV)(Vector2 position, Color color) = nullptr;
-static void (*_DrawLine)(int startPosX, int startPosY, int endPosX, int endPosY, Color color) = nullptr;
-static void (*_DrawLineV)(Vector2 startPos, Vector2 endPos, Color color) = nullptr;
-static void (*_DrawLineEx)(Vector2 startPos, Vector2 endPos, float thick, Color color) = nullptr;
-static void (*_DrawLineBezier)(Vector2 startPos, Vector2 endPos, float thick, Color color) = nullptr;
-static void (*_DrawLineBezierQuad)(Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thick, Color color) = nullptr;
-static void (*_DrawLineBezierCubic)(Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thick, Color color) = nullptr;
-static void (*_DrawLineStrip)(Vector2 *points, int pointCount, Color color) = nullptr;
-static void (*_DrawCircle)(int centerX, int centerY, float radius, Color color) = nullptr;
-static void (*_DrawCircleSector)(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color) = nullptr;
-static void (*_DrawCircleSectorLines)(Vector2 center, float radius, float startAngle, float endAngle, int segments, Color color) = nullptr;
-static void (*_DrawCircleGradient)(int centerX, int centerY, float radius, Color color1, Color color2) = nullptr;
-static void (*_DrawCircleV)(Vector2 center, float radius, Color color) = nullptr;
-static void (*_DrawCircleLines)(int centerX, int centerY, float radius, Color color) = nullptr;
-static void (*_DrawEllipse)(int centerX, int centerY, float radiusH, float radiusV, Color color) = nullptr;
-static void (*_DrawEllipseLines)(int centerX, int centerY, float radiusH, float radiusV, Color color) = nullptr;
-static void (*_DrawRing)(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color) = nullptr;
-static void (*_DrawRingLines)(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color) = nullptr;
-static void (*_DrawRectangle)(int posX, int posY, int width, int height, Color color) = nullptr;
-static void (*_DrawRectangleV)(Vector2 position, Vector2 size, Color color) = nullptr;
-static void (*_DrawRectangleRec)(RRectangle rec, Color color) = nullptr;
-static void (*_DrawRectanglePro)(RRectangle rec, Vector2 origin, float rotation, Color color) = nullptr;
-static void (*_DrawRectangleGradientV)(int posX, int posY, int width, int height, Color color1, Color color2) = nullptr;
-static void (*_DrawRectangleGradientH)(int posX, int posY, int width, int height, Color color1, Color color2) = nullptr;
-static void (*_DrawRectangleGradientEx)(RRectangle rec, Color col1, Color col2, Color col3, Color col4) = nullptr;
-static void (*_DrawRectangleLines)(int posX, int posY, int width, int height, Color color) = nullptr;
-static void (*_DrawRectangleLinesEx)(RRectangle rec, float lineThick, Color color) = nullptr;
-static void (*_DrawRectangleRounded)(RRectangle rec, float roundness, int segments, Color color) = nullptr;
-static void (*_DrawRectangleRoundedLines)(RRectangle rec, float roundness, int segments, float lineThick, Color color) = nullptr;
-static void (*_DrawTriangle)(Vector2 v1, Vector2 v2, Vector2 v3, Color color) = nullptr;
-static void (*_DrawTriangleLines)(Vector2 v1, Vector2 v2, Vector2 v3, Color color) = nullptr;
-static void (*_DrawTriangleFan)(Vector2 *points, int pointCount, Color color) = nullptr;
-static void (*_DrawTriangleStrip)(Vector2 *points, int pointCount, Color color) = nullptr;
-static void (*_DrawPoly)(Vector2 center, int sides, float radius, float rotation, Color color) = nullptr;
-static void (*_DrawPolyLines)(Vector2 center, int sides, float radius, float rotation, Color color) = nullptr;
-static void (*_DrawPolyLinesEx)(Vector2 center, int sides, float radius, float rotation, float lineThick, Color color) = nullptr;
+static void (*_DrawPixel)(int posX, int posY, uint32_t color) = nullptr;
+static void (*_DrawPixelV)(Vector2 position, uint32_t color) = nullptr;
+static void (*_DrawLine)(int startPosX, int startPosY, int endPosX, int endPosY, uint32_t color) = nullptr;
+static void (*_DrawLineV)(Vector2 startPos, Vector2 endPos, uint32_t color) = nullptr;
+static void (*_DrawLineEx)(Vector2 startPos, Vector2 endPos, float thick, uint32_t color) = nullptr;
+static void (*_DrawLineBezier)(Vector2 startPos, Vector2 endPos, float thick, uint32_t color) = nullptr;
+static void (*_DrawLineBezierQuad)(Vector2 startPos, Vector2 endPos, Vector2 controlPos, float thick, uint32_t color) = nullptr;
+static void (*_DrawLineBezierCubic)(Vector2 startPos, Vector2 endPos, Vector2 startControlPos, Vector2 endControlPos, float thick, uint32_t color) = nullptr;
+static void (*_DrawLineStrip)(Vector2 *points, int pointCount, uint32_t color) = nullptr;
+static void (*_DrawCircle)(int centerX, int centerY, float radius, uint32_t color) = nullptr;
+static void (*_DrawCircleSector)(Vector2 center, float radius, float startAngle, float endAngle, int segments, uint32_t color) = nullptr;
+static void (*_DrawCircleSectorLines)(Vector2 center, float radius, float startAngle, float endAngle, int segments, uint32_t color) = nullptr;
+static void (*_DrawCircleGradient)(int centerX, int centerY, float radius, uint32_t color1, uint32_t color2) = nullptr;
+static void (*_DrawCircleV)(Vector2 center, float radius, uint32_t color) = nullptr;
+static void (*_DrawCircleLines)(int centerX, int centerY, float radius, uint32_t color) = nullptr;
+static void (*_DrawEllipse)(int centerX, int centerY, float radiusH, float radiusV, uint32_t color) = nullptr;
+static void (*_DrawEllipseLines)(int centerX, int centerY, float radiusH, float radiusV, uint32_t color) = nullptr;
+static void (*_DrawRing)(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, uint32_t color) = nullptr;
+static void (*_DrawRingLines)(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, uint32_t color) = nullptr;
+static void (*_DrawRectangle)(int posX, int posY, int width, int height, uint32_t color) = nullptr;
+static void (*_DrawRectangleV)(Vector2 position, Vector2 size, uint32_t color) = nullptr;
+static void (*_DrawRectangleRec)(RRectangle rec, uint32_t color) = nullptr;
+static void (*_DrawRectanglePro)(RRectangle rec, Vector2 origin, float rotation, uint32_t color) = nullptr;
+static void (*_DrawRectangleGradientV)(int posX, int posY, int width, int height, uint32_t color1, uint32_t color2) = nullptr;
+static void (*_DrawRectangleGradientH)(int posX, int posY, int width, int height, uint32_t color1, uint32_t color2) = nullptr;
+static void (*_DrawRectangleGradientEx)(RRectangle rec, uint32_t col1, uint32_t col2, uint32_t col3, uint32_t col4) = nullptr;
+static void (*_DrawRectangleLines)(int posX, int posY, int width, int height, uint32_t color) = nullptr;
+static void (*_DrawRectangleLinesEx)(RRectangle rec, float lineThick, uint32_t color) = nullptr;
+static void (*_DrawRectangleRounded)(RRectangle rec, float roundness, int segments, uint32_t color) = nullptr;
+static void (*_DrawRectangleRoundedLines)(RRectangle rec, float roundness, int segments, float lineThick, uint32_t color) = nullptr;
+static void (*_DrawTriangle)(Vector2 v1, Vector2 v2, Vector2 v3, uint32_t color) = nullptr;
+static void (*_DrawTriangleLines)(Vector2 v1, Vector2 v2, Vector2 v3, uint32_t color) = nullptr;
+static void (*_DrawTriangleFan)(Vector2 *points, int pointCount, uint32_t color) = nullptr;
+static void (*_DrawTriangleStrip)(Vector2 *points, int pointCount, uint32_t color) = nullptr;
+static void (*_DrawPoly)(Vector2 center, int sides, float radius, float rotation, uint32_t color) = nullptr;
+static void (*_DrawPolyLines)(Vector2 center, int sides, float radius, float rotation, uint32_t color) = nullptr;
+static void (*_DrawPolyLinesEx)(Vector2 center, int sides, float radius, float rotation, float lineThick, uint32_t color) = nullptr;
 static bool (*_CheckCollisionRecs)(RRectangle rec1, RRectangle rec2) = nullptr;
 static bool (*_CheckCollisionCircles)(Vector2 center1, float radius1, Vector2 center2, float radius2) = nullptr;
 static bool (*_CheckCollisionCircleRec)(Vector2 center, float radius, RRectangle rec) = nullptr;
@@ -620,64 +626,64 @@ static bool (*_IsImageReady)(Image image) = nullptr;
 static void (*_UnloadImage)(Image image) = nullptr;
 static bool (*_ExportImage)(Image image, const char *fileName) = nullptr;
 static bool (*_ExportImageAsCode)(Image image, const char *fileName) = nullptr;
-static Image (*_GenImageColor)(int width, int height, Color color) = nullptr;
-static Image (*_GenImageGradientV)(int width, int height, Color top, Color bottom) = nullptr;
-static Image (*_GenImageGradientH)(int width, int height, Color left, Color right) = nullptr;
-static Image (*_GenImageGradientRadial)(int width, int height, float density, Color inner, Color outer) = nullptr;
-static Image (*_GenImageChecked)(int width, int height, int checksX, int checksY, Color col1, Color col2) = nullptr;
+static Image (*_GenImageColor)(int width, int height, uint32_t color) = nullptr;
+static Image (*_GenImageGradientV)(int width, int height, uint32_t top, uint32_t bottom) = nullptr;
+static Image (*_GenImageGradientH)(int width, int height, uint32_t left, uint32_t right) = nullptr;
+static Image (*_GenImageGradientRadial)(int width, int height, float density, uint32_t inner, uint32_t outer) = nullptr;
+static Image (*_GenImageChecked)(int width, int height, int checksX, int checksY, uint32_t col1, uint32_t col2) = nullptr;
 static Image (*_GenImageWhiteNoise)(int width, int height, float factor) = nullptr;
 static Image (*_GenImagePerlinNoise)(int width, int height, int offsetX, int offsetY, float scale) = nullptr;
 static Image (*_GenImageCellular)(int width, int height, int tileSize) = nullptr;
 static Image (*_GenImageText)(int width, int height, const char *text) = nullptr;
 static Image (*_ImageCopy)(Image image) = nullptr;
 static Image (*_ImageFromImage)(Image image, RRectangle rec) = nullptr;
-static Image (*_ImageText)(const char *text, int fontSize, Color color) = nullptr;
-static Image (*_ImageTextEx)(Font font, const char *text, float fontSize, float spacing, Color tint) = nullptr;
+static Image (*_ImageText)(const char *text, int fontSize, uint32_t color) = nullptr;
+static Image (*_ImageTextEx)(Font font, const char *text, float fontSize, float spacing, uint32_t tint) = nullptr;
 static void (*_ImageFormat)(Image *image, int newFormat) = nullptr;
-static void (*_ImageToPOT)(Image *image, Color fill) = nullptr;
+static void (*_ImageToPOT)(Image *image, uint32_t fill) = nullptr;
 static void (*_ImageCrop)(Image *image, RRectangle crop) = nullptr;
 static void (*_ImageAlphaCrop)(Image *image, float threshold) = nullptr;
-static void (*_ImageAlphaClear)(Image *image, Color color, float threshold) = nullptr;
+static void (*_ImageAlphaClear)(Image *image, uint32_t color, float threshold) = nullptr;
 static void (*_ImageAlphaMask)(Image *image, Image alphaMask) = nullptr;
 static void (*_ImageAlphaPremultiply)(Image *image) = nullptr;
 static void (*_ImageBlurGaussian)(Image *image, int blurSize) = nullptr;
 static void (*_ImageResize)(Image *image, int newWidth, int newHeight) = nullptr;
 static void (*_ImageResizeNN)(Image *image, int newWidth, int newHeight) = nullptr;
-static void (*_ImageResizeCanvas)(Image *image, int newWidth, int newHeight, int offsetX, int offsetY, Color fill) = nullptr;
+static void (*_ImageResizeCanvas)(Image *image, int newWidth, int newHeight, int offsetX, int offsetY, uint32_t fill) = nullptr;
 static void (*_ImageMipmaps)(Image *image) = nullptr;
 static void (*_ImageDither)(Image *image, int rBpp, int gBpp, int bBpp, int aBpp) = nullptr;
 static void (*_ImageFlipVertical)(Image *image) = nullptr;
 static void (*_ImageFlipHorizontal)(Image *image) = nullptr;
 static void (*_ImageRotateCW)(Image *image) = nullptr;
 static void (*_ImageRotateCCW)(Image *image) = nullptr;
-static void (*_ImageColorTint)(Image *image, Color color) = nullptr;
+static void (*_ImageColorTint)(Image *image, uint32_t color) = nullptr;
 static void (*_ImageColorInvert)(Image *image) = nullptr;
 static void (*_ImageColorGrayscale)(Image *image) = nullptr;
 static void (*_ImageColorContrast)(Image *image, float contrast) = nullptr;
 static void (*_ImageColorBrightness)(Image *image, int brightness) = nullptr;
-static void (*_ImageColorReplace)(Image *image, Color color, Color replace) = nullptr;
-static Color *(*_LoadImageColors)(Image image) = nullptr;
-static Color *(*_LoadImagePalette)(Image image, int maxPaletteSize, int *colorCount) = nullptr;
-static void (*_UnloadImageColors)(Color *colors) = nullptr;
-static void (*_UnloadImagePalette)(Color *colors) = nullptr;
+static void (*_ImageColorReplace)(Image *image, uint32_t color, uint32_t replace) = nullptr;
+static uint32_t *(*_LoadImageColors)(Image image) = nullptr;
+static uint32_t *(*_LoadImagePalette)(Image image, int maxPaletteSize, int *colorCount) = nullptr;
+static void (*_UnloadImageColors)(uint32_t *colors) = nullptr;
+static void (*_UnloadImagePalette)(uint32_t *colors) = nullptr;
 static RRectangle (*_GetImageAlphaBorder)(Image image, float threshold) = nullptr;
-static Color (*_GetImageColor)(Image image, int x, int y) = nullptr;
-static void (*_ImageClearBackground)(Image *dst, Color color) = nullptr;
-static void (*_ImageDrawPixel)(Image *dst, int posX, int posY, Color color) = nullptr;
-static void (*_ImageDrawPixelV)(Image *dst, Vector2 position, Color color) = nullptr;
-static void (*_ImageDrawLine)(Image *dst, int startPosX, int startPosY, int endPosX, int endPosY, Color color) = nullptr;
-static void (*_ImageDrawLineV)(Image *dst, Vector2 start, Vector2 end, Color color) = nullptr;
-static void (*_ImageDrawCircle)(Image *dst, int centerX, int centerY, int radius, Color color) = nullptr;
-static void (*_ImageDrawCircleV)(Image *dst, Vector2 center, int radius, Color color) = nullptr;
-static void (*_ImageDrawCircleLines)(Image *dst, int centerX, int centerY, int radius, Color color) = nullptr;
-static void (*_ImageDrawCircleLinesV)(Image *dst, Vector2 center, int radius, Color color) = nullptr;
-static void (*_ImageDrawRectangle)(Image *dst, int posX, int posY, int width, int height, Color color) = nullptr;
-static void (*_ImageDrawRectangleV)(Image *dst, Vector2 position, Vector2 size, Color color) = nullptr;
-static void (*_ImageDrawRectangleRec)(Image *dst, RRectangle rec, Color color) = nullptr;
-static void (*_ImageDrawRectangleLines)(Image *dst, RRectangle rec, int thick, Color color) = nullptr;
-static void (*_ImageDraw)(Image *dst, Image src, RRectangle srcRec, RRectangle dstRec, Color tint) = nullptr;
-static void (*_ImageDrawText)(Image *dst, const char *text, int posX, int posY, int fontSize, Color color) = nullptr;
-static void (*_ImageDrawTextEx)(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint) = nullptr;
+static uint32_t (*_GetImageColor)(Image image, int x, int y) = nullptr;
+static void (*_ImageClearBackground)(Image *dst, uint32_t color) = nullptr;
+static void (*_ImageDrawPixel)(Image *dst, int posX, int posY, uint32_t color) = nullptr;
+static void (*_ImageDrawPixelV)(Image *dst, Vector2 position, uint32_t color) = nullptr;
+static void (*_ImageDrawLine)(Image *dst, int startPosX, int startPosY, int endPosX, int endPosY, uint32_t color) = nullptr;
+static void (*_ImageDrawLineV)(Image *dst, Vector2 start, Vector2 end, uint32_t color) = nullptr;
+static void (*_ImageDrawCircle)(Image *dst, int centerX, int centerY, int radius, uint32_t color) = nullptr;
+static void (*_ImageDrawCircleV)(Image *dst, Vector2 center, int radius, uint32_t color) = nullptr;
+static void (*_ImageDrawCircleLines)(Image *dst, int centerX, int centerY, int radius, uint32_t color) = nullptr;
+static void (*_ImageDrawCircleLinesV)(Image *dst, Vector2 center, int radius, uint32_t color) = nullptr;
+static void (*_ImageDrawRectangle)(Image *dst, int posX, int posY, int width, int height, uint32_t color) = nullptr;
+static void (*_ImageDrawRectangleV)(Image *dst, Vector2 position, Vector2 size, uint32_t color) = nullptr;
+static void (*_ImageDrawRectangleRec)(Image *dst, RRectangle rec, uint32_t color) = nullptr;
+static void (*_ImageDrawRectangleLines)(Image *dst, RRectangle rec, int thick, uint32_t color) = nullptr;
+static void (*_ImageDraw)(Image *dst, Image src, RRectangle srcRec, RRectangle dstRec, uint32_t tint) = nullptr;
+static void (*_ImageDrawText)(Image *dst, const char *text, int posX, int posY, int fontSize, uint32_t color) = nullptr;
+static void (*_ImageDrawTextEx)(Image *dst, Font font, const char *text, Vector2 position, float fontSize, float spacing, uint32_t tint) = nullptr;
 static Texture2D (*_LoadTexture)(const char *fileName) = nullptr;
 static Texture2D (*_LoadTextureFromImage)(Image image) = nullptr;
 static TextureCubemap (*_LoadTextureCubemap)(Image image, int layout) = nullptr;
@@ -691,31 +697,31 @@ static void (*_UpdateTextureRec)(Texture2D texture, RRectangle rec, const void *
 static void (*_GenTextureMipmaps)(Texture2D *texture) = nullptr;
 static void (*_SetTextureFilter)(Texture2D texture, int filter) = nullptr;
 static void (*_SetTextureWrap)(Texture2D texture, int wrap) = nullptr;
-static void (*_DrawTexture)(Texture2D texture, int posX, int posY, Color tint) = nullptr;
-static void (*_DrawTextureV)(Texture2D texture, Vector2 position, Color tint) = nullptr;
-static void (*_DrawTextureEx)(Texture2D texture, Vector2 position, float rotation, float scale, Color tint) = nullptr;
-static void (*_DrawTextureRec)(Texture2D texture, RRectangle source, Vector2 position, Color tint) = nullptr;
-static void (*_DrawTexturePro)(Texture2D texture, RRectangle source, RRectangle dest, Vector2 origin, float rotation, Color tint) = nullptr;
-static void (*_DrawTextureNPatch)(Texture2D texture, NPatchInfo nPatchInfo, RRectangle dest, Vector2 origin, float rotation, Color tint) = nullptr;
-static Color (*_Fade)(Color color, float alpha) = nullptr;
-static int (*_ColorToInt)(Color color) = nullptr;
-static Vector4 (*_ColorNormalize)(Color color) = nullptr;
-static Color (*_ColorFromNormalized)(Vector4 normalized) = nullptr;
-static Vector3 (*_ColorToHSV)(Color color) = nullptr;
-static Color (*_ColorFromHSV)(float hue, float saturation, float value) = nullptr;
-static Color (*_ColorTint)(Color color, Color tint) = nullptr;
-static Color (*_ColorBrightness)(Color color, float factor) = nullptr;
-static Color (*_ColorContrast)(Color color, float contrast) = nullptr;
-static Color (*_ColorAlpha)(Color color, float alpha) = nullptr;
-static Color (*_ColorAlphaBlend)(Color dst, Color src, Color tint) = nullptr;
-static Color (*_GetColor)(unsigned int hexValue) = nullptr;
-static Color (*_GetPixelColor)(void *srcPtr, int format) = nullptr;
-static void (*_SetPixelColor)(void *dstPtr, Color color, int format) = nullptr;
+static void (*_DrawTexture)(Texture2D texture, int posX, int posY, uint32_t tint) = nullptr;
+static void (*_DrawTextureV)(Texture2D texture, Vector2 position, uint32_t tint) = nullptr;
+static void (*_DrawTextureEx)(Texture2D texture, Vector2 position, float rotation, float scale, uint32_t tint) = nullptr;
+static void (*_DrawTextureRec)(Texture2D texture, RRectangle source, Vector2 position, uint32_t tint) = nullptr;
+static void (*_DrawTexturePro)(Texture2D texture, RRectangle source, RRectangle dest, Vector2 origin, float rotation, uint32_t tint) = nullptr;
+static void (*_DrawTextureNPatch)(Texture2D texture, NPatchInfo nPatchInfo, RRectangle dest, Vector2 origin, float rotation, uint32_t tint) = nullptr;
+static uint32_t (*_Fade)(uint32_t color, float alpha) = nullptr;
+static int (*_ColorToInt)(uint32_t color) = nullptr;
+static Vector4 (*_ColorNormalize)(uint32_t color) = nullptr;
+static uint32_t (*_ColorFromNormalized)(Vector4 normalized) = nullptr;
+static Vector3 (*_ColorToHSV)(uint32_t color) = nullptr;
+static uint32_t (*_ColorFromHSV)(float hue, float saturation, float value) = nullptr;
+static uint32_t (*_ColorTint)(uint32_t color, uint32_t tint) = nullptr;
+static uint32_t (*_ColorBrightness)(uint32_t color, float factor) = nullptr;
+static uint32_t (*_ColorContrast)(uint32_t color, float contrast) = nullptr;
+static uint32_t (*_ColorAlpha)(uint32_t color, float alpha) = nullptr;
+static uint32_t (*_ColorAlphaBlend)(uint32_t dst, uint32_t src, uint32_t tint) = nullptr;
+static uint32_t (*_GetColor)(unsigned int hexValue) = nullptr;
+static uint32_t (*_GetPixelColor)(void *srcPtr, int format) = nullptr;
+static void (*_SetPixelColor)(void *dstPtr, uint32_t color, int format) = nullptr;
 static int (*_GetPixelDataSize)(int width, int height, int format) = nullptr;
 static Font (*_GetFontDefault)(void) = nullptr;
 static Font (*_LoadFont)(const char *fileName) = nullptr;
 static Font (*_LoadFontEx)(const char *fileName, int fontSize, int *fontChars, int glyphCount) = nullptr;
-static Font (*_LoadFontFromImage)(Image image, Color key, int firstChar) = nullptr;
+static Font (*_LoadFontFromImage)(Image image, uint32_t key, int firstChar) = nullptr;
 static Font (*_LoadFontFromMemory)(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount) = nullptr;
 static bool (*_IsFontReady)(Font font) = nullptr;
 static GlyphInfo *(*_LoadFontData)(const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, int type) = nullptr;
@@ -724,11 +730,11 @@ static void (*_UnloadFontData)(GlyphInfo *chars, int glyphCount) = nullptr;
 static void (*_UnloadFont)(Font font) = nullptr;
 static bool (*_ExportFontAsCode)(Font font, const char *fileName) = nullptr;
 static void (*_DrawFPS)(int posX, int posY) = nullptr;
-static void (*_DrawText)(const char *text, int posX, int posY, int fontSize, Color color) = nullptr;
-static void (*_DrawTextEx)(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color tint) = nullptr;
-static void (*_DrawTextPro)(Font font, const char *text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, Color tint) = nullptr;
-static void (*_DrawTextCodepoint)(Font font, int codepoint, Vector2 position, float fontSize, Color tint) = nullptr;
-static void (*_DrawTextCodepoints)(Font font, const int *codepoints, int count, Vector2 position, float fontSize, float spacing, Color tint) = nullptr;
+static void (*_DrawText)(const char *text, int posX, int posY, int fontSize, uint32_t color) = nullptr;
+static void (*_DrawTextEx)(Font font, const char *text, Vector2 position, float fontSize, float spacing, uint32_t tint) = nullptr;
+static void (*_DrawTextPro)(Font font, const char *text, Vector2 position, Vector2 origin, float rotation, float fontSize, float spacing, uint32_t tint) = nullptr;
+static void (*_DrawTextCodepoint)(Font font, int codepoint, Vector2 position, float fontSize, uint32_t tint) = nullptr;
+static void (*_DrawTextCodepoints)(Font font, const int *codepoints, int count, Vector2 position, float fontSize, float spacing, uint32_t tint) = nullptr;
 static int (*_MeasureText)(const char *text, int fontSize) = nullptr;
 static Vector2 (*_MeasureTextEx)(Font font, const char *text, float fontSize, float spacing) = nullptr;
 static int (*_GetGlyphIndex)(Font font, int codepoint) = nullptr;
@@ -758,40 +764,40 @@ static const char *(*_TextToUpper)(const char *text) = nullptr;
 static const char *(*_TextToLower)(const char *text) = nullptr;
 static const char *(*_TextToPascal)(const char *text) = nullptr;
 static int (*_TextToInteger)(const char *text) = nullptr;
-static void (*_DrawLine3D)(Vector3 startPos, Vector3 endPos, Color color) = nullptr;
-static void (*_DrawPoint3D)(Vector3 position, Color color) = nullptr;
-static void (*_DrawCircle3D)(Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, Color color) = nullptr;
-static void (*_DrawTriangle3D)(Vector3 v1, Vector3 v2, Vector3 v3, Color color) = nullptr;
-static void (*_DrawTriangleStrip3D)(Vector3 *points, int pointCount, Color color) = nullptr;
-static void (*_DrawCube)(Vector3 position, float width, float height, float length, Color color) = nullptr;
-static void (*_DrawCubeV)(Vector3 position, Vector3 size, Color color) = nullptr;
-static void (*_DrawCubeWires)(Vector3 position, float width, float height, float length, Color color) = nullptr;
-static void (*_DrawCubeWiresV)(Vector3 position, Vector3 size, Color color) = nullptr;
-static void (*_DrawSphere)(Vector3 centerPos, float radius, Color color) = nullptr;
-static void (*_DrawSphereEx)(Vector3 centerPos, float radius, int rings, int slices, Color color) = nullptr;
-static void (*_DrawSphereWires)(Vector3 centerPos, float radius, int rings, int slices, Color color) = nullptr;
-static void (*_DrawCylinder)(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color) = nullptr;
-static void (*_DrawCylinderEx)(Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color) = nullptr;
-static void (*_DrawCylinderWires)(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, Color color) = nullptr;
-static void (*_DrawCylinderWiresEx)(Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, Color color) = nullptr;
-static void (*_DrawCapsule)(Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color) = nullptr;
-static void (*_DrawCapsuleWires)(Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, Color color) = nullptr;
-static void (*_DrawPlane)(Vector3 centerPos, Vector2 size, Color color) = nullptr;
-static void (*_DrawRay)(Ray ray, Color color) = nullptr;
+static void (*_DrawLine3D)(Vector3 startPos, Vector3 endPos, uint32_t color) = nullptr;
+static void (*_DrawPoint3D)(Vector3 position, uint32_t color) = nullptr;
+static void (*_DrawCircle3D)(Vector3 center, float radius, Vector3 rotationAxis, float rotationAngle, uint32_t color) = nullptr;
+static void (*_DrawTriangle3D)(Vector3 v1, Vector3 v2, Vector3 v3, uint32_t color) = nullptr;
+static void (*_DrawTriangleStrip3D)(Vector3 *points, int pointCount, uint32_t color) = nullptr;
+static void (*_DrawCube)(Vector3 position, float width, float height, float length, uint32_t color) = nullptr;
+static void (*_DrawCubeV)(Vector3 position, Vector3 size, uint32_t color) = nullptr;
+static void (*_DrawCubeWires)(Vector3 position, float width, float height, float length, uint32_t color) = nullptr;
+static void (*_DrawCubeWiresV)(Vector3 position, Vector3 size, uint32_t color) = nullptr;
+static void (*_DrawSphere)(Vector3 centerPos, float radius, uint32_t color) = nullptr;
+static void (*_DrawSphereEx)(Vector3 centerPos, float radius, int rings, int slices, uint32_t color) = nullptr;
+static void (*_DrawSphereWires)(Vector3 centerPos, float radius, int rings, int slices, uint32_t color) = nullptr;
+static void (*_DrawCylinder)(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, uint32_t color) = nullptr;
+static void (*_DrawCylinderEx)(Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, uint32_t color) = nullptr;
+static void (*_DrawCylinderWires)(Vector3 position, float radiusTop, float radiusBottom, float height, int slices, uint32_t color) = nullptr;
+static void (*_DrawCylinderWiresEx)(Vector3 startPos, Vector3 endPos, float startRadius, float endRadius, int sides, uint32_t color) = nullptr;
+static void (*_DrawCapsule)(Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, uint32_t color) = nullptr;
+static void (*_DrawCapsuleWires)(Vector3 startPos, Vector3 endPos, float radius, int slices, int rings, uint32_t color) = nullptr;
+static void (*_DrawPlane)(Vector3 centerPos, Vector2 size, uint32_t color) = nullptr;
+static void (*_DrawRay)(Ray ray, uint32_t color) = nullptr;
 static void (*_DrawGrid)(int slices, float spacing) = nullptr;
 static Model (*_LoadModel)(const char *fileName) = nullptr;
 static Model (*_LoadModelFromMesh)(Mesh mesh) = nullptr;
 static bool (*_IsModelReady)(Model model) = nullptr;
 static void (*_UnloadModel)(Model model) = nullptr;
 static BoundingBox (*_GetModelBoundingBox)(Model model) = nullptr;
-static void (*_DrawModel)(Model model, Vector3 position, float scale, Color tint) = nullptr;
-static void (*_DrawModelEx)(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint) = nullptr;
-static void (*_DrawModelWires)(Model model, Vector3 position, float scale, Color tint) = nullptr;
-static void (*_DrawModelWiresEx)(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, Color tint) = nullptr;
-static void (*_DrawBoundingBox)(BoundingBox box, Color color) = nullptr;
-static void (*_DrawBillboard)(Camera camera, Texture2D texture, Vector3 position, float size, Color tint) = nullptr;
-static void (*_DrawBillboardRec)(Camera camera, Texture2D texture, RRectangle source, Vector3 position, Vector2 size, Color tint) = nullptr;
-static void (*_DrawBillboardPro)(Camera camera, Texture2D texture, RRectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, Color tint) = nullptr;
+static void (*_DrawModel)(Model model, Vector3 position, float scale, uint32_t tint) = nullptr;
+static void (*_DrawModelEx)(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, uint32_t tint) = nullptr;
+static void (*_DrawModelWires)(Model model, Vector3 position, float scale, uint32_t tint) = nullptr;
+static void (*_DrawModelWiresEx)(Model model, Vector3 position, Vector3 rotationAxis, float rotationAngle, Vector3 scale, uint32_t tint) = nullptr;
+static void (*_DrawBoundingBox)(BoundingBox box, uint32_t color) = nullptr;
+static void (*_DrawBillboard)(Camera camera, Texture2D texture, Vector3 position, float size, uint32_t tint) = nullptr;
+static void (*_DrawBillboardRec)(Camera camera, Texture2D texture, RRectangle source, Vector3 position, Vector2 size, uint32_t tint) = nullptr;
+static void (*_DrawBillboardPro)(Camera camera, Texture2D texture, RRectangle source, Vector3 position, Vector3 up, Vector2 size, Vector2 origin, float rotation, uint32_t tint) = nullptr;
 static void (*_UploadMesh)(Mesh *mesh, bool dynamic) = nullptr;
 static void (*_UpdateMeshBuffer)(Mesh mesh, int index, const void *data, int dataSize, int offset) = nullptr;
 static void (*_UnloadMesh)(Mesh mesh) = nullptr;
@@ -1513,7 +1519,7 @@ qb_bool __init_raylib()
         _EnableCursor = raylib->get_function<void(void)>("EnableCursor");
         _DisableCursor = raylib->get_function<void(void)>("DisableCursor");
         _IsCursorOnScreen = raylib->get_function<bool(void)>("IsCursorOnScreen");
-        _ClearBackground = raylib->get_function<void(Color)>("ClearBackground");
+        _ClearBackground = raylib->get_function<void(uint32_t)>("ClearBackground");
         _BeginDrawing = raylib->get_function<void(void)>("BeginDrawing");
         _EndDrawing = raylib->get_function<void(void)>("EndDrawing");
         _BeginMode2D = raylib->get_function<void(Camera2D)>("BeginMode2D");
@@ -1646,43 +1652,43 @@ qb_bool __init_raylib()
         _UpdateCamera = raylib->get_function<void(Camera *, int)>("UpdateCamera");
         _UpdateCameraPro = raylib->get_function<void(Camera *, Vector3, Vector3, float)>("UpdateCameraPro");
         _SetShapesTexture = raylib->get_function<void(Texture2D, RRectangle)>("SetShapesTexture");
-        _DrawPixel = raylib->get_function<void(int, int, Color)>("DrawPixel");
-        _DrawPixelV = raylib->get_function<void(Vector2, Color)>("DrawPixelV");
-        _DrawLine = raylib->get_function<void(int, int, int, int, Color)>("DrawLine");
-        _DrawLineV = raylib->get_function<void(Vector2, Vector2, Color)>("DrawLineV");
-        _DrawLineEx = raylib->get_function<void(Vector2, Vector2, float, Color)>("DrawLineEx");
-        _DrawLineBezier = raylib->get_function<void(Vector2, Vector2, float, Color)>("DrawLineBezier");
-        _DrawLineBezierQuad = raylib->get_function<void(Vector2, Vector2, Vector2, float, Color)>("DrawLineBezierQuad");
-        _DrawLineBezierCubic = raylib->get_function<void(Vector2, Vector2, Vector2, Vector2, float, Color)>("DrawLineBezierCubic");
-        _DrawLineStrip = raylib->get_function<void(Vector2 *, int, Color)>("DrawLineStrip");
-        _DrawCircle = raylib->get_function<void(int, int, float, Color)>("DrawCircle");
-        _DrawCircleSector = raylib->get_function<void(Vector2, float, float, float, int, Color)>("DrawCircleSector");
-        _DrawCircleSectorLines = raylib->get_function<void(Vector2, float, float, float, int, Color)>("DrawCircleSectorLines");
-        _DrawCircleGradient = raylib->get_function<void(int, int, float, Color, Color)>("DrawCircleGradient");
-        _DrawCircleV = raylib->get_function<void(Vector2, float, Color)>("DrawCircleV");
-        _DrawCircleLines = raylib->get_function<void(int, int, float, Color)>("DrawCircleLines");
-        _DrawEllipse = raylib->get_function<void(int, int, float, float, Color)>("DrawEllipse");
-        _DrawEllipseLines = raylib->get_function<void(int, int, float, float, Color)>("DrawEllipseLines");
-        _DrawRing = raylib->get_function<void(Vector2, float, float, float, float, int, Color)>("DrawRing");
-        _DrawRingLines = raylib->get_function<void(Vector2, float, float, float, float, int, Color)>("DrawRingLines");
-        _DrawRectangle = raylib->get_function<void(int, int, int, int, Color)>("DrawRectangle");
-        _DrawRectangleV = raylib->get_function<void(Vector2, Vector2, Color)>("DrawRectangleV");
-        _DrawRectangleRec = raylib->get_function<void(RRectangle, Color)>("DrawRectangleRec");
-        _DrawRectanglePro = raylib->get_function<void(RRectangle, Vector2, float, Color)>("DrawRectanglePro");
-        _DrawRectangleGradientV = raylib->get_function<void(int, int, int, int, Color, Color)>("DrawRectangleGradientV");
-        _DrawRectangleGradientH = raylib->get_function<void(int, int, int, int, Color, Color)>("DrawRectangleGradientH");
-        _DrawRectangleGradientEx = raylib->get_function<void(RRectangle, Color, Color, Color, Color)>("DrawRectangleGradientEx");
-        _DrawRectangleLines = raylib->get_function<void(int, int, int, int, Color)>("DrawRectangleLines");
-        _DrawRectangleLinesEx = raylib->get_function<void(RRectangle, float, Color)>("DrawRectangleLinesEx");
-        _DrawRectangleRounded = raylib->get_function<void(RRectangle, float, int, Color)>("DrawRectangleRounded");
-        _DrawRectangleRoundedLines = raylib->get_function<void(RRectangle, float, int, float, Color)>("DrawRectangleRoundedLines");
-        _DrawTriangle = raylib->get_function<void(Vector2, Vector2, Vector2, Color)>("DrawTriangle");
-        _DrawTriangleLines = raylib->get_function<void(Vector2, Vector2, Vector2, Color)>("DrawTriangleLines");
-        _DrawTriangleFan = raylib->get_function<void(Vector2 *, int, Color)>("DrawTriangleFan");
-        _DrawTriangleStrip = raylib->get_function<void(Vector2 *, int, Color)>("DrawTriangleStrip");
-        _DrawPoly = raylib->get_function<void(Vector2, int, float, float, Color)>("DrawPoly");
-        _DrawPolyLines = raylib->get_function<void(Vector2, int, float, float, Color)>("DrawPolyLines");
-        _DrawPolyLinesEx = raylib->get_function<void(Vector2, int, float, float, float, Color)>("DrawPolyLinesEx");
+        _DrawPixel = raylib->get_function<void(int, int, uint32_t)>("DrawPixel");
+        _DrawPixelV = raylib->get_function<void(Vector2, uint32_t)>("DrawPixelV");
+        _DrawLine = raylib->get_function<void(int, int, int, int, uint32_t)>("DrawLine");
+        _DrawLineV = raylib->get_function<void(Vector2, Vector2, uint32_t)>("DrawLineV");
+        _DrawLineEx = raylib->get_function<void(Vector2, Vector2, float, uint32_t)>("DrawLineEx");
+        _DrawLineBezier = raylib->get_function<void(Vector2, Vector2, float, uint32_t)>("DrawLineBezier");
+        _DrawLineBezierQuad = raylib->get_function<void(Vector2, Vector2, Vector2, float, uint32_t)>("DrawLineBezierQuad");
+        _DrawLineBezierCubic = raylib->get_function<void(Vector2, Vector2, Vector2, Vector2, float, uint32_t)>("DrawLineBezierCubic");
+        _DrawLineStrip = raylib->get_function<void(Vector2 *, int, uint32_t)>("DrawLineStrip");
+        _DrawCircle = raylib->get_function<void(int, int, float, uint32_t)>("DrawCircle");
+        _DrawCircleSector = raylib->get_function<void(Vector2, float, float, float, int, uint32_t)>("DrawCircleSector");
+        _DrawCircleSectorLines = raylib->get_function<void(Vector2, float, float, float, int, uint32_t)>("DrawCircleSectorLines");
+        _DrawCircleGradient = raylib->get_function<void(int, int, float, uint32_t, uint32_t)>("DrawCircleGradient");
+        _DrawCircleV = raylib->get_function<void(Vector2, float, uint32_t)>("DrawCircleV");
+        _DrawCircleLines = raylib->get_function<void(int, int, float, uint32_t)>("DrawCircleLines");
+        _DrawEllipse = raylib->get_function<void(int, int, float, float, uint32_t)>("DrawEllipse");
+        _DrawEllipseLines = raylib->get_function<void(int, int, float, float, uint32_t)>("DrawEllipseLines");
+        _DrawRing = raylib->get_function<void(Vector2, float, float, float, float, int, uint32_t)>("DrawRing");
+        _DrawRingLines = raylib->get_function<void(Vector2, float, float, float, float, int, uint32_t)>("DrawRingLines");
+        _DrawRectangle = raylib->get_function<void(int, int, int, int, uint32_t)>("DrawRectangle");
+        _DrawRectangleV = raylib->get_function<void(Vector2, Vector2, uint32_t)>("DrawRectangleV");
+        _DrawRectangleRec = raylib->get_function<void(RRectangle, uint32_t)>("DrawRectangleRec");
+        _DrawRectanglePro = raylib->get_function<void(RRectangle, Vector2, float, uint32_t)>("DrawRectanglePro");
+        _DrawRectangleGradientV = raylib->get_function<void(int, int, int, int, uint32_t, uint32_t)>("DrawRectangleGradientV");
+        _DrawRectangleGradientH = raylib->get_function<void(int, int, int, int, uint32_t, uint32_t)>("DrawRectangleGradientH");
+        _DrawRectangleGradientEx = raylib->get_function<void(RRectangle, uint32_t, uint32_t, uint32_t, uint32_t)>("DrawRectangleGradientEx");
+        _DrawRectangleLines = raylib->get_function<void(int, int, int, int, uint32_t)>("DrawRectangleLines");
+        _DrawRectangleLinesEx = raylib->get_function<void(RRectangle, float, uint32_t)>("DrawRectangleLinesEx");
+        _DrawRectangleRounded = raylib->get_function<void(RRectangle, float, int, uint32_t)>("DrawRectangleRounded");
+        _DrawRectangleRoundedLines = raylib->get_function<void(RRectangle, float, int, float, uint32_t)>("DrawRectangleRoundedLines");
+        _DrawTriangle = raylib->get_function<void(Vector2, Vector2, Vector2, uint32_t)>("DrawTriangle");
+        _DrawTriangleLines = raylib->get_function<void(Vector2, Vector2, Vector2, uint32_t)>("DrawTriangleLines");
+        _DrawTriangleFan = raylib->get_function<void(Vector2 *, int, uint32_t)>("DrawTriangleFan");
+        _DrawTriangleStrip = raylib->get_function<void(Vector2 *, int, uint32_t)>("DrawTriangleStrip");
+        _DrawPoly = raylib->get_function<void(Vector2, int, float, float, uint32_t)>("DrawPoly");
+        _DrawPolyLines = raylib->get_function<void(Vector2, int, float, float, uint32_t)>("DrawPolyLines");
+        _DrawPolyLinesEx = raylib->get_function<void(Vector2, int, float, float, float, uint32_t)>("DrawPolyLinesEx");
         _CheckCollisionRecs = raylib->get_function<bool(RRectangle, RRectangle)>("CheckCollisionRecs");
         _CheckCollisionCircles = raylib->get_function<bool(Vector2, float, Vector2, float)>("CheckCollisionCircles");
         _CheckCollisionCircleRec = raylib->get_function<bool(Vector2, float, RRectangle)>("CheckCollisionCircleRec");
@@ -1703,64 +1709,64 @@ qb_bool __init_raylib()
         _UnloadImage = raylib->get_function<void(Image)>("UnloadImage");
         _ExportImage = raylib->get_function<bool(Image, const char *)>("ExportImage");
         _ExportImageAsCode = raylib->get_function<bool(Image, const char *)>("ExportImageAsCode");
-        _GenImageColor = raylib->get_function<Image(int, int, Color)>("GenImageColor");
-        _GenImageGradientV = raylib->get_function<Image(int, int, Color, Color)>("GenImageGradientV");
-        _GenImageGradientH = raylib->get_function<Image(int, int, Color, Color)>("GenImageGradientH");
-        _GenImageGradientRadial = raylib->get_function<Image(int, int, float, Color, Color)>("GenImageGradientRadial");
-        _GenImageChecked = raylib->get_function<Image(int, int, int, int, Color, Color)>("GenImageChecked");
+        _GenImageColor = raylib->get_function<Image(int, int, uint32_t)>("GenImageColor");
+        _GenImageGradientV = raylib->get_function<Image(int, int, uint32_t, uint32_t)>("GenImageGradientV");
+        _GenImageGradientH = raylib->get_function<Image(int, int, uint32_t, uint32_t)>("GenImageGradientH");
+        _GenImageGradientRadial = raylib->get_function<Image(int, int, float, uint32_t, uint32_t)>("GenImageGradientRadial");
+        _GenImageChecked = raylib->get_function<Image(int, int, int, int, uint32_t, uint32_t)>("GenImageChecked");
         _GenImageWhiteNoise = raylib->get_function<Image(int, int, float)>("GenImageWhiteNoise");
         _GenImagePerlinNoise = raylib->get_function<Image(int, int, int, int, float)>("GenImagePerlinNoise");
         _GenImageCellular = raylib->get_function<Image(int, int, int)>("GenImageCellular");
         _GenImageText = raylib->get_function<Image(int, int, const char *)>("GenImageText");
         _ImageCopy = raylib->get_function<Image(Image)>("ImageCopy");
         _ImageFromImage = raylib->get_function<Image(Image, RRectangle)>("ImageFromImage");
-        _ImageText = raylib->get_function<Image(const char *, int, Color)>("ImageText");
-        _ImageTextEx = raylib->get_function<Image(Font, const char *, float, float, Color)>("ImageTextEx");
+        _ImageText = raylib->get_function<Image(const char *, int, uint32_t)>("ImageText");
+        _ImageTextEx = raylib->get_function<Image(Font, const char *, float, float, uint32_t)>("ImageTextEx");
         _ImageFormat = raylib->get_function<void(Image *, int)>("ImageFormat");
-        _ImageToPOT = raylib->get_function<void(Image *, Color)>("ImageToPOT");
+        _ImageToPOT = raylib->get_function<void(Image *, uint32_t)>("ImageToPOT");
         _ImageCrop = raylib->get_function<void(Image *, RRectangle)>("ImageCrop");
         _ImageAlphaCrop = raylib->get_function<void(Image *, float)>("ImageAlphaCrop");
-        _ImageAlphaClear = raylib->get_function<void(Image *, Color, float)>("ImageAlphaClear");
+        _ImageAlphaClear = raylib->get_function<void(Image *, uint32_t, float)>("ImageAlphaClear");
         _ImageAlphaMask = raylib->get_function<void(Image *, Image)>("ImageAlphaMask");
         _ImageAlphaPremultiply = raylib->get_function<void(Image *)>("ImageAlphaPremultiply");
         _ImageBlurGaussian = raylib->get_function<void(Image *, int)>("ImageBlurGaussian");
         _ImageResize = raylib->get_function<void(Image *, int, int)>("ImageResize");
         _ImageResizeNN = raylib->get_function<void(Image *, int, int)>("ImageResizeNN");
-        _ImageResizeCanvas = raylib->get_function<void(Image *, int, int, int, int, Color)>("ImageResizeCanvas");
+        _ImageResizeCanvas = raylib->get_function<void(Image *, int, int, int, int, uint32_t)>("ImageResizeCanvas");
         _ImageMipmaps = raylib->get_function<void(Image *)>("ImageMipmaps");
         _ImageDither = raylib->get_function<void(Image *, int, int, int, int)>("ImageDither");
         _ImageFlipVertical = raylib->get_function<void(Image *)>("ImageFlipVertical");
         _ImageFlipHorizontal = raylib->get_function<void(Image *)>("ImageFlipHorizontal");
         _ImageRotateCW = raylib->get_function<void(Image *)>("ImageRotateCW");
         _ImageRotateCCW = raylib->get_function<void(Image *)>("ImageRotateCCW");
-        _ImageColorTint = raylib->get_function<void(Image *, Color)>("ImageColorTint");
+        _ImageColorTint = raylib->get_function<void(Image *, uint32_t)>("ImageColorTint");
         _ImageColorInvert = raylib->get_function<void(Image *)>("ImageColorInvert");
         _ImageColorGrayscale = raylib->get_function<void(Image *)>("ImageColorGrayscale");
         _ImageColorContrast = raylib->get_function<void(Image *, float)>("ImageColorContrast");
         _ImageColorBrightness = raylib->get_function<void(Image *, int)>("ImageColorBrightness");
-        _ImageColorReplace = raylib->get_function<void(Image *, Color, Color)>("ImageColorReplace");
-        _LoadImageColors = raylib->get_function<Color *(Image)>("LoadImageColors");
-        _LoadImagePalette = raylib->get_function<Color *(Image, int, int *)>("LoadImagePalette");
-        _UnloadImageColors = raylib->get_function<void(Color *)>("UnloadImageColors");
-        _UnloadImagePalette = raylib->get_function<void(Color *)>("UnloadImagePalette");
+        _ImageColorReplace = raylib->get_function<void(Image *, uint32_t, uint32_t)>("ImageColorReplace");
+        _LoadImageColors = raylib->get_function<uint32_t *(Image)>("LoadImageColors");
+        _LoadImagePalette = raylib->get_function<uint32_t *(Image, int, int *)>("LoadImagePalette");
+        _UnloadImageColors = raylib->get_function<void(uint32_t *)>("UnloadImageColors");
+        _UnloadImagePalette = raylib->get_function<void(uint32_t *)>("UnloadImagePalette");
         _GetImageAlphaBorder = raylib->get_function<RRectangle(Image, float)>("GetImageAlphaBorder");
-        _GetImageColor = raylib->get_function<Color(Image, int, int)>("GetImageColor");
-        _ImageClearBackground = raylib->get_function<void(Image *, Color)>("ImageClearBackground");
-        _ImageDrawPixel = raylib->get_function<void(Image *, int, int, Color)>("ImageDrawPixel");
-        _ImageDrawPixelV = raylib->get_function<void(Image *, Vector2, Color)>("ImageDrawPixelV");
-        _ImageDrawLine = raylib->get_function<void(Image *, int, int, int, int, Color)>("ImageDrawLine");
-        _ImageDrawLineV = raylib->get_function<void(Image *, Vector2, Vector2, Color)>("ImageDrawLineV");
-        _ImageDrawCircle = raylib->get_function<void(Image *, int, int, int, Color)>("ImageDrawCircle");
-        _ImageDrawCircleV = raylib->get_function<void(Image *, Vector2, int, Color)>("ImageDrawCircleV");
-        _ImageDrawCircleLines = raylib->get_function<void(Image *, int, int, int, Color)>("ImageDrawCircleLines");
-        _ImageDrawCircleLinesV = raylib->get_function<void(Image *, Vector2, int, Color)>("ImageDrawCircleLinesV");
-        _ImageDrawRectangle = raylib->get_function<void(Image *, int, int, int, int, Color)>("ImageDrawRectangle");
-        _ImageDrawRectangleV = raylib->get_function<void(Image *, Vector2, Vector2, Color)>("ImageDrawRectangleV");
-        _ImageDrawRectangleRec = raylib->get_function<void(Image *, RRectangle, Color)>("ImageDrawRectangleRec");
-        _ImageDrawRectangleLines = raylib->get_function<void(Image *, RRectangle, int, Color)>("ImageDrawRectangleLines");
-        _ImageDraw = raylib->get_function<void(Image *, Image, RRectangle, RRectangle, Color)>("ImageDraw");
-        _ImageDrawText = raylib->get_function<void(Image *, const char *, int, int, int, Color)>("ImageDrawText");
-        _ImageDrawTextEx = raylib->get_function<void(Image *, Font, const char *, Vector2, float, float, Color)>("ImageDrawTextEx");
+        _GetImageColor = raylib->get_function<uint32_t(Image, int, int)>("GetImageColor");
+        _ImageClearBackground = raylib->get_function<void(Image *, uint32_t)>("ImageClearBackground");
+        _ImageDrawPixel = raylib->get_function<void(Image *, int, int, uint32_t)>("ImageDrawPixel");
+        _ImageDrawPixelV = raylib->get_function<void(Image *, Vector2, uint32_t)>("ImageDrawPixelV");
+        _ImageDrawLine = raylib->get_function<void(Image *, int, int, int, int, uint32_t)>("ImageDrawLine");
+        _ImageDrawLineV = raylib->get_function<void(Image *, Vector2, Vector2, uint32_t)>("ImageDrawLineV");
+        _ImageDrawCircle = raylib->get_function<void(Image *, int, int, int, uint32_t)>("ImageDrawCircle");
+        _ImageDrawCircleV = raylib->get_function<void(Image *, Vector2, int, uint32_t)>("ImageDrawCircleV");
+        _ImageDrawCircleLines = raylib->get_function<void(Image *, int, int, int, uint32_t)>("ImageDrawCircleLines");
+        _ImageDrawCircleLinesV = raylib->get_function<void(Image *, Vector2, int, uint32_t)>("ImageDrawCircleLinesV");
+        _ImageDrawRectangle = raylib->get_function<void(Image *, int, int, int, int, uint32_t)>("ImageDrawRectangle");
+        _ImageDrawRectangleV = raylib->get_function<void(Image *, Vector2, Vector2, uint32_t)>("ImageDrawRectangleV");
+        _ImageDrawRectangleRec = raylib->get_function<void(Image *, RRectangle, uint32_t)>("ImageDrawRectangleRec");
+        _ImageDrawRectangleLines = raylib->get_function<void(Image *, RRectangle, int, uint32_t)>("ImageDrawRectangleLines");
+        _ImageDraw = raylib->get_function<void(Image *, Image, RRectangle, RRectangle, uint32_t)>("ImageDraw");
+        _ImageDrawText = raylib->get_function<void(Image *, const char *, int, int, int, uint32_t)>("ImageDrawText");
+        _ImageDrawTextEx = raylib->get_function<void(Image *, Font, const char *, Vector2, float, float, uint32_t)>("ImageDrawTextEx");
         _LoadTexture = raylib->get_function<Texture2D(const char *)>("LoadTexture");
         _LoadTextureFromImage = raylib->get_function<Texture2D(Image)>("LoadTextureFromImage");
         _LoadTextureCubemap = raylib->get_function<TextureCubemap(Image, int)>("LoadTextureCubemap");
@@ -1774,31 +1780,31 @@ qb_bool __init_raylib()
         _GenTextureMipmaps = raylib->get_function<void(Texture2D *)>("GenTextureMipmaps");
         _SetTextureFilter = raylib->get_function<void(Texture2D, int)>("SetTextureFilter");
         _SetTextureWrap = raylib->get_function<void(Texture2D, int)>("SetTextureWrap");
-        _DrawTexture = raylib->get_function<void(Texture2D, int, int, Color)>("DrawTexture");
-        _DrawTextureV = raylib->get_function<void(Texture2D, Vector2, Color)>("DrawTextureV");
-        _DrawTextureEx = raylib->get_function<void(Texture2D, Vector2, float, float, Color)>("DrawTextureEx");
-        _DrawTextureRec = raylib->get_function<void(Texture2D, RRectangle, Vector2, Color)>("DrawTextureRec");
-        _DrawTexturePro = raylib->get_function<void(Texture2D, RRectangle, RRectangle, Vector2, float, Color)>("DrawTexturePro");
-        _DrawTextureNPatch = raylib->get_function<void(Texture2D, NPatchInfo, RRectangle, Vector2, float, Color)>("DrawTextureNPatch");
-        _Fade = raylib->get_function<Color(Color, float)>("Fade");
-        _ColorToInt = raylib->get_function<int(Color)>("ColorToInt");
-        _ColorNormalize = raylib->get_function<Vector4(Color)>("ColorNormalize");
-        _ColorFromNormalized = raylib->get_function<Color(Vector4)>("ColorFromNormalized");
-        _ColorToHSV = raylib->get_function<Vector3(Color)>("ColorToHSV");
-        _ColorFromHSV = raylib->get_function<Color(float, float, float)>("ColorFromHSV");
-        _ColorTint = raylib->get_function<Color(Color, Color)>("ColorTint");
-        _ColorBrightness = raylib->get_function<Color(Color, float)>("ColorBrightness");
-        _ColorContrast = raylib->get_function<Color(Color, float)>("ColorContrast");
-        _ColorAlpha = raylib->get_function<Color(Color, float)>("ColorAlpha");
-        _ColorAlphaBlend = raylib->get_function<Color(Color, Color, Color)>("ColorAlphaBlend");
-        _GetColor = raylib->get_function<Color(unsigned int)>("GetColor");
-        _GetPixelColor = raylib->get_function<Color(void *, int)>("GetPixelColor");
-        _SetPixelColor = raylib->get_function<void(void *, Color, int)>("SetPixelColor");
+        _DrawTexture = raylib->get_function<void(Texture2D, int, int, uint32_t)>("DrawTexture");
+        _DrawTextureV = raylib->get_function<void(Texture2D, Vector2, uint32_t)>("DrawTextureV");
+        _DrawTextureEx = raylib->get_function<void(Texture2D, Vector2, float, float, uint32_t)>("DrawTextureEx");
+        _DrawTextureRec = raylib->get_function<void(Texture2D, RRectangle, Vector2, uint32_t)>("DrawTextureRec");
+        _DrawTexturePro = raylib->get_function<void(Texture2D, RRectangle, RRectangle, Vector2, float, uint32_t)>("DrawTexturePro");
+        _DrawTextureNPatch = raylib->get_function<void(Texture2D, NPatchInfo, RRectangle, Vector2, float, uint32_t)>("DrawTextureNPatch");
+        _Fade = raylib->get_function<uint32_t(uint32_t, float)>("Fade");
+        _ColorToInt = raylib->get_function<int(uint32_t)>("ColorToInt");
+        _ColorNormalize = raylib->get_function<Vector4(uint32_t)>("ColorNormalize");
+        _ColorFromNormalized = raylib->get_function<uint32_t(Vector4)>("ColorFromNormalized");
+        _ColorToHSV = raylib->get_function<Vector3(uint32_t)>("ColorToHSV");
+        _ColorFromHSV = raylib->get_function<uint32_t(float, float, float)>("ColorFromHSV");
+        _ColorTint = raylib->get_function<uint32_t(uint32_t, uint32_t)>("ColorTint");
+        _ColorBrightness = raylib->get_function<uint32_t(uint32_t, float)>("ColorBrightness");
+        _ColorContrast = raylib->get_function<uint32_t(uint32_t, float)>("ColorContrast");
+        _ColorAlpha = raylib->get_function<uint32_t(uint32_t, float)>("ColorAlpha");
+        _ColorAlphaBlend = raylib->get_function<uint32_t(uint32_t, uint32_t, uint32_t)>("ColorAlphaBlend");
+        _GetColor = raylib->get_function<uint32_t(unsigned int)>("GetColor");
+        _GetPixelColor = raylib->get_function<uint32_t(void *, int)>("GetPixelColor");
+        _SetPixelColor = raylib->get_function<void(void *, uint32_t, int)>("SetPixelColor");
         _GetPixelDataSize = raylib->get_function<int(int, int, int)>("GetPixelDataSize");
         _GetFontDefault = raylib->get_function<Font(void)>("GetFontDefault");
         _LoadFont = raylib->get_function<Font(const char *)>("LoadFont");
         _LoadFontEx = raylib->get_function<Font(const char *, int, int *, int)>("LoadFontEx");
-        _LoadFontFromImage = raylib->get_function<Font(Image, Color, int)>("LoadFontFromImage");
+        _LoadFontFromImage = raylib->get_function<Font(Image, uint32_t, int)>("LoadFontFromImage");
         _LoadFontFromMemory = raylib->get_function<Font(const char *, const unsigned char *, int, int, int *, int)>("LoadFontFromMemory");
         _IsFontReady = raylib->get_function<bool(Font)>("IsFontReady");
         _LoadFontData = raylib->get_function<GlyphInfo *(const unsigned char *, int, int, int *, int, int)>("LoadFontData");
@@ -1807,11 +1813,11 @@ qb_bool __init_raylib()
         _UnloadFont = raylib->get_function<void(Font)>("UnloadFont");
         _ExportFontAsCode = raylib->get_function<bool(Font, const char *)>("ExportFontAsCode");
         _DrawFPS = raylib->get_function<void(int, int)>("DrawFPS");
-        _DrawText = raylib->get_function<void(const char *, int, int, int, Color)>("DrawText");
-        _DrawTextEx = raylib->get_function<void(Font, const char *, Vector2, float, float, Color)>("DrawTextEx");
-        _DrawTextPro = raylib->get_function<void(Font, const char *, Vector2, Vector2, float, float, float, Color)>("DrawTextPro");
-        _DrawTextCodepoint = raylib->get_function<void(Font, int, Vector2, float, Color)>("DrawTextCodepoint");
-        _DrawTextCodepoints = raylib->get_function<void(Font, const int *, int, Vector2, float, float, Color)>("DrawTextCodepoints");
+        _DrawText = raylib->get_function<void(const char *, int, int, int, uint32_t)>("DrawText");
+        _DrawTextEx = raylib->get_function<void(Font, const char *, Vector2, float, float, uint32_t)>("DrawTextEx");
+        _DrawTextPro = raylib->get_function<void(Font, const char *, Vector2, Vector2, float, float, float, uint32_t)>("DrawTextPro");
+        _DrawTextCodepoint = raylib->get_function<void(Font, int, Vector2, float, uint32_t)>("DrawTextCodepoint");
+        _DrawTextCodepoints = raylib->get_function<void(Font, const int *, int, Vector2, float, float, uint32_t)>("DrawTextCodepoints");
         _MeasureText = raylib->get_function<int(const char *, int)>("MeasureText");
         _MeasureTextEx = raylib->get_function<Vector2(Font, const char *, float, float)>("MeasureTextEx");
         _GetGlyphIndex = raylib->get_function<int(Font, int)>("GetGlyphIndex");
@@ -1841,40 +1847,40 @@ qb_bool __init_raylib()
         _TextToLower = raylib->get_function<const char *(const char *)>("TextToLower");
         _TextToPascal = raylib->get_function<const char *(const char *)>("TextToPascal");
         _TextToInteger = raylib->get_function<int(const char *)>("TextToInteger");
-        _DrawLine3D = raylib->get_function<void(Vector3, Vector3, Color)>("DrawLine3D");
-        _DrawPoint3D = raylib->get_function<void(Vector3, Color)>("DrawPoint3D");
-        _DrawCircle3D = raylib->get_function<void(Vector3, float, Vector3, float, Color)>("DrawCircle3D");
-        _DrawTriangle3D = raylib->get_function<void(Vector3, Vector3, Vector3, Color)>("DrawTriangle3D");
-        _DrawTriangleStrip3D = raylib->get_function<void(Vector3 *, int, Color)>("DrawTriangleStrip3D");
-        _DrawCube = raylib->get_function<void(Vector3, float, float, float, Color)>("DrawCube");
-        _DrawCubeV = raylib->get_function<void(Vector3, Vector3, Color)>("DrawCubeV");
-        _DrawCubeWires = raylib->get_function<void(Vector3, float, float, float, Color)>("DrawCubeWires");
-        _DrawCubeWiresV = raylib->get_function<void(Vector3, Vector3, Color)>("DrawCubeWiresV");
-        _DrawSphere = raylib->get_function<void(Vector3, float, Color)>("DrawSphere");
-        _DrawSphereEx = raylib->get_function<void(Vector3, float, int, int, Color)>("DrawSphereEx");
-        _DrawSphereWires = raylib->get_function<void(Vector3, float, int, int, Color)>("DrawSphereWires");
-        _DrawCylinder = raylib->get_function<void(Vector3, float, float, float, int, Color)>("DrawCylinder");
-        _DrawCylinderEx = raylib->get_function<void(Vector3, Vector3, float, float, int, Color)>("DrawCylinderEx");
-        _DrawCylinderWires = raylib->get_function<void(Vector3, float, float, float, int, Color)>("DrawCylinderWires");
-        _DrawCylinderWiresEx = raylib->get_function<void(Vector3, Vector3, float, float, int, Color)>("DrawCylinderWiresEx");
-        _DrawCapsule = raylib->get_function<void(Vector3, Vector3, float, int, int, Color)>("DrawCapsule");
-        _DrawCapsuleWires = raylib->get_function<void(Vector3, Vector3, float, int, int, Color)>("DrawCapsuleWires");
-        _DrawPlane = raylib->get_function<void(Vector3, Vector2, Color)>("DrawPlane");
-        _DrawRay = raylib->get_function<void(Ray, Color)>("DrawRay");
+        _DrawLine3D = raylib->get_function<void(Vector3, Vector3, uint32_t)>("DrawLine3D");
+        _DrawPoint3D = raylib->get_function<void(Vector3, uint32_t)>("DrawPoint3D");
+        _DrawCircle3D = raylib->get_function<void(Vector3, float, Vector3, float, uint32_t)>("DrawCircle3D");
+        _DrawTriangle3D = raylib->get_function<void(Vector3, Vector3, Vector3, uint32_t)>("DrawTriangle3D");
+        _DrawTriangleStrip3D = raylib->get_function<void(Vector3 *, int, uint32_t)>("DrawTriangleStrip3D");
+        _DrawCube = raylib->get_function<void(Vector3, float, float, float, uint32_t)>("DrawCube");
+        _DrawCubeV = raylib->get_function<void(Vector3, Vector3, uint32_t)>("DrawCubeV");
+        _DrawCubeWires = raylib->get_function<void(Vector3, float, float, float, uint32_t)>("DrawCubeWires");
+        _DrawCubeWiresV = raylib->get_function<void(Vector3, Vector3, uint32_t)>("DrawCubeWiresV");
+        _DrawSphere = raylib->get_function<void(Vector3, float, uint32_t)>("DrawSphere");
+        _DrawSphereEx = raylib->get_function<void(Vector3, float, int, int, uint32_t)>("DrawSphereEx");
+        _DrawSphereWires = raylib->get_function<void(Vector3, float, int, int, uint32_t)>("DrawSphereWires");
+        _DrawCylinder = raylib->get_function<void(Vector3, float, float, float, int, uint32_t)>("DrawCylinder");
+        _DrawCylinderEx = raylib->get_function<void(Vector3, Vector3, float, float, int, uint32_t)>("DrawCylinderEx");
+        _DrawCylinderWires = raylib->get_function<void(Vector3, float, float, float, int, uint32_t)>("DrawCylinderWires");
+        _DrawCylinderWiresEx = raylib->get_function<void(Vector3, Vector3, float, float, int, uint32_t)>("DrawCylinderWiresEx");
+        _DrawCapsule = raylib->get_function<void(Vector3, Vector3, float, int, int, uint32_t)>("DrawCapsule");
+        _DrawCapsuleWires = raylib->get_function<void(Vector3, Vector3, float, int, int, uint32_t)>("DrawCapsuleWires");
+        _DrawPlane = raylib->get_function<void(Vector3, Vector2, uint32_t)>("DrawPlane");
+        _DrawRay = raylib->get_function<void(Ray, uint32_t)>("DrawRay");
         _DrawGrid = raylib->get_function<void(int, float)>("DrawGrid");
         _LoadModel = raylib->get_function<Model(const char *)>("LoadModel");
         _LoadModelFromMesh = raylib->get_function<Model(Mesh)>("LoadModelFromMesh");
         _IsModelReady = raylib->get_function<bool(Model)>("IsModelReady");
         _UnloadModel = raylib->get_function<void(Model)>("UnloadModel");
         _GetModelBoundingBox = raylib->get_function<BoundingBox(Model)>("GetModelBoundingBox");
-        _DrawModel = raylib->get_function<void(Model, Vector3, float, Color)>("DrawModel");
-        _DrawModelEx = raylib->get_function<void(Model, Vector3, Vector3, float, Vector3, Color)>("DrawModelEx");
-        _DrawModelWires = raylib->get_function<void(Model, Vector3, float, Color)>("DrawModelWires");
-        _DrawModelWiresEx = raylib->get_function<void(Model, Vector3, Vector3, float, Vector3, Color)>("DrawModelWiresEx");
-        _DrawBoundingBox = raylib->get_function<void(BoundingBox, Color)>("DrawBoundingBox");
-        _DrawBillboard = raylib->get_function<void(Camera, Texture2D, Vector3, float, Color)>("DrawBillboard");
-        _DrawBillboardRec = raylib->get_function<void(Camera, Texture2D, RRectangle, Vector3, Vector2, Color)>("DrawBillboardRec");
-        _DrawBillboardPro = raylib->get_function<void(Camera, Texture2D, RRectangle, Vector3, Vector3, Vector2, Vector2, float, Color)>("DrawBillboardPro");
+        _DrawModel = raylib->get_function<void(Model, Vector3, float, uint32_t)>("DrawModel");
+        _DrawModelEx = raylib->get_function<void(Model, Vector3, Vector3, float, Vector3, uint32_t)>("DrawModelEx");
+        _DrawModelWires = raylib->get_function<void(Model, Vector3, float, uint32_t)>("DrawModelWires");
+        _DrawModelWiresEx = raylib->get_function<void(Model, Vector3, Vector3, float, Vector3, uint32_t)>("DrawModelWiresEx");
+        _DrawBoundingBox = raylib->get_function<void(BoundingBox, uint32_t)>("DrawBoundingBox");
+        _DrawBillboard = raylib->get_function<void(Camera, Texture2D, Vector3, float, uint32_t)>("DrawBillboard");
+        _DrawBillboardRec = raylib->get_function<void(Camera, Texture2D, RRectangle, Vector3, Vector2, uint32_t)>("DrawBillboardRec");
+        _DrawBillboardPro = raylib->get_function<void(Camera, Texture2D, RRectangle, Vector3, Vector3, Vector2, Vector2, float, uint32_t)>("DrawBillboardPro");
         _UploadMesh = raylib->get_function<void(Mesh *, bool)>("UploadMesh");
         _UpdateMeshBuffer = raylib->get_function<void(Mesh, int, const void *, int, int)>("UpdateMeshBuffer");
         _UnloadMesh = raylib->get_function<void(Mesh)>("UnloadMesh");
@@ -1990,6 +1996,43 @@ qb_bool __init_raylib()
     RAYLIB_DEBUG_PRINT("Shared library loaded");
 
     return QB_TRUE;
+}
+
+// QB64 BGRA <> raylib RGBA color conversion helpers
+
+inline uint32_t MakeRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+{
+    return MAKE_RGBA(r, g, b, a);
+}
+
+inline uint8_t GetRGBARed(uint32_t rgba)
+{
+    return GET_RGBA_R(rgba);
+}
+
+inline uint8_t GetRGBAGreen(uint32_t rgba)
+{
+    return GET_RGBA_G(rgba);
+}
+
+inline uint8_t GetRGBABlue(uint32_t rgba)
+{
+    return GET_RGBA_B(rgba);
+}
+
+inline uint8_t GetRGBAAlpha(uint32_t rgba)
+{
+    return GET_RGBA_A(rgba);
+}
+
+inline uint32_t GetRGBARGB(uint32_t rgba)
+{
+    return GET_RGBA_RGB(rgba);
+}
+
+inline uint32_t BGRAToRGBA(uint32_t bgra)
+{
+    return CONVERT_BGRA_TO_RGBA(bgra);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -2265,9 +2308,9 @@ inline qb_bool IsCursorOnScreen(void)
     return TO_QB_BOOL(_IsCursorOnScreen());
 }
 
-inline void ClearBackground(void *color)
+inline void ClearBackground(uint32_t color)
 {
-    _ClearBackground(*(Color *)color);
+    _ClearBackground(color);
 }
 
 inline void BeginDrawing(void)
@@ -2945,189 +2988,189 @@ inline void SetShapesTexture(void *texture, void *source)
     _SetShapesTexture(*(Texture2D *)texture, *(RRectangle *)source);
 }
 
-inline void DrawPixel(int posX, int posY, void *color)
+inline void DrawPixel(int posX, int posY, uint32_t color)
 {
-    _DrawPixel(posX, posY, *(Color *)color);
+    _DrawPixel(posX, posY, color);
 }
 
-inline void DrawPixelV(void *position, void *color)
+inline void DrawPixelV(void *position, uint32_t color)
 {
-    _DrawPixelV(*(Vector2 *)position, *(Color *)color);
+    _DrawPixelV(*(Vector2 *)position, color);
 }
 
-inline void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, void *color)
+inline void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, uint32_t color)
 {
-    _DrawLine(startPosX, startPosY, endPosX, endPosY, *(Color *)color);
+    _DrawLine(startPosX, startPosY, endPosX, endPosY, color);
 }
 
-inline void DrawLineV(void *startPos, void *endPos, void *color)
+inline void DrawLineV(void *startPos, void *endPos, uint32_t color)
 {
-    _DrawLineV(*(Vector2 *)startPos, *(Vector2 *)endPos, *(Color *)color);
+    _DrawLineV(*(Vector2 *)startPos, *(Vector2 *)endPos, color);
 }
 
-inline void DrawLineEx(void *startPos, void *endPos, float thick, void *color)
+inline void DrawLineEx(void *startPos, void *endPos, float thick, uint32_t color)
 {
-    _DrawLineEx(*(Vector2 *)startPos, *(Vector2 *)endPos, thick, *(Color *)color);
+    _DrawLineEx(*(Vector2 *)startPos, *(Vector2 *)endPos, thick, color);
 }
 
-inline void DrawLineBezier(void *startPos, void *endPos, float thick, void *color)
+inline void DrawLineBezier(void *startPos, void *endPos, float thick, uint32_t color)
 {
-    _DrawLineBezier(*(Vector2 *)startPos, *(Vector2 *)endPos, thick, *(Color *)color);
+    _DrawLineBezier(*(Vector2 *)startPos, *(Vector2 *)endPos, thick, color);
 }
 
-inline void DrawLineBezierQuad(void *startPos, void *endPos, void *controlPos, float thick, void *color)
+inline void DrawLineBezierQuad(void *startPos, void *endPos, void *controlPos, float thick, uint32_t color)
 {
-    _DrawLineBezierQuad(*(Vector2 *)startPos, *(Vector2 *)endPos, *(Vector2 *)controlPos, thick, *(Color *)color);
+    _DrawLineBezierQuad(*(Vector2 *)startPos, *(Vector2 *)endPos, *(Vector2 *)controlPos, thick, color);
 }
 
-inline void DrawLineBezierCubic(void *startPos, void *endPos, void *startControlPos, void *endControlPos, float thick, void *color)
+inline void DrawLineBezierCubic(void *startPos, void *endPos, void *startControlPos, void *endControlPos, float thick, uint32_t color)
 {
-    _DrawLineBezierCubic(*(Vector2 *)startPos, *(Vector2 *)endPos, *(Vector2 *)startControlPos, *(Vector2 *)endControlPos, thick, *(Color *)color);
+    _DrawLineBezierCubic(*(Vector2 *)startPos, *(Vector2 *)endPos, *(Vector2 *)startControlPos, *(Vector2 *)endControlPos, thick, color);
 }
 
-inline void DrawLineStrip(void *points, int pointCount, void *color)
+inline void DrawLineStrip(void *points, int pointCount, uint32_t color)
 {
-    _DrawLineStrip((Vector2 *)points, pointCount, *(Color *)color);
+    _DrawLineStrip((Vector2 *)points, pointCount, color);
 }
 
-inline void DrawCircle(int centerX, int centerY, float radius, void *color)
+inline void DrawCircle(int centerX, int centerY, float radius, uint32_t color)
 {
-    _DrawCircle(centerX, centerY, radius, *(Color *)color);
+    _DrawCircle(centerX, centerY, radius, color);
 }
 
-inline void DrawCircleSector(void *center, float radius, float startAngle, float endAngle, int segments, void *color)
+inline void DrawCircleSector(void *center, float radius, float startAngle, float endAngle, int segments, uint32_t color)
 {
-    _DrawCircleSector(*(Vector2 *)center, radius, startAngle, endAngle, segments, *(Color *)color);
+    _DrawCircleSector(*(Vector2 *)center, radius, startAngle, endAngle, segments, color);
 }
 
-inline void DrawCircleSectorLines(void *center, float radius, float startAngle, float endAngle, int segments, void *color)
+inline void DrawCircleSectorLines(void *center, float radius, float startAngle, float endAngle, int segments, uint32_t color)
 {
-    _DrawCircleSectorLines(*(Vector2 *)center, radius, startAngle, endAngle, segments, *(Color *)color);
+    _DrawCircleSectorLines(*(Vector2 *)center, radius, startAngle, endAngle, segments, color);
 }
 
-inline void DrawCircleGradient(int centerX, int centerY, float radius, void *color1, void *color2)
+inline void DrawCircleGradient(int centerX, int centerY, float radius, uint32_t color1, uint32_t color2)
 {
-    _DrawCircleGradient(centerX, centerY, radius, *(Color *)color1, *(Color *)color2);
+    _DrawCircleGradient(centerX, centerY, radius, color1, color2);
 }
 
-inline void DrawCircleV(void *center, float radius, void *color)
+inline void DrawCircleV(void *center, float radius, uint32_t color)
 {
-    _DrawCircleV(*(Vector2 *)center, radius, *(Color *)color);
+    _DrawCircleV(*(Vector2 *)center, radius, color);
 }
 
-inline void DrawCircleLines(int centerX, int centerY, float radius, void *color)
+inline void DrawCircleLines(int centerX, int centerY, float radius, uint32_t color)
 {
-    _DrawCircleLines(centerX, centerY, radius, *(Color *)color);
+    _DrawCircleLines(centerX, centerY, radius, color);
 }
 
-inline void DrawEllipse(int centerX, int centerY, float radiusH, float radiusV, void *color)
+inline void DrawEllipse(int centerX, int centerY, float radiusH, float radiusV, uint32_t color)
 {
-    _DrawEllipse(centerX, centerY, radiusH, radiusV, *(Color *)color);
+    _DrawEllipse(centerX, centerY, radiusH, radiusV, color);
 }
 
-inline void DrawEllipseLines(int centerX, int centerY, float radiusH, float radiusV, void *color)
+inline void DrawEllipseLines(int centerX, int centerY, float radiusH, float radiusV, uint32_t color)
 {
-    _DrawEllipseLines(centerX, centerY, radiusH, radiusV, *(Color *)color);
+    _DrawEllipseLines(centerX, centerY, radiusH, radiusV, color);
 }
 
-inline void DrawRing(void *center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, void *color)
+inline void DrawRing(void *center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, uint32_t color)
 {
-    _DrawRing(*(Vector2 *)center, innerRadius, outerRadius, startAngle, endAngle, segments, *(Color *)color);
+    _DrawRing(*(Vector2 *)center, innerRadius, outerRadius, startAngle, endAngle, segments, color);
 }
 
-inline void DrawRingLines(void *center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, void *color)
+inline void DrawRingLines(void *center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, uint32_t color)
 {
-    _DrawRingLines(*(Vector2 *)center, innerRadius, outerRadius, startAngle, endAngle, segments, *(Color *)color);
+    _DrawRingLines(*(Vector2 *)center, innerRadius, outerRadius, startAngle, endAngle, segments, color);
 }
 
-inline void DrawRectangle(int posX, int posY, int width, int height, void *color)
+inline void DrawRectangle(int posX, int posY, int width, int height, uint32_t color)
 {
-    _DrawRectangle(posX, posY, width, height, *(Color *)color);
+    _DrawRectangle(posX, posY, width, height, color);
 }
 
-inline void DrawRectangleV(void *position, void *size, void *color)
+inline void DrawRectangleV(void *position, void *size, uint32_t color)
 {
-    _DrawRectangleV(*(Vector2 *)position, *(Vector2 *)size, *(Color *)color);
+    _DrawRectangleV(*(Vector2 *)position, *(Vector2 *)size, color);
 }
 
-inline void DrawRectangleRec(void *rec, void *color)
+inline void DrawRectangleRec(void *rec, uint32_t color)
 {
-    _DrawRectangleRec(*(RRectangle *)rec, *(Color *)color);
+    _DrawRectangleRec(*(RRectangle *)rec, color);
 }
 
-inline void DrawRectanglePro(void *rec, void *origin, float rotation, void *color)
+inline void DrawRectanglePro(void *rec, void *origin, float rotation, uint32_t color)
 {
-    _DrawRectanglePro(*(RRectangle *)rec, *(Vector2 *)origin, rotation, *(Color *)color);
+    _DrawRectanglePro(*(RRectangle *)rec, *(Vector2 *)origin, rotation, color);
 }
 
-inline void DrawRectangleGradientV(int posX, int posY, int width, int height, void *color1, void *color2)
+inline void DrawRectangleGradientV(int posX, int posY, int width, int height, uint32_t color1, uint32_t color2)
 {
-    _DrawRectangleGradientV(posX, posY, width, height, *(Color *)color1, *(Color *)color2);
+    _DrawRectangleGradientV(posX, posY, width, height, color1, color2);
 }
 
-inline void DrawRectangleGradientH(int posX, int posY, int width, int height, void *color1, void *color2)
+inline void DrawRectangleGradientH(int posX, int posY, int width, int height, uint32_t color1, uint32_t color2)
 {
-    _DrawRectangleGradientH(posX, posY, width, height, *(Color *)color1, *(Color *)color2);
+    _DrawRectangleGradientH(posX, posY, width, height, color1, color2);
 }
 
-inline void DrawRectangleGradientEx(void *rec, void *col1, void *col2, void *col3, void *col4)
+inline void DrawRectangleGradientEx(void *rec, uint32_t col1, uint32_t col2, uint32_t col3, uint32_t col4)
 {
-    _DrawRectangleGradientEx(*(RRectangle *)rec, *(Color *)col1, *(Color *)col2, *(Color *)col3, *(Color *)col4);
+    _DrawRectangleGradientEx(*(RRectangle *)rec, col1, col2, col3, col4);
 }
 
-inline void DrawRectangleLines(int posX, int posY, int width, int height, void *color)
+inline void DrawRectangleLines(int posX, int posY, int width, int height, uint32_t color)
 {
-    _DrawRectangleLines(posX, posY, width, height, *(Color *)color);
+    _DrawRectangleLines(posX, posY, width, height, color);
 }
 
-inline void DrawRectangleLinesEx(void *rec, float lineThick, void *color)
+inline void DrawRectangleLinesEx(void *rec, float lineThick, uint32_t color)
 {
-    _DrawRectangleLinesEx(*(RRectangle *)rec, lineThick, *(Color *)color);
+    _DrawRectangleLinesEx(*(RRectangle *)rec, lineThick, color);
 }
 
-inline void DrawRectangleRounded(void *rec, float roundness, int segments, void *color)
+inline void DrawRectangleRounded(void *rec, float roundness, int segments, uint32_t color)
 {
-    _DrawRectangleRounded(*(RRectangle *)rec, roundness, segments, *(Color *)color);
+    _DrawRectangleRounded(*(RRectangle *)rec, roundness, segments, color);
 }
 
-inline void DrawRectangleRoundedLines(void *rec, float roundness, int segments, float lineThick, void *color)
+inline void DrawRectangleRoundedLines(void *rec, float roundness, int segments, float lineThick, uint32_t color)
 {
-    _DrawRectangleRoundedLines(*(RRectangle *)rec, roundness, segments, lineThick, *(Color *)color);
+    _DrawRectangleRoundedLines(*(RRectangle *)rec, roundness, segments, lineThick, color);
 }
 
-inline void DrawTriangle(void *v1, void *v2, void *v3, void *color)
+inline void DrawTriangle(void *v1, void *v2, void *v3, uint32_t color)
 {
-    _DrawTriangle(*(Vector2 *)v1, *(Vector2 *)v2, *(Vector2 *)v3, *(Color *)color);
+    _DrawTriangle(*(Vector2 *)v1, *(Vector2 *)v2, *(Vector2 *)v3, color);
 }
 
-inline void DrawTriangleLines(void *v1, void *v2, void *v3, void *color)
+inline void DrawTriangleLines(void *v1, void *v2, void *v3, uint32_t color)
 {
-    _DrawTriangleLines(*(Vector2 *)v1, *(Vector2 *)v2, *(Vector2 *)v3, *(Color *)color);
+    _DrawTriangleLines(*(Vector2 *)v1, *(Vector2 *)v2, *(Vector2 *)v3, color);
 }
 
-inline void DrawTriangleFan(void *points, int pointCount, void *color)
+inline void DrawTriangleFan(void *points, int pointCount, uint32_t color)
 {
-    _DrawTriangleFan((Vector2 *)points, pointCount, *(Color *)color);
+    _DrawTriangleFan((Vector2 *)points, pointCount, color);
 }
 
-inline void DrawTriangleStrip(void *points, int pointCount, void *color)
+inline void DrawTriangleStrip(void *points, int pointCount, uint32_t color)
 {
-    _DrawTriangleStrip((Vector2 *)points, pointCount, *(Color *)color);
+    _DrawTriangleStrip((Vector2 *)points, pointCount, color);
 }
 
-inline void DrawPoly(void *center, int sides, float radius, float rotation, void *color)
+inline void DrawPoly(void *center, int sides, float radius, float rotation, uint32_t color)
 {
-    _DrawPoly(*(Vector2 *)center, sides, radius, rotation, *(Color *)color);
+    _DrawPoly(*(Vector2 *)center, sides, radius, rotation, color);
 }
 
-inline void DrawPolyLines(void *center, int sides, float radius, float rotation, void *color)
+inline void DrawPolyLines(void *center, int sides, float radius, float rotation, uint32_t color)
 {
-    _DrawPolyLines(*(Vector2 *)center, sides, radius, rotation, *(Color *)color);
+    _DrawPolyLines(*(Vector2 *)center, sides, radius, rotation, color);
 }
 
-inline void DrawPolyLinesEx(void *center, int sides, float radius, float rotation, float lineThick, void *color)
+inline void DrawPolyLinesEx(void *center, int sides, float radius, float rotation, float lineThick, uint32_t color)
 {
-    _DrawPolyLinesEx(*(Vector2 *)center, sides, radius, rotation, lineThick, *(Color *)color);
+    _DrawPolyLinesEx(*(Vector2 *)center, sides, radius, rotation, lineThick, color);
 }
 
 inline qb_bool CheckCollisionRecs(void *rec1, void *rec2)
@@ -3230,29 +3273,29 @@ inline qb_bool ExportImageAsCode(void *image, const char *fileName)
     return TO_QB_BOOL(_ExportImageAsCode(*(Image *)image, fileName));
 }
 
-inline void GenImageColor(int width, int height, void *color, void *ret)
+inline void GenImageColor(int width, int height, uint32_t color, void *ret)
 {
-    *(Image *)ret = _GenImageColor(width, height, *(Color *)color);
+    *(Image *)ret = _GenImageColor(width, height, color);
 }
 
-inline void GenImageGradientV(int width, int height, void *top, void *bottom, void *ret)
+inline void GenImageGradientV(int width, int height, uint32_t top, uint32_t bottom, void *ret)
 {
-    *(Image *)ret = _GenImageGradientV(width, height, *(Color *)top, *(Color *)bottom);
+    *(Image *)ret = _GenImageGradientV(width, height, top, bottom);
 }
 
-inline void GenImageGradientH(int width, int height, void *left, void *right, void *ret)
+inline void GenImageGradientH(int width, int height, uint32_t left, uint32_t right, void *ret)
 {
-    *(Image *)ret = _GenImageGradientH(width, height, *(Color *)left, *(Color *)right);
+    *(Image *)ret = _GenImageGradientH(width, height, left, right);
 }
 
-inline void GenImageGradientRadial(int width, int height, float density, void *inner, void *outer, void *ret)
+inline void GenImageGradientRadial(int width, int height, float density, uint32_t inner, uint32_t outer, void *ret)
 {
-    *(Image *)ret = _GenImageGradientRadial(width, height, density, *(Color *)inner, *(Color *)outer);
+    *(Image *)ret = _GenImageGradientRadial(width, height, density, inner, outer);
 }
 
-inline void GenImageChecked(int width, int height, int checksX, int checksY, void *col1, void *col2, void *ret)
+inline void GenImageChecked(int width, int height, int checksX, int checksY, uint32_t col1, uint32_t col2, void *ret)
 {
-    *(Image *)ret = _GenImageChecked(width, height, checksX, checksY, *(Color *)col1, *(Color *)col2);
+    *(Image *)ret = _GenImageChecked(width, height, checksX, checksY, col1, col2);
 }
 
 inline void GenImageWhiteNoise(int width, int height, float factor, void *ret)
@@ -3285,14 +3328,14 @@ inline void ImageFromImage(void *image, void *rec, void *ret)
     *(Image *)ret = _ImageFromImage(*(Image *)image, *(RRectangle *)rec);
 }
 
-inline void ImageText(const char *text, int fontSize, void *color, void *ret)
+inline void ImageText(const char *text, int fontSize, uint32_t color, void *ret)
 {
-    *(Image *)ret = _ImageText(text, fontSize, *(Color *)color);
+    *(Image *)ret = _ImageText(text, fontSize, color);
 }
 
-inline void ImageTextEx(void *font, const char *text, float fontSize, float spacing, void *tint, void *ret)
+inline void ImageTextEx(void *font, const char *text, float fontSize, float spacing, uint32_t tint, void *ret)
 {
-    *(Image *)ret = _ImageTextEx(*(Font *)font, text, fontSize, spacing, *(Color *)tint);
+    *(Image *)ret = _ImageTextEx(*(Font *)font, text, fontSize, spacing, tint);
 }
 
 inline void ImageFormat(void *image, int newFormat)
@@ -3300,9 +3343,9 @@ inline void ImageFormat(void *image, int newFormat)
     _ImageFormat((Image *)image, newFormat);
 }
 
-inline void ImageToPOT(void *image, void *fill)
+inline void ImageToPOT(void *image, uint32_t fill)
 {
-    _ImageToPOT((Image *)image, *(Color *)fill);
+    _ImageToPOT((Image *)image, fill);
 }
 
 inline void ImageCrop(void *image, void *crop)
@@ -3315,9 +3358,9 @@ inline void ImageAlphaCrop(void *image, float threshold)
     _ImageAlphaCrop((Image *)image, threshold);
 }
 
-inline void ImageAlphaClear(void *image, void *color, float threshold)
+inline void ImageAlphaClear(void *image, uint32_t color, float threshold)
 {
-    _ImageAlphaClear((Image *)image, *(Color *)color, threshold);
+    _ImageAlphaClear((Image *)image, color, threshold);
 }
 
 inline void ImageAlphaMask(void *image, void *alphaMask)
@@ -3345,9 +3388,9 @@ inline void ImageResizeNN(void *image, int newWidth, int newHeight)
     _ImageResizeNN((Image *)image, newWidth, newHeight);
 }
 
-inline void ImageResizeCanvas(void *image, int newWidth, int newHeight, int offsetX, int offsetY, void *fill)
+inline void ImageResizeCanvas(void *image, int newWidth, int newHeight, int offsetX, int offsetY, uint32_t fill)
 {
-    _ImageResizeCanvas((Image *)image, newWidth, newHeight, offsetX, offsetY, *(Color *)fill);
+    _ImageResizeCanvas((Image *)image, newWidth, newHeight, offsetX, offsetY, fill);
 }
 
 inline void ImageMipmaps(void *image)
@@ -3380,9 +3423,9 @@ inline void ImageRotateCCW(void *image)
     _ImageRotateCCW((Image *)image);
 }
 
-inline void ImageColorTint(void *image, void *color)
+inline void ImageColorTint(void *image, uint32_t color)
 {
-    _ImageColorTint((Image *)image, *(Color *)color);
+    _ImageColorTint((Image *)image, color);
 }
 
 inline void ImageColorInvert(void *image)
@@ -3405,9 +3448,9 @@ inline void ImageColorBrightness(void *image, int brightness)
     _ImageColorBrightness((Image *)image, brightness);
 }
 
-inline void ImageColorReplace(void *image, void *color, void *replace)
+inline void ImageColorReplace(void *image, uint32_t color, uint32_t replace)
 {
-    _ImageColorReplace((Image *)image, *(Color *)color, *(Color *)replace);
+    _ImageColorReplace((Image *)image, color, replace);
 }
 
 inline void *LoadImageColors(void *image)
@@ -3422,12 +3465,12 @@ inline void *LoadImagePalette(void *image, int maxPaletteSize, int *colorCount)
 
 inline void UnloadImageColors(void *colors)
 {
-    _UnloadImageColors((Color *)colors);
+    _UnloadImageColors((uint32_t *)colors);
 }
 
 inline void UnloadImagePalette(void *colors)
 {
-    _UnloadImagePalette((Color *)colors);
+    _UnloadImagePalette((uint32_t *)colors);
 }
 
 inline void GetImageAlphaBorder(void *image, float threshold, void *ret)
@@ -3435,89 +3478,89 @@ inline void GetImageAlphaBorder(void *image, float threshold, void *ret)
     *(RRectangle *)ret = _GetImageAlphaBorder(*(Image *)image, threshold);
 }
 
-inline void GetImageColor(void *image, int x, int y, void *ret)
+inline uint32_t GetImageColor(void *image, int x, int y)
 {
-    *(Color *)ret = _GetImageColor(*(Image *)image, x, y);
+    return _GetImageColor(*(Image *)image, x, y);
 }
 
-inline void ImageClearBackground(void *dst, void *color)
+inline void ImageClearBackground(void *dst, uint32_t color)
 {
-    _ImageClearBackground((Image *)dst, *(Color *)color);
+    _ImageClearBackground((Image *)dst, color);
 }
 
-inline void ImageDrawPixel(void *dst, int posX, int posY, void *color)
+inline void ImageDrawPixel(void *dst, int posX, int posY, uint32_t color)
 {
-    _ImageDrawPixel((Image *)dst, posX, posY, *(Color *)color);
+    _ImageDrawPixel((Image *)dst, posX, posY, color);
 }
 
-inline void ImageDrawPixelV(void *dst, void *position, void *color)
+inline void ImageDrawPixelV(void *dst, void *position, uint32_t color)
 {
-    _ImageDrawPixelV((Image *)dst, *(Vector2 *)position, *(Color *)color);
+    _ImageDrawPixelV((Image *)dst, *(Vector2 *)position, color);
 }
 
-inline void ImageDrawLine(void *dst, int startPosX, int startPosY, int endPosX, int endPosY, void *color)
+inline void ImageDrawLine(void *dst, int startPosX, int startPosY, int endPosX, int endPosY, uint32_t color)
 {
-    _ImageDrawLine((Image *)dst, startPosX, startPosY, endPosX, endPosY, *(Color *)color);
+    _ImageDrawLine((Image *)dst, startPosX, startPosY, endPosX, endPosY, color);
 }
 
-inline void ImageDrawLineV(void *dst, void *start, void *end, void *color)
+inline void ImageDrawLineV(void *dst, void *start, void *end, uint32_t color)
 {
-    _ImageDrawLineV((Image *)dst, *(Vector2 *)start, *(Vector2 *)end, *(Color *)color);
+    _ImageDrawLineV((Image *)dst, *(Vector2 *)start, *(Vector2 *)end, color);
 }
 
-inline void ImageDrawCircle(void *dst, int centerX, int centerY, int radius, void *color)
+inline void ImageDrawCircle(void *dst, int centerX, int centerY, int radius, uint32_t color)
 {
-    _ImageDrawCircle((Image *)dst, centerX, centerY, radius, *(Color *)color);
+    _ImageDrawCircle((Image *)dst, centerX, centerY, radius, color);
 }
 
-inline void ImageDrawCircleV(void *dst, void *center, int radius, void *color)
+inline void ImageDrawCircleV(void *dst, void *center, int radius, uint32_t color)
 {
-    _ImageDrawCircleV((Image *)dst, *(Vector2 *)center, radius, *(Color *)color);
+    _ImageDrawCircleV((Image *)dst, *(Vector2 *)center, radius, color);
 }
 
-inline void ImageDrawCircleLines(void *dst, int centerX, int centerY, int radius, void *color)
+inline void ImageDrawCircleLines(void *dst, int centerX, int centerY, int radius, uint32_t color)
 {
-    _ImageDrawCircleLines((Image *)dst, centerX, centerY, radius, *(Color *)color);
+    _ImageDrawCircleLines((Image *)dst, centerX, centerY, radius, color);
 }
 
-inline void ImageDrawCircleLinesV(void *dst, void *center, int radius, void *color)
+inline void ImageDrawCircleLinesV(void *dst, void *center, int radius, uint32_t color)
 {
-    _ImageDrawCircleLinesV((Image *)dst, *(Vector2 *)center, radius, *(Color *)color);
+    _ImageDrawCircleLinesV((Image *)dst, *(Vector2 *)center, radius, color);
 }
 
-inline void ImageDrawRectangle(void *dst, int posX, int posY, int width, int height, void *color)
+inline void ImageDrawRectangle(void *dst, int posX, int posY, int width, int height, uint32_t color)
 {
-    _ImageDrawRectangle((Image *)dst, posX, posY, width, height, *(Color *)color);
+    _ImageDrawRectangle((Image *)dst, posX, posY, width, height, color);
 }
 
-inline void ImageDrawRectangleV(void *dst, void *position, void *size, void *color)
+inline void ImageDrawRectangleV(void *dst, void *position, void *size, uint32_t color)
 {
-    _ImageDrawRectangleV((Image *)dst, *(Vector2 *)position, *(Vector2 *)size, *(Color *)color);
+    _ImageDrawRectangleV((Image *)dst, *(Vector2 *)position, *(Vector2 *)size, color);
 }
 
-inline void ImageDrawRectangleRec(void *dst, void *rec, void *color)
+inline void ImageDrawRectangleRec(void *dst, void *rec, uint32_t color)
 {
-    _ImageDrawRectangleRec((Image *)dst, *(RRectangle *)rec, *(Color *)color);
+    _ImageDrawRectangleRec((Image *)dst, *(RRectangle *)rec, color);
 }
 
-inline void ImageDrawRectangleLines(void *dst, void *rec, int thick, void *color)
+inline void ImageDrawRectangleLines(void *dst, void *rec, int thick, uint32_t color)
 {
-    _ImageDrawRectangleLines((Image *)dst, *(RRectangle *)rec, thick, *(Color *)color);
+    _ImageDrawRectangleLines((Image *)dst, *(RRectangle *)rec, thick, color);
 }
 
-inline void ImageDraw(void *dst, void *src, void *srcRec, void *dstRec, void *tint)
+inline void ImageDraw(void *dst, void *src, void *srcRec, void *dstRec, uint32_t tint)
 {
-    _ImageDraw((Image *)dst, *(Image *)src, *(RRectangle *)srcRec, *(RRectangle *)dstRec, *(Color *)tint);
+    _ImageDraw((Image *)dst, *(Image *)src, *(RRectangle *)srcRec, *(RRectangle *)dstRec, tint);
 }
 
-inline void ImageDrawText(void *dst, const char *text, int posX, int posY, int fontSize, void *color)
+inline void ImageDrawText(void *dst, const char *text, int posX, int posY, int fontSize, uint32_t color)
 {
-    _ImageDrawText((Image *)dst, text, posX, posY, fontSize, *(Color *)color);
+    _ImageDrawText((Image *)dst, text, posX, posY, fontSize, color);
 }
 
-inline void ImageDrawTextEx(void *dst, void *font, const char *text, void *position, float fontSize, float spacing, void *tint)
+inline void ImageDrawTextEx(void *dst, void *font, const char *text, void *position, float fontSize, float spacing, uint32_t tint)
 {
-    _ImageDrawTextEx((Image *)dst, *(Font *)font, text, *(Vector2 *)position, fontSize, spacing, *(Color *)tint);
+    _ImageDrawTextEx((Image *)dst, *(Font *)font, text, *(Vector2 *)position, fontSize, spacing, tint);
 }
 
 inline void LoadTexture(const char *fileName, void *ret)
@@ -3585,104 +3628,104 @@ inline void SetTextureWrap(void *texture, int wrap)
     _SetTextureWrap(*(Texture2D *)texture, wrap);
 }
 
-inline void DrawTexture(void *texture, int posX, int posY, void *tint)
+inline void DrawTexture(void *texture, int posX, int posY, uint32_t tint)
 {
-    _DrawTexture(*(Texture2D *)texture, posX, posY, *(Color *)tint);
+    _DrawTexture(*(Texture2D *)texture, posX, posY, tint);
 }
 
-inline void DrawTextureV(void *texture, void *position, void *tint)
+inline void DrawTextureV(void *texture, void *position, uint32_t tint)
 {
-    _DrawTextureV(*(Texture2D *)texture, *(Vector2 *)position, *(Color *)tint);
+    _DrawTextureV(*(Texture2D *)texture, *(Vector2 *)position, tint);
 }
 
-inline void DrawTextureEx(void *texture, void *position, float rotation, float scale, void *tint)
+inline void DrawTextureEx(void *texture, void *position, float rotation, float scale, uint32_t tint)
 {
-    _DrawTextureEx(*(Texture2D *)texture, *(Vector2 *)position, rotation, scale, *(Color *)tint);
+    _DrawTextureEx(*(Texture2D *)texture, *(Vector2 *)position, rotation, scale, tint);
 }
 
-inline void DrawTextureRec(void *texture, void *source, void *position, void *tint)
+inline void DrawTextureRec(void *texture, void *source, void *position, uint32_t tint)
 {
-    _DrawTextureRec(*(Texture2D *)texture, *(RRectangle *)source, *(Vector2 *)position, *(Color *)tint);
+    _DrawTextureRec(*(Texture2D *)texture, *(RRectangle *)source, *(Vector2 *)position, tint);
 }
 
-inline void DrawTexturePro(void *texture, void *source, void *dest, void *origin, float rotation, void *tint)
+inline void DrawTexturePro(void *texture, void *source, void *dest, void *origin, float rotation, uint32_t tint)
 {
-    _DrawTexturePro(*(Texture2D *)texture, *(RRectangle *)source, *(RRectangle *)dest, *(Vector2 *)origin, rotation, *(Color *)tint);
+    _DrawTexturePro(*(Texture2D *)texture, *(RRectangle *)source, *(RRectangle *)dest, *(Vector2 *)origin, rotation, tint);
 }
 
-inline void DrawTextureNPatch(void *texture, void *nPatchInfo, void *dest, void *origin, float rotation, void *tint)
+inline void DrawTextureNPatch(void *texture, void *nPatchInfo, void *dest, void *origin, float rotation, uint32_t tint)
 {
-    _DrawTextureNPatch(*(Texture2D *)texture, *(NPatchInfo *)nPatchInfo, *(RRectangle *)dest, *(Vector2 *)origin, rotation, *(Color *)tint);
+    _DrawTextureNPatch(*(Texture2D *)texture, *(NPatchInfo *)nPatchInfo, *(RRectangle *)dest, *(Vector2 *)origin, rotation, tint);
 }
 
-inline void Fade(void *color, float alpha, void *ret)
+inline uint32_t Fade(uint32_t color, float alpha)
 {
-    *(Color *)ret = _Fade(*(Color *)color, alpha);
+    return _Fade(color, alpha);
 }
 
-inline int ColorToInt(void *color)
+inline int ColorToInt(uint32_t color)
 {
-    return _ColorToInt(*(Color *)color);
+    return _ColorToInt(color);
 }
 
-inline void ColorNormalize(void *color, void *ret)
+inline void ColorNormalize(uint32_t color, void *ret)
 {
-    *(Vector4 *)ret = _ColorNormalize(*(Color *)color);
+    *(Vector4 *)ret = _ColorNormalize(color);
 }
 
-inline void ColorFromNormalized(void *normalized, void *ret)
+inline uint32_t ColorFromNormalized(void *normalized)
 {
-    *(Color *)ret = _ColorFromNormalized(*(Vector4 *)normalized);
+    return _ColorFromNormalized(*(Vector4 *)normalized);
 }
 
-inline void ColorToHSV(void *color, void *ret)
+inline void ColorToHSV(uint32_t color, void *ret)
 {
-    *(Vector3 *)ret = _ColorToHSV(*(Color *)color);
+    *(Vector3 *)ret = _ColorToHSV(color);
 }
 
-inline void ColorFromHSV(float hue, float saturation, float value, void *ret)
+inline uint32_t ColorFromHSV(float hue, float saturation, float value)
 {
-    *(Color *)ret = _ColorFromHSV(hue, saturation, value);
+    return _ColorFromHSV(hue, saturation, value);
 }
 
-inline void ColorTint(void *color, void *tint, void *ret)
+inline uint32_t ColorTint(uint32_t color, uint32_t tint)
 {
-    *(Color *)ret = _ColorTint(*(Color *)color, *(Color *)tint);
+    return _ColorTint(color, tint);
 }
 
-inline void ColorBrightness(void *color, float factor, void *ret)
+inline uint32_t ColorBrightness(uint32_t color, float factor)
 {
-    *(Color *)ret = _ColorBrightness(*(Color *)color, factor);
+    return _ColorBrightness(color, factor);
 }
 
-inline void ColorContrast(void *color, float contrast, void *ret)
+inline uint32_t ColorContrast(uint32_t color, float contrast)
 {
-    *(Color *)ret = _ColorContrast(*(Color *)color, contrast);
+    return _ColorContrast(color, contrast);
 }
 
-inline void ColorAlpha(void *color, float alpha, void *ret)
+inline uint32_t ColorAlpha(uint32_t color, float alpha)
 {
-    *(Color *)ret = _ColorAlpha(*(Color *)color, alpha);
+    return _ColorAlpha(color, alpha);
 }
 
-inline void ColorAlphaBlend(void *dst, void *src, void *tint, void *ret)
+inline uint32_t ColorAlphaBlend(uint32_t dst, uint32_t src, uint32_t tint)
 {
-    *(Color *)ret = _ColorAlphaBlend(*(Color *)dst, *(Color *)src, *(Color *)tint);
+    return _ColorAlphaBlend(dst, src, tint);
 }
 
-inline void GetColor(unsigned int hexValue, void *ret)
+inline uint32_t GetColor(unsigned int hexValue)
 {
-    *(Color *)ret = _GetColor(hexValue);
+    return _GetColor(hexValue);
 }
 
-inline void GetPixelColor(void *srcPtr, int format, void *ret)
+inline uint32_t GetPixelColor(void *srcPtr, int format)
 {
-    *(Color *)ret = _GetPixelColor(srcPtr, format);
+    return _GetPixelColor(srcPtr, format);
 }
 
-inline void SetPixelColor(void *dstPtr, void *color, int format)
+inline void SetPixelColor(void *dstPtr, uint32_t color, int format)
 {
-    _SetPixelColor(dstPtr, *(Color *)color, format);
+    _SetPixelColor(dstPtr, color, format);
 }
 
 inline int GetPixelDataSize(int width, int height, int format)
@@ -3705,9 +3748,9 @@ inline void LoadFontEx(const char *fileName, int fontSize, int *fontChars, int g
     *(Font *)ret = _LoadFontEx(fileName, fontSize, fontChars, glyphCount);
 }
 
-inline void LoadFontFromImage(void *image, void *key, int firstChar, void *ret)
+inline void LoadFontFromImage(void *image, uint32_t key, int firstChar, void *ret)
 {
-    *(Font *)ret = _LoadFontFromImage(*(Image *)image, *(Color *)key, firstChar);
+    *(Font *)ret = _LoadFontFromImage(*(Image *)image, key, firstChar);
 }
 
 inline void LoadFontFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, void *ret)
@@ -3750,29 +3793,29 @@ inline void DrawFPS(int posX, int posY)
     _DrawFPS(posX, posY);
 }
 
-inline void DrawText(const char *text, int posX, int posY, int fontSize, void *color)
+inline void DrawText(const char *text, int posX, int posY, int fontSize, uint32_t color)
 {
-    _DrawText(text, posX, posY, fontSize, *(Color *)color);
+    _DrawText(text, posX, posY, fontSize, color);
 }
 
-inline void DrawTextEx(void *font, const char *text, void *position, float fontSize, float spacing, void *tint)
+inline void DrawTextEx(void *font, const char *text, void *position, float fontSize, float spacing, uint32_t tint)
 {
-    _DrawTextEx(*(Font *)font, text, *(Vector2 *)position, fontSize, spacing, *(Color *)tint);
+    _DrawTextEx(*(Font *)font, text, *(Vector2 *)position, fontSize, spacing, tint);
 }
 
-inline void DrawTextPro(void *font, const char *text, void *position, void *origin, float rotation, float fontSize, float spacing, void *tint)
+inline void DrawTextPro(void *font, const char *text, void *position, void *origin, float rotation, float fontSize, float spacing, uint32_t tint)
 {
-    _DrawTextPro(*(Font *)font, text, *(Vector2 *)position, *(Vector2 *)origin, rotation, fontSize, spacing, *(Color *)tint);
+    _DrawTextPro(*(Font *)font, text, *(Vector2 *)position, *(Vector2 *)origin, rotation, fontSize, spacing, tint);
 }
 
-inline void DrawTextCodepoint(void *font, int codepoint, void *position, float fontSize, void *tint)
+inline void DrawTextCodepoint(void *font, int codepoint, void *position, float fontSize, uint32_t tint)
 {
-    _DrawTextCodepoint(*(Font *)font, codepoint, *(Vector2 *)position, fontSize, *(Color *)tint);
+    _DrawTextCodepoint(*(Font *)font, codepoint, *(Vector2 *)position, fontSize, tint);
 }
 
-inline void DrawTextCodepoints(void *font, const int *codepoints, int count, void *position, float fontSize, float spacing, void *tint)
+inline void DrawTextCodepoints(void *font, const int *codepoints, int count, void *position, float fontSize, float spacing, uint32_t tint)
 {
-    _DrawTextCodepoints(*(Font *)font, codepoints, count, *(Vector2 *)position, fontSize, spacing, *(Color *)tint);
+    _DrawTextCodepoints(*(Font *)font, codepoints, count, *(Vector2 *)position, fontSize, spacing, tint);
 }
 
 inline int MeasureText(const char *text, int fontSize)
@@ -3930,104 +3973,104 @@ inline int TextToInteger(const char *text)
     return _TextToInteger(text);
 }
 
-inline void DrawLine3D(void *startPos, void *endPos, void *color)
+inline void DrawLine3D(void *startPos, void *endPos, uint32_t color)
 {
-    _DrawLine3D(*(Vector3 *)startPos, *(Vector3 *)endPos, *(Color *)color);
+    _DrawLine3D(*(Vector3 *)startPos, *(Vector3 *)endPos, color);
 }
 
-inline void DrawPoint3D(void *position, void *color)
+inline void DrawPoint3D(void *position, uint32_t color)
 {
-    _DrawPoint3D(*(Vector3 *)position, *(Color *)color);
+    _DrawPoint3D(*(Vector3 *)position, color);
 }
 
-inline void DrawCircle3D(void *center, float radius, void *rotationAxis, float rotationAngle, void *color)
+inline void DrawCircle3D(void *center, float radius, void *rotationAxis, float rotationAngle, uint32_t color)
 {
-    _DrawCircle3D(*(Vector3 *)center, radius, *(Vector3 *)rotationAxis, rotationAngle, *(Color *)color);
+    _DrawCircle3D(*(Vector3 *)center, radius, *(Vector3 *)rotationAxis, rotationAngle, color);
 }
 
-inline void DrawTriangle3D(void *v1, void *v2, void *v3, void *color)
+inline void DrawTriangle3D(void *v1, void *v2, void *v3, uint32_t color)
 {
-    _DrawTriangle3D(*(Vector3 *)v1, *(Vector3 *)v2, *(Vector3 *)v3, *(Color *)color);
+    _DrawTriangle3D(*(Vector3 *)v1, *(Vector3 *)v2, *(Vector3 *)v3, color);
 }
 
-inline void DrawTriangleStrip3D(void *points, int pointCount, void *color)
+inline void DrawTriangleStrip3D(void *points, int pointCount, uint32_t color)
 {
-    _DrawTriangleStrip3D((Vector3 *)points, pointCount, *(Color *)color);
+    _DrawTriangleStrip3D((Vector3 *)points, pointCount, color);
 }
 
-inline void DrawCube(void *position, float width, float height, float length, void *color)
+inline void DrawCube(void *position, float width, float height, float length, uint32_t color)
 {
-    _DrawCube(*(Vector3 *)position, width, height, length, *(Color *)color);
+    _DrawCube(*(Vector3 *)position, width, height, length, color);
 }
 
-inline void DrawCubeV(void *position, void *size, void *color)
+inline void DrawCubeV(void *position, void *size, uint32_t color)
 {
-    _DrawCubeV(*(Vector3 *)position, *(Vector3 *)size, *(Color *)color);
+    _DrawCubeV(*(Vector3 *)position, *(Vector3 *)size, color);
 }
 
-inline void DrawCubeWires(void *position, float width, float height, float length, void *color)
+inline void DrawCubeWires(void *position, float width, float height, float length, uint32_t color)
 {
-    _DrawCubeWires(*(Vector3 *)position, width, height, length, *(Color *)color);
+    _DrawCubeWires(*(Vector3 *)position, width, height, length, color);
 }
 
-inline void DrawCubeWiresV(void *position, void *size, void *color)
+inline void DrawCubeWiresV(void *position, void *size, uint32_t color)
 {
-    _DrawCubeWiresV(*(Vector3 *)position, *(Vector3 *)size, *(Color *)color);
+    _DrawCubeWiresV(*(Vector3 *)position, *(Vector3 *)size, color);
 }
 
-inline void DrawSphere(void *centerPos, float radius, void *color)
+inline void DrawSphere(void *centerPos, float radius, uint32_t color)
 {
-    _DrawSphere(*(Vector3 *)centerPos, radius, *(Color *)color);
+    _DrawSphere(*(Vector3 *)centerPos, radius, color);
 }
 
-inline void DrawSphereEx(void *centerPos, float radius, int rings, int slices, void *color)
+inline void DrawSphereEx(void *centerPos, float radius, int rings, int slices, uint32_t color)
 {
-    _DrawSphereEx(*(Vector3 *)centerPos, radius, rings, slices, *(Color *)color);
+    _DrawSphereEx(*(Vector3 *)centerPos, radius, rings, slices, color);
 }
 
-inline void DrawSphereWires(void *centerPos, float radius, int rings, int slices, void *color)
+inline void DrawSphereWires(void *centerPos, float radius, int rings, int slices, uint32_t color)
 {
-    _DrawSphereWires(*(Vector3 *)centerPos, radius, rings, slices, *(Color *)color);
+    _DrawSphereWires(*(Vector3 *)centerPos, radius, rings, slices, color);
 }
 
-inline void DrawCylinder(void *position, float radiusTop, float radiusBottom, float height, int slices, void *color)
+inline void DrawCylinder(void *position, float radiusTop, float radiusBottom, float height, int slices, uint32_t color)
 {
-    _DrawCylinder(*(Vector3 *)position, radiusTop, radiusBottom, height, slices, *(Color *)color);
+    _DrawCylinder(*(Vector3 *)position, radiusTop, radiusBottom, height, slices, color);
 }
 
-inline void DrawCylinderEx(void *startPos, void *endPos, float startRadius, float endRadius, int sides, void *color)
+inline void DrawCylinderEx(void *startPos, void *endPos, float startRadius, float endRadius, int sides, uint32_t color)
 {
-    _DrawCylinderEx(*(Vector3 *)startPos, *(Vector3 *)endPos, startRadius, endRadius, sides, *(Color *)color);
+    _DrawCylinderEx(*(Vector3 *)startPos, *(Vector3 *)endPos, startRadius, endRadius, sides, color);
 }
 
-inline void DrawCylinderWires(void *position, float radiusTop, float radiusBottom, float height, int slices, void *color)
+inline void DrawCylinderWires(void *position, float radiusTop, float radiusBottom, float height, int slices, uint32_t color)
 {
-    _DrawCylinderWires(*(Vector3 *)position, radiusTop, radiusBottom, height, slices, *(Color *)color);
+    _DrawCylinderWires(*(Vector3 *)position, radiusTop, radiusBottom, height, slices, color);
 }
 
-inline void DrawCylinderWiresEx(void *startPos, void *endPos, float startRadius, float endRadius, int sides, void *color)
+inline void DrawCylinderWiresEx(void *startPos, void *endPos, float startRadius, float endRadius, int sides, uint32_t color)
 {
-    _DrawCylinderWiresEx(*(Vector3 *)startPos, *(Vector3 *)endPos, startRadius, endRadius, sides, *(Color *)color);
+    _DrawCylinderWiresEx(*(Vector3 *)startPos, *(Vector3 *)endPos, startRadius, endRadius, sides, color);
 }
 
-inline void DrawCapsule(void *startPos, void *endPos, float radius, int slices, int rings, void *color)
+inline void DrawCapsule(void *startPos, void *endPos, float radius, int slices, int rings, uint32_t color)
 {
-    _DrawCapsule(*(Vector3 *)startPos, *(Vector3 *)endPos, radius, slices, rings, *(Color *)color);
+    _DrawCapsule(*(Vector3 *)startPos, *(Vector3 *)endPos, radius, slices, rings, color);
 }
 
-inline void DrawCapsuleWires(void *startPos, void *endPos, float radius, int slices, int rings, void *color)
+inline void DrawCapsuleWires(void *startPos, void *endPos, float radius, int slices, int rings, uint32_t color)
 {
-    _DrawCapsuleWires(*(Vector3 *)startPos, *(Vector3 *)endPos, radius, slices, rings, *(Color *)color);
+    _DrawCapsuleWires(*(Vector3 *)startPos, *(Vector3 *)endPos, radius, slices, rings, color);
 }
 
-inline void DrawPlane(void *centerPos, void *size, void *color)
+inline void DrawPlane(void *centerPos, void *size, uint32_t color)
 {
-    _DrawPlane(*(Vector3 *)centerPos, *(Vector2 *)size, *(Color *)color);
+    _DrawPlane(*(Vector3 *)centerPos, *(Vector2 *)size, color);
 }
 
-inline void DrawRay(void *ray, void *color)
+inline void DrawRay(void *ray, uint32_t color)
 {
-    _DrawRay(*(Ray *)ray, *(Color *)color);
+    _DrawRay(*(Ray *)ray, color);
 }
 
 inline void DrawGrid(int slices, float spacing)
@@ -4060,44 +4103,44 @@ inline void GetModelBoundingBox(void *model, void *ret)
     *(BoundingBox *)ret = _GetModelBoundingBox(*(Model *)model);
 }
 
-inline void DrawModel(void *model, void *position, float scale, void *tint)
+inline void DrawModel(void *model, void *position, float scale, uint32_t tint)
 {
-    _DrawModel(*(Model *)model, *(Vector3 *)position, scale, *(Color *)tint);
+    _DrawModel(*(Model *)model, *(Vector3 *)position, scale, tint);
 }
 
-inline void DrawModelEx(void *model, void *position, void *rotationAxis, float rotationAngle, void *scale, void *tint)
+inline void DrawModelEx(void *model, void *position, void *rotationAxis, float rotationAngle, void *scale, uint32_t tint)
 {
-    _DrawModelEx(*(Model *)model, *(Vector3 *)position, *(Vector3 *)rotationAxis, rotationAngle, *(Vector3 *)scale, *(Color *)tint);
+    _DrawModelEx(*(Model *)model, *(Vector3 *)position, *(Vector3 *)rotationAxis, rotationAngle, *(Vector3 *)scale, tint);
 }
 
-inline void DrawModelWires(void *model, void *position, float scale, void *tint)
+inline void DrawModelWires(void *model, void *position, float scale, uint32_t tint)
 {
-    _DrawModelWires(*(Model *)model, *(Vector3 *)position, scale, *(Color *)tint);
+    _DrawModelWires(*(Model *)model, *(Vector3 *)position, scale, tint);
 }
 
-inline void DrawModelWiresEx(void *model, void *position, void *rotationAxis, float rotationAngle, void *scale, void *tint)
+inline void DrawModelWiresEx(void *model, void *position, void *rotationAxis, float rotationAngle, void *scale, uint32_t tint)
 {
-    _DrawModelWiresEx(*(Model *)model, *(Vector3 *)position, *(Vector3 *)rotationAxis, rotationAngle, *(Vector3 *)scale, *(Color *)tint);
+    _DrawModelWiresEx(*(Model *)model, *(Vector3 *)position, *(Vector3 *)rotationAxis, rotationAngle, *(Vector3 *)scale, tint);
 }
 
-inline void DrawBoundingBox(void *box, void *color)
+inline void DrawBoundingBox(void *box, uint32_t color)
 {
-    _DrawBoundingBox(*(BoundingBox *)box, *(Color *)color);
+    _DrawBoundingBox(*(BoundingBox *)box, color);
 }
 
-inline void DrawBillboard(void *camera, void *texture, void *position, float size, void *tint)
+inline void DrawBillboard(void *camera, void *texture, void *position, float size, uint32_t tint)
 {
-    _DrawBillboard(*(Camera *)camera, *(Texture2D *)texture, *(Vector3 *)position, size, *(Color *)tint);
+    _DrawBillboard(*(Camera *)camera, *(Texture2D *)texture, *(Vector3 *)position, size, tint);
 }
 
-inline void DrawBillboardRec(void *camera, void *texture, void *source, void *position, void *size, void *tint)
+inline void DrawBillboardRec(void *camera, void *texture, void *source, void *position, void *size, uint32_t tint)
 {
-    _DrawBillboardRec(*(Camera *)camera, *(Texture2D *)texture, *(RRectangle *)source, *(Vector3 *)position, *(Vector2 *)size, *(Color *)tint);
+    _DrawBillboardRec(*(Camera *)camera, *(Texture2D *)texture, *(RRectangle *)source, *(Vector3 *)position, *(Vector2 *)size, tint);
 }
 
-inline void DrawBillboardPro(void *camera, void *texture, void *source, void *position, void *up, void *size, void *origin, float rotation, void *tint)
+inline void DrawBillboardPro(void *camera, void *texture, void *source, void *position, void *up, void *size, void *origin, float rotation, uint32_t tint)
 {
-    _DrawBillboardPro(*(Camera *)camera, *(Texture2D *)texture, *(RRectangle *)source, *(Vector3 *)position, *(Vector3 *)up, *(Vector2 *)size, *(Vector2 *)origin, rotation, *(Color *)tint);
+    _DrawBillboardPro(*(Camera *)camera, *(Texture2D *)texture, *(RRectangle *)source, *(Vector3 *)position, *(Vector3 *)up, *(Vector2 *)size, *(Vector2 *)origin, rotation, tint);
 }
 
 inline void UploadMesh(void *mesh, int8_t dynamic)
