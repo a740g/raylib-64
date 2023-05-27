@@ -1,18 +1,18 @@
 ' A simple "Hello, World" program using raylib
 
-$EXEICON:'./raylib.ico'
+$ExeIcon:'./raylib.ico'
 
 '$INCLUDE:'./raylib.bi'
 
-CONST APP_NAME = "Hello, world!"
+Const APP_NAME = "Hello, world!"
 
-CONST w = 800
-CONST h = 600
+Const w = 800
+Const h = 600
 
 InitWindow w, h, APP_NAME
 'SetTargetFPS (60)
 
-DO
+Do
     BeginDrawing
 
     'ClearBackground _RGBA32(Col.r, Col.g, Col.b, Col.a)
@@ -28,11 +28,11 @@ DO
     'DrawLine 10, 20, 50, 50, _RGBA32(0, 0, 255, 255)
 
     EndDrawing
-LOOP UNTIL WindowShouldClose
+Loop Until WindowShouldClose
 
 CloseWindow
 
-SYSTEM
+System
 
 '$INCLUDE:'./raylib.bas'
 
