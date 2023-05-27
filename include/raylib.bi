@@ -57,12 +57,129 @@ $If RAYLIB_BI = UNDEFINED Then
     Const BEIGE = &HFF83B0D3 ' Beige
     Const BROWN = &HFF4F6A7F ' Brown
     Const DARKBROWN = &HFF2F3F4C ' Dark Brown
-
     Const WHITE = &HFFFFFFFF ' White
     Const BLACK = &HFF000000 ' Black
     Const BLANK = &H00000000 ' Blank (Transparent)
     Const MAGENTA = &HFFFF00FF ' Magenta
     Const RAYWHITE = &HFFF5F5F5 ' My own White (raylib logo)
+
+    ' Keyboard keys (US keyboard layout)
+    ' NOTE: Use GetKeyPressed() to allow redefining
+    ' required keys for alternative layouts
+    Const KEY_NULL = 0 ' Key: NULL
+    ' Alphanumeric keys
+    Const KEY_APOSTROPHE = 39 ' Key: '
+    Const KEY_COMMA = 44 ' Key:
+    Const KEY_MINUS = 45 ' Key: -
+    Const KEY_PERIOD = 46 ' Key: .
+    Const KEY_SLASH = 47 ' Key:
+    Const KEY_ZERO = 48 ' Key: 0
+    Const KEY_ONE = 49 ' Key: 1
+    Const KEY_TWO = 50 ' Key: 2
+    Const KEY_THREE = 51 ' Key: 3
+    Const KEY_FOUR = 52 ' Key: 4
+    Const KEY_FIVE = 53 ' Key: 5
+    Const KEY_SIX = 54 ' Key: 6
+    Const KEY_SEVEN = 55 ' Key: 7
+    Const KEY_EIGHT = 56 ' Key: 8
+    Const KEY_NINE = 57 ' Key: 9
+    Const KEY_SEMICOLON = 59 ' Key: ;
+    Const KEY_EQUAL = 61 ' Key:
+    Const KEY_A = 65 ' Key: A | a
+    Const KEY_B = 66 ' Key: B | b
+    Const KEY_C = 67 ' Key: C | c
+    Const KEY_D = 68 ' Key: D | d
+    Const KEY_E = 69 ' Key: E | e
+    Const KEY_F = 70 ' Key: F | f
+    Const KEY_G = 71 ' Key: G | g
+    Const KEY_H = 72 ' Key: H | h
+    Const KEY_I = 73 ' Key: I | i
+    Const KEY_J = 74 ' Key: J | j
+    Const KEY_K = 75 ' Key: K | k
+    Const KEY_L = 76 ' Key: L | l
+    Const KEY_M = 77 ' Key: M | m
+    Const KEY_N = 78 ' Key: N | n
+    Const KEY_O = 79 ' Key: O | o
+    Const KEY_P = 80 ' Key: P | p
+    Const KEY_Q = 81 ' Key: Q | q
+    Const KEY_R = 82 ' Key: R | r
+    Const KEY_S = 83 ' Key: S | s
+    Const KEY_T = 84 ' Key: T | t
+    Const KEY_U = 85 ' Key: U | u
+    Const KEY_V = 86 ' Key: V | v
+    Const KEY_W = 87 ' Key: W | w
+    Const KEY_X = 88 ' Key: X | x
+    Const KEY_Y = 89 ' Key: Y | y
+    Const KEY_Z = 90 ' Key: Z | z
+    Const KEY_LEFT_BRACKET = 91 ' Key: [
+    Const KEY_BACKSLASH = 92 ' Key: '\'
+    Const KEY_RIGHT_BRACKET = 93 ' Key: ]
+    Const KEY_GRAVE = 96 ' Key: `
+    ' Function keys
+    Const KEY_SPACE = 32 ' Key: Space
+    Const KEY_ESCAPE = 256 ' Key: Esc
+    Const KEY_ENTER = 257 ' Key: Enter
+    Const KEY_TAB = 258 ' Key: Tab
+    Const KEY_BACKSPACE = 259 ' Key: Backspace
+    Const KEY_INSERT = 260 ' Key: Ins
+    Const KEY_DELETE = 261 ' Key: Del
+    Const KEY_RIGHT = 262 ' Key: Cursor right
+    Const KEY_LEFT = 263 ' Key: Cursor left
+    Const KEY_DOWN = 264 ' Key: Cursor down
+    Const KEY_UP = 265 ' Key: Cursor up
+    Const KEY_PAGE_UP = 266 ' Key: Page up
+    Const KEY_PAGE_DOWN = 267 ' Key: Page down
+    Const KEY_HOME = 268 ' Key: Home
+    Const KEY_END = 269 ' Key: End
+    Const KEY_CAPS_LOCK = 280 ' Key: Caps lock
+    Const KEY_SCROLL_LOCK = 281 ' Key: Scroll down
+    Const KEY_NUM_LOCK = 282 ' Key: Num lock
+    Const KEY_PRINT_SCREEN = 283 ' Key: Print screen
+    Const KEY_PAUSE = 284 ' Key: Pause
+    Const KEY_F1 = 290 ' Key: F1
+    Const KEY_F2 = 291 ' Key: F2
+    Const KEY_F3 = 292 ' Key: F3
+    Const KEY_F4 = 293 ' Key: F4
+    Const KEY_F5 = 294 ' Key: F5
+    Const KEY_F6 = 295 ' Key: F6
+    Const KEY_F7 = 296 ' Key: F7
+    Const KEY_F8 = 297 ' Key: F8
+    Const KEY_F9 = 298 ' Key: F9
+    Const KEY_F10 = 299 ' Key: F10
+    Const KEY_F11 = 300 ' Key: F11
+    Const KEY_F12 = 301 ' Key: F12
+    Const KEY_LEFT_SHIFT = 340 ' Key: Shift left
+    Const KEY_LEFT_CONTROL = 341 ' Key: Control left
+    Const KEY_LEFT_ALT = 342 ' Key: Alt left
+    Const KEY_LEFT_SUPER = 343 ' Key: Super left
+    Const KEY_RIGHT_SHIFT = 344 ' Key: Shift right
+    Const KEY_RIGHT_CONTROL = 345 ' Key: Control right
+    Const KEY_RIGHT_ALT = 346 ' Key: Alt right
+    Const KEY_RIGHT_SUPER = 347 ' Key: Super right
+    Const KEY_KB_MENU = 348 ' Key: KB menu
+    ' Keypad keys
+    Const KEY_KP_0 = 320 ' Key: Keypad 0
+    Const KEY_KP_1 = 321 ' Key: Keypad 1
+    Const KEY_KP_2 = 322 ' Key: Keypad 2
+    Const KEY_KP_3 = 323 ' Key: Keypad 3
+    Const KEY_KP_4 = 324 ' Key: Keypad 4
+    Const KEY_KP_5 = 325 ' Key: Keypad 5
+    Const KEY_KP_6 = 326 ' Key: Keypad 6
+    Const KEY_KP_7 = 327 ' Key: Keypad 7
+    Const KEY_KP_8 = 328 ' Key: Keypad 8
+    Const KEY_KP_9 = 329 ' Key: Keypad 9
+    Const KEY_KP_DECIMAL = 330 ' Key: Keypad .
+    Const KEY_KP_DIVIDE = 331 ' Key: Keypad
+    Const KEY_KP_MULTIPLY = 332 ' Key: Keypad *
+    Const KEY_KP_SUBTRACT = 333 ' Key: Keypad -
+    Const KEY_KP_ADD = 334 ' Key: Keypad +
+    Const KEY_KP_ENTER = 335 ' Key: Keypad Enter
+    Const KEY_KP_EQUAL = 336 ' Key: Keypad
+    ' Android key buttons
+    Const KEY_BACK = 4 ' Key: Android back button
+    Const KEY_MENU = 82 ' Key: Android menu button
+    Const KEY_VOLUME_UP = 24 ' Key: Android volume up button
+    Const KEY_VOLUME_DOWN = 25 ' Key: Android volume down button
 
     ' Vector2, 2 components
     Type Vector2
@@ -91,6 +208,14 @@ $If RAYLIB_BI = UNDEFINED Then
         g As _Unsigned _Byte ' Color green value
         b As _Unsigned _Byte ' Color blue value
         a As _Unsigned _Byte ' Color alpha value
+    End Type
+
+    ' Rectangle, 4 components
+    Type Rectangle
+        x As Single ' Rectangle top-left corner position x
+        y As Single ' Rectangle top-left corner position y
+        w As Single ' Rectangle width
+        h As Single ' Rectangle height
     End Type
 
     ' Image, pixel data stored in CPU memory (RAM)
@@ -306,8 +431,8 @@ $If RAYLIB_BI = UNDEFINED Then
         Sub GetScreenToWorld2D (ByVal position As _Unsigned _Offset, Byval camera As _Unsigned _Offset, Byval retVal As _Unsigned _Offset)
         Sub GetWorldToScreenEx (ByVal position As _Unsigned _Offset, Byval camera As _Unsigned _Offset, Byval width As Long, Byval height As Long, Byval retVal As _Unsigned _Offset)
         Sub GetWorldToScreen2D (ByVal position As _Unsigned _Offset, Byval camera As _Unsigned _Offset, Byval retVal As _Unsigned _Offset)
-        Sub SetTargetFPS (ByVal fps As Long)
-        Function GetFPS&
+        Sub SetTargetFPS (ByVal fps As _Unsigned Long)
+        Function GetFPS~&
         Function GetFrameTime!
         Function GetTime#
         Function GetRandomValue& (ByVal min As Long, Byval max As Long)
@@ -359,11 +484,11 @@ $If RAYLIB_BI = UNDEFINED Then
         Function DecompressData~%& (ByVal compData As _Unsigned _Offset, Byval compDataSize As _Unsigned Long, dataSize As _Unsigned Long)
         Function EncodeDataBase64~%& (ByVal dat As _Unsigned _Offset, Byval dataSize As Long, outputSize As _Unsigned Long)
         Function DecodeDataBase64~%& (ByVal dat As _Unsigned _Offset, outputSize As _Unsigned Long)
-        Function IsKeyPressed%% (ByVal key As Long)
-        Function IsKeyDown%% (ByVal key As Long)
-        Function IsKeyReleased%% (ByVal key As Long)
-        Function IsKeyUp%% (ByVal key As Long)
-        Sub SetExitKey (ByVal key As Long)
+        Function IsKeyPressed%% (ByVal kbKey As Long)
+        Function IsKeyDown%% (ByVal kbKey As Long)
+        Function IsKeyReleased%% (ByVal kbKey As Long)
+        Function IsKeyUp%% (ByVal kbKey As Long)
+        Sub SetExitKey (ByVal kbKey As Long)
         Function GetKeyPressed&
         Function GetCharPressed&
         Function IsGamepadAvailable%% (ByVal gamepad As Long)
@@ -419,7 +544,7 @@ $If RAYLIB_BI = UNDEFINED Then
         Sub DrawCircleSector (ByVal center As _Unsigned _Offset, Byval radius As Single, Byval startAngle As Single, Byval endAngle As Single, Byval segments As Long, Byval color As _Unsigned _Offset)
         Sub DrawCircleSectorLines (ByVal center As _Unsigned _Offset, Byval radius As Single, Byval startAngle As Single, Byval endAngle As Single, Byval segments As Long, Byval color As _Unsigned _Offset)
         Sub DrawCircleGradient (ByVal centerX As Long, Byval centerY As Long, Byval radius As Single, Byval color1 As _Unsigned _Offset, Byval color2 As _Unsigned _Offset)
-        Sub DrawCircleV (ByVal center As _Unsigned _Offset, Byval radius As Single, Byval color As _Unsigned _Offset)
+        Sub DrawCircleV (center As Vector2, Byval radius As Single, Byval clr As _Unsigned Long)
         Sub DrawCircleLines (ByVal centerX As Long, Byval centerY As Long, Byval radius As Single, Byval color As _Unsigned _Offset)
         Sub DrawEllipse (ByVal centerX As Long, Byval centerY As Long, Byval radiusH As Single, Byval radiusV As Single, Byval color As _Unsigned _Offset)
         Sub DrawEllipseLines (ByVal centerX As Long, Byval centerY As Long, Byval radiusH As Single, Byval radiusV As Single, Byval color As _Unsigned _Offset)
@@ -428,7 +553,7 @@ $If RAYLIB_BI = UNDEFINED Then
         Sub DrawRectangle (ByVal posX As Long, Byval posY As Long, Byval width As Long, Byval height As Long, Byval color As _Unsigned _Offset)
         Sub DrawRectangleV (ByVal position As _Unsigned _Offset, Byval size As _Unsigned _Offset, Byval color As _Unsigned _Offset)
         Sub DrawRectangleRec (ByVal rec As _Unsigned _Offset, Byval color As _Unsigned _Offset)
-        Sub DrawRectanglePro (ByVal rec As _Unsigned _Offset, Byval origin As _Unsigned _Offset, Byval rotation As Single, Byval color As _Unsigned _Offset)
+        Sub DrawRectanglePro (rec As Rectangle, origin As Vector2, Byval rotation As Single, Byval clr As _Unsigned Long)
         Sub DrawRectangleGradientV (ByVal posX As Long, Byval posY As Long, Byval width As Long, Byval height As Long, Byval color1 As _Unsigned _Offset, Byval color2 As _Unsigned _Offset)
         Sub DrawRectangleGradientH (ByVal posX As Long, Byval posY As Long, Byval width As Long, Byval height As Long, Byval color1 As _Unsigned _Offset, Byval color2 As _Unsigned _Offset)
         Sub DrawRectangleGradientEx (ByVal rec As _Unsigned _Offset, Byval col1 As _Unsigned _Offset, Byval col2 As _Unsigned _Offset, Byval col3 As _Unsigned _Offset, Byval col4 As _Unsigned _Offset)
@@ -540,7 +665,7 @@ $If RAYLIB_BI = UNDEFINED Then
         Sub DrawTextureRec (ByVal texture As _Unsigned _Offset, Byval source As _Unsigned _Offset, Byval position As _Unsigned _Offset, Byval tint As _Unsigned _Offset)
         Sub DrawTexturePro (ByVal texture As _Unsigned _Offset, Byval source As _Unsigned _Offset, Byval dest As _Unsigned _Offset, Byval origin As _Unsigned _Offset, Byval rotation As Single, Byval tint As _Unsigned _Offset)
         Sub DrawTextureNPatch (ByVal texture As _Unsigned _Offset, Byval nPatchInfo As _Unsigned _Offset, Byval dest As _Unsigned _Offset, Byval origin As _Unsigned _Offset, Byval rotation As Single, Byval tint As _Unsigned _Offset)
-        Sub Fade (ByVal color As _Unsigned _Offset, Byval alpha As Single, Byval retVal As _Unsigned _Offset)
+        Function Fade~& (ByVal clr As _Unsigned Long, Byval alpha As Single)
         Function ColorToInt& (ByVal color As _Unsigned _Offset)
         Sub ColorNormalize (ByVal color As _Unsigned _Offset, Byval retVal As _Unsigned _Offset)
         Sub ColorFromNormalized (ByVal normalized As _Unsigned _Offset, Byval retVal As _Unsigned _Offset)
@@ -567,7 +692,7 @@ $If RAYLIB_BI = UNDEFINED Then
         Sub UnloadFont (ByVal font As _Unsigned _Offset)
         Function __ExportFontAsCode%% Alias ExportFontAsCode (ByVal font As _Unsigned _Offset, fileName As String)
         Sub DrawFPS (ByVal posX As Long, Byval posY As Long)
-        Sub __DrawText Alias DrawText (text As String, Byval posX As Long, Byval posY As Long, Byval fontSize As Long, Byval color As _Unsigned _Offset)
+        Sub __DrawText Alias DrawText (text As String, Byval posX As Long, Byval posY As Long, Byval fontSize As Long, Byval clr As _Unsigned Long)
         Sub __DrawTextEx Alias DrawTextEx (ByVal font As _Unsigned _Offset, text As String, Byval position As _Unsigned _Offset, Byval fontSize As Single, Byval spacing As Single, Byval tint As _Unsigned _Offset)
         Sub __DrawTextPro Alias DrawTextPro (ByVal font As _Unsigned _Offset, text As String, Byval position As _Unsigned _Offset, Byval origin As _Unsigned _Offset, Byval rotation As Single, Byval fontSize As Single, Byval spacing As Single, Byval tint As _Unsigned _Offset)
         Sub DrawTextCodepoint (ByVal font As _Unsigned _Offset, Byval codepoint As Long, Byval position As _Unsigned _Offset, Byval fontSize As Single, Byval tint As _Unsigned _Offset)

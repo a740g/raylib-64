@@ -19,12 +19,16 @@ $If RAYLIB_BAS = UNDEFINED Then
         __InitWindow W, H, BStrToCStr(caption)
     End Sub
 
-    Sub SetWindowTitle (title As String)
-        __SetWindowTitle BStrToCStr(title)
+    Sub SetWindowTitle (caption As String)
+        __SetWindowTitle BStrToCStr(caption)
     End Sub
 
     Sub SetClipboardText (text As String)
         __SetClipboardText BStrToCStr(text)
+    End Sub
+
+    Sub DrawText (text As String, posX As Long, posY As Long, fontSize As Long, clr As _Unsigned Long)
+        __DrawText BStrToCStr(text), posX, posY, fontSize, clr
     End Sub
 
     ' TODO: QB64 does not like byval UTD in expressions. Sigh!
