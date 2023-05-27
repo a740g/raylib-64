@@ -3407,14 +3407,14 @@ inline void ImageColorReplace(void *image, void *color, void *replace)
     _ImageColorReplace((Image *)image, *(Color *)color, *(Color *)replace);
 }
 
-inline void LoadImageColors(void *image, void *ret)
+inline void *LoadImageColors(void *image)
 {
-    ret = (void *)_LoadImageColors(*(Image *)image);
+    return (void *)_LoadImageColors(*(Image *)image);
 }
 
-inline void LoadImagePalette(void *image, int maxPaletteSize, int *colorCount, void *ret)
+inline void *LoadImagePalette(void *image, int maxPaletteSize, int *colorCount)
 {
-    ret = (void *)_LoadImagePalette(*(Image *)image, maxPaletteSize, colorCount);
+    return (void *)_LoadImagePalette(*(Image *)image, maxPaletteSize, colorCount);
 }
 
 inline void UnloadImageColors(void *colors)
@@ -3717,9 +3717,9 @@ inline qb_bool IsFontReady(void *font)
     return TO_QB_BOOL(_IsFontReady(*(Font *)font));
 }
 
-inline void LoadFontData(const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, int type, void *ret)
+inline void *LoadFontData(const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, int type)
 {
-    ret = (void *)_LoadFontData(fileData, dataSize, fontSize, fontChars, glyphCount, type);
+    return (void *)_LoadFontData(fileData, dataSize, fontSize, fontChars, glyphCount, type);
 }
 
 inline void GenImageFontAtlas(void *chars, void *recs, int glyphCount, int fontSize, int padding, int packMethod, void *ret)
@@ -4192,9 +4192,9 @@ inline void GenMeshCubicmap(void *cubicmap, void *cubeSize, void *ret)
     *(Mesh *)ret = _GenMeshCubicmap(*(Image *)cubicmap, *(Vector3 *)cubeSize);
 }
 
-inline void LoadMaterials(const char *fileName, int *materialCount, void *ret)
+inline void *LoadMaterials(const char *fileName, int *materialCount)
 {
-    ret = (void *)_LoadMaterials(fileName, materialCount);
+    return (void *)_LoadMaterials(fileName, materialCount);
 }
 
 inline void LoadMaterialDefault(void *ret)
@@ -4222,9 +4222,9 @@ inline void SetModelMeshMaterial(void *model, int meshId, int materialId)
     _SetModelMeshMaterial((Model *)model, meshId, materialId);
 }
 
-inline void LoadModelAnimations(const char *fileName, unsigned int *animCount, void *ret)
+inline void *LoadModelAnimations(const char *fileName, unsigned int *animCount)
 {
-    ret = (void *)_LoadModelAnimations(fileName, animCount);
+    return (void *)_LoadModelAnimations(fileName, animCount);
 }
 
 inline void UpdateModelAnimation(void *model, void *anim, int frame)
