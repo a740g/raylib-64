@@ -20,7 +20,10 @@ enum qb_bool : int8_t
     QB_FALSE = 0
 };
 
+// We have to do this for the QB64 side
 #define TO_QB_BOOL(_exp_) ((_exp_) ? QB_TRUE : QB_FALSE)
+// This one is just for safety just in case someone is doing _exp_ == 1 inside raylib
+#define TO_C_BOOL(_exp_) ((_exp_) != 0)
 
 // Vector2, 2 components
 struct Vector2
@@ -2659,7 +2662,7 @@ inline void LoadDirectoryFiles(const char *dirPath, void *ret)
 
 inline void LoadDirectoryFilesEx(const char *basePath, const char *filter, int8_t scanSubdirs, void *ret)
 {
-    *(FilePathList *)ret = _LoadDirectoryFilesEx(basePath, filter, (bool)scanSubdirs);
+    *(FilePathList *)ret = _LoadDirectoryFilesEx(basePath, filter, TO_C_BOOL(scanSubdirs));
 }
 
 inline void UnloadDirectoryFiles(void *files)
@@ -4099,7 +4102,7 @@ inline void DrawBillboardPro(void *camera, void *texture, void *source, void *po
 
 inline void UploadMesh(void *mesh, int8_t dynamic)
 {
-    _UploadMesh((Mesh *)mesh, (bool)dynamic);
+    _UploadMesh((Mesh *)mesh, TO_C_BOOL(dynamic));
 }
 
 inline void UpdateMeshBuffer(void *mesh, int index, const void *data, int dataSize, int offset)
