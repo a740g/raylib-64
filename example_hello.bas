@@ -1,5 +1,4 @@
 ' A simple "Hello, World" program using raylib
-
 $ExeIcon:'./raylib.ico'
 
 '$INCLUDE:'include/raylib.bi'
@@ -9,7 +8,7 @@ Const APP_NAME = "Hello, world!"
 Const w = 800
 Const h = 600
 
-Dim myColor As _Unsigned Long: myColor = MakeRGBA(0, 0, 0, 255)
+Dim myColor As _Unsigned Long: myColor = DARKBROWN
 
 
 InitWindow w, h, APP_NAME

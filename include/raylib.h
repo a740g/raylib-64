@@ -28,7 +28,7 @@ enum qb_bool : int8_t
 // Macro to create a packed RGBA value from individual component values
 #define MAKE_RGBA(_r_, _g_, _b_, _a_) ((uint32_t)(((uint8_t)(_a_) << 24) | ((uint8_t)(_b_) << 16) | ((uint8_t)(_g_) << 8) | (uint8_t)(_r_)))
 // Macro to extract the red component from a packed RGBA value
-#define GET_RGBA_R(_rgba_) ((uint8_t)((uint32_t)(_rgba_) & 0xFF))
+#define GET_RGBA_R(_rgba_) ((uint8_t)((uint32_t)(_rgba_)&0xFF))
 // Macro to extract the green component from a packed RGBA value
 #define GET_RGBA_G(_rgba_) ((uint8_t)(((uint32_t)(_rgba_) >> 8) & 0xFF))
 // Macro to extract the blue component from a packed RGBA value
@@ -36,9 +36,7 @@ enum qb_bool : int8_t
 // Macro to extract the alpha component from a packed RGBA value
 #define GET_RGBA_A(_rgba_) ((uint8_t)(((uint32_t)(_rgba_) >> 24) & 0xFF))
 // Macro to extract the RGB value (ignoring the alpha component) from a packed RGBA value
-#define GET_RGBA_RGB(_rgba_) ((uint32_t)((uint32_t)(_rgba_) & 0xFFFFFF))
-// Macro to convert BGRA to RGBA
-#define CONVERT_BGRA_TO_RGBA(_bgra_) ((((uint32_t)(_bgra_) & 0xFF) << 16) | (((uint32_t)(_bgra_) & 0xFF00) << 8) | (((uint32_t)(_bgra_) >> 16) & 0xFF) | ((uint32_t)(_bgra_) & 0xFF000000))
+#define GET_RGBA_RGB(_rgba_) ((uint32_t)((uint32_t)(_rgba_)&0xFFFFFF))
 
 // Vector2, 2 components
 struct Vector2
@@ -2028,11 +2026,6 @@ inline uint8_t GetRGBAAlpha(uint32_t rgba)
 inline uint32_t GetRGBARGB(uint32_t rgba)
 {
     return GET_RGBA_RGB(rgba);
-}
-
-inline uint32_t BGRAToRGBA(uint32_t bgra)
-{
-    return CONVERT_BGRA_TO_RGBA(bgra);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
