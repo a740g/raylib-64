@@ -2030,7 +2030,7 @@ inline uint32_t GetRGBARGB(uint32_t rgba)
 
 inline uint32_t BGRAToRGBA(uint32_t bgra)
 {
-    return ((bgra & 0xFF00FF00) | ((bgra & 0x00FF0000) >> 16) | ((bgra & 0x000000FF) << 16));
+    return (bgra & 0xFF00FF00) | ((bgra & 0x00FF0000) >> 16) | ((bgra & 0x000000FF) << 16);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

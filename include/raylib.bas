@@ -31,6 +31,10 @@ $IF RAYLIB_BAS = UNDEFINED THEN
         __DrawText BStrToCStr(text), posX, posY, fontSize, clr
     END SUB
 
+    SUB LoadMusicStream (fileName AS STRING, retVal AS Music)
+        __LoadMusicStream BStrToCStr(fileName), retVal
+    END SUB
+
     ' TODO: QB64 does not like byval UTD in expressions. Sigh!
     'FUNCTION GetShaderLocation& (shdr AS Shader, uniformName AS STRING)
     '    GetShaderLocation = __GetShaderLocation(shdr, uniformName)

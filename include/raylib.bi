@@ -34,6 +34,25 @@ $IF RAYLIB_BI = UNDEFINED THEN
     CONST FALSE = 0, TRUE = NOT FALSE
     CONST NULL = 0
 
+    ' System/Window config flags
+    ' NOTE: Every bit registers one state (use it with bit masks)
+    ' By default all flags are set to 0
+    CONST FLAG_VSYNC_HINT = &H00000040 ' Set to try enabling V-Sync on GPU
+    CONST FLAG_FULLSCREEN_MODE = &H00000002 ' Set to run program in fullscreen
+    CONST FLAG_WINDOW_RESIZABLE = &H00000004 ' Set to allow resizable window
+    CONST FLAG_WINDOW_UNDECORATED = &H00000008 ' Set to disable window decoration (frame and buttons)
+    CONST FLAG_WINDOW_HIDDEN = &H00000080 ' Set to hide window
+    CONST FLAG_WINDOW_MINIMIZED = &H00000200 ' Set to minimize window (iconify)
+    CONST FLAG_WINDOW_MAXIMIZED = &H00000400 ' Set to maximize window (expanded to monitor)
+    CONST FLAG_WINDOW_UNFOCUSED = &H00000800 ' Set to window non focused
+    CONST FLAG_WINDOW_TOPMOST = &H00001000 ' Set to window always on top
+    CONST FLAG_WINDOW_ALWAYS_RUN = &H00000100 ' Set to allow windows running while minimized
+    CONST FLAG_WINDOW_TRANSPARENT = &H00000010 ' Set to allow transparent framebuffer
+    CONST FLAG_WINDOW_HIGHDPI = &H00002000 ' Set to support HighDPI
+    CONST FLAG_WINDOW_MOUSE_PASSTHROUGH = &H00004000 ' Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+    CONST FLAG_MSAA_4X_HINT = &H00000020 ' Set to try enabling MSAA 4X
+    CONST FLAG_INTERLACED_HINT = &H00010000 ' Set to try enabling interlaced video format (for V3D)
+
     ' Some Basic Colors
     ' NOTE: Custom raylib color palette for amazing visuals on WHITE background
     CONST LIGHTGRAY = &HFFC8C8C8 ' Light Gray
@@ -1009,7 +1028,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB WaveFormat (wave AS Wave, BYVAL sampleRate AS LONG, BYVAL sampleSize AS LONG, BYVAL channels AS LONG)
         FUNCTION LoadWaveSamples~%& (wave AS Wave)
         SUB UnloadWaveSamples (samples AS SINGLE)
-        SUB LoadMusicStream (fileName AS STRING, retVal AS Music)
+        SUB __LoadMusicStream ALIAS LoadMusicStream (fileName AS STRING, retVal AS Music)
         SUB LoadMusicStreamFromMemory (fileType AS STRING, dat AS _UNSIGNED _BYTE, BYVAL dataSize AS LONG, retVal AS Music)
         FUNCTION IsMusicReady%% (music AS Music)
         SUB UnloadMusicStream (music AS Music)
