@@ -7,7 +7,11 @@ $IF RAYLIB_BI = UNDEFINED THEN
     $LET RAYLIB_BI = TRUE
 
     ' Check QB64-PE compiler version and complain if it does not meet minimum version requirement
-    ' We do not support 32-bit versions. Although it may be trivial to add if we can find 32-bit raylib shared libraries
+    ' We do not support 32-bit versions. There are multiple roadblocks for supporting 32-bit platforms
+    '   1. The official raylib binary distributons do not contain 32-bit shared libraries for all platforms
+    '   2. The TYPES below are aligned for x86-64 arch. Padded with extra bytes wherever needed
+    '   3. 32-bit machines and OSes are not mainstream anymore
+    '   4. I clearly lack the motivation for adding 32-bit support. If anyone wants to do it, then please open a PR!
     $IF VERSION < 3.7 OR 32BIT THEN
             $ERROR This requires the latest 64-bit version of QB64-PE from https://github.com/QB64-Phoenix-Edition/QB64pe/releases
     $END IF
@@ -15,7 +19,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
     ' All identifiers must default to long (32-bits). This results in fastest code execution on x86 & x64
     DEFLNG A-Z
 
-    ' Force all arrays to be defined
+    ' Force all arrays to be defined (technically not required since we use _EXPLICIT below)
     OPTION _EXPLICITARRAY
 
     ' Force all variables to be defined
@@ -380,10 +384,10 @@ $IF RAYLIB_BI = UNDEFINED THEN
         AS _UNSIGNED _OFFSET vboId ' OpenGL Vertex Buffer Objects id (default vertex data) (unsigned int *)
     END TYPE
 
-
     ' Shader
     TYPE Shader
         AS LONG id ' Shader program id
+        AS STRING * 4 padding
         AS _OFFSET locs ' Shader locations array (RL_MAX_SHADER_LOCATIONS)
     END TYPE
 
@@ -447,7 +451,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
 
     ' RayCollision, ray hit information
     TYPE RayCollision
-        AS _BYTE hit ' Did the ray hit something?
+        AS LONG hit ' Did the ray hit something?
         AS SINGLE distance ' Distance to the nearest hit
         AS Vector3 position ' Point of the nearest hit
         AS Vector3 normal ' Surface normal of hit
@@ -475,21 +479,24 @@ $IF RAYLIB_BI = UNDEFINED THEN
         AS _UNSIGNED LONG sampleRate ' Frequency (samples per second)
         AS _UNSIGNED LONG sampleSize ' Bit depth (bits per sample): 8, 16, 32 (24 not supported)
         AS _UNSIGNED LONG channels ' Number of channels (1-mono, 2-stereo, ...)
+        AS STRING * 4 padding
     END TYPE
 
     ' Sound
-    TYPE Sound
+    TYPE RSound
         AS AudioStream stream ' Audio stream
         AS _UNSIGNED LONG frameCount ' Total number of frames (considering channels)
+        AS STRING * 4 padding
     END TYPE
 
     ' Music, audio stream, anything longer than ~10 seconds should be streamed
     TYPE Music
         AS AudioStream stream ' Audio stream
         AS _UNSIGNED LONG frameCount ' Total number of frames (considering channels)
-        AS _BYTE looping ' Music looping enable
+        AS LONG looping ' Music looping enable
         AS LONG ctxType ' Type of music context (audio filetype)
         AS _UNSIGNED _OFFSET ctxData ' Audio context data, depends on type (void *)
+        AS STRING * 4 padding
     END TYPE
 
     ' VrDeviceInfo, Head-Mounted-Display device parameters
@@ -968,7 +975,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB DrawBillboard (camera AS Camera, tex AS Texture2D, position AS Vector3, BYVAL size AS SINGLE, BYVAL tint AS _UNSIGNED LONG)
         SUB DrawBillboardRec (camera AS Camera, tex AS Texture2D, source AS Rectangle, position AS Vector3, size AS Vector2, BYVAL tint AS _UNSIGNED LONG)
         SUB DrawBillboardPro (camera AS Camera, tex AS Texture2D, source AS Rectangle, position AS Vector3, up AS Vector3, size AS Vector2, origin AS Vector2, BYVAL rotation AS SINGLE, BYVAL tint AS _UNSIGNED LONG)
-        SUB UploadMesh (mesh AS Mesh, BYVAL dynamic AS _BYTE)
+        SUB UploadMesh (mesh AS Mesh, BYVAL dyna AS _BYTE)
         SUB UpdateMeshBuffer (mesh AS Mesh, BYVAL index AS LONG, BYVAL dat AS _UNSIGNED _OFFSET, BYVAL dataSize AS LONG, BYVAL offset AS LONG)
         SUB UnloadMesh (mesh AS Mesh)
         SUB DrawMesh (mesh AS Mesh, material AS Material, transform AS Matrix)
@@ -1012,27 +1019,27 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB SetMasterVolume (BYVAL volume AS SINGLE)
         SUB LoadWave (fileName AS STRING, retVal AS Wave)
         SUB LoadWaveFromMemory (fileType AS STRING, fileData AS _UNSIGNED _BYTE, BYVAL dataSize AS LONG, retVal AS Wave)
-        FUNCTION IsWaveReady%% (wave AS Wave)
-        SUB LoadSound (fileName AS STRING, retVal AS Sound)
-        SUB LoadSoundFromWave (wave AS Wave, retVal AS Sound)
-        FUNCTION IsSoundReady%% (sound AS Sound)
-        SUB UpdateSound (sound AS Sound, BYVAL dat AS _UNSIGNED _OFFSET, BYVAL sampleCount AS LONG)
-        SUB UnloadWave (wave AS Wave)
-        SUB UnloadSound (sound AS Sound)
-        FUNCTION ExportWave%% (wave AS Wave, fileName AS STRING)
-        FUNCTION ExportWaveAsCode%% (wave AS Wave, fileName AS STRING)
-        SUB PlaySound (sound AS Sound)
-        SUB StopSound (sound AS Sound)
-        SUB PauseSound (sound AS Sound)
-        SUB ResumeSound (sound AS Sound)
-        FUNCTION IsSoundPlaying%% (sound AS Sound)
-        SUB SetSoundVolume (sound AS Sound, BYVAL volume AS SINGLE)
-        SUB SetSoundPitch (sound AS Sound, BYVAL pitch AS SINGLE)
-        SUB SetSoundPan (sound AS Sound, BYVAL pan AS SINGLE)
-        SUB WaveCopy (wave AS Wave, retVal AS Wave)
-        SUB WaveCrop (wave AS Wave, BYVAL initSample AS LONG, BYVAL finalSample AS LONG)
-        SUB WaveFormat (wave AS Wave, BYVAL sampleRate AS LONG, BYVAL sampleSize AS LONG, BYVAL channels AS LONG)
-        FUNCTION LoadWaveSamples~%& (wave AS Wave)
+        FUNCTION IsWaveReady%% (wav AS Wave)
+        SUB LoadSound (fileName AS STRING, retVal AS RSound)
+        SUB LoadSoundFromWave (wav AS Wave, retVal AS RSound)
+        FUNCTION IsSoundReady%% (snd AS RSound)
+        SUB UpdateSound (snd AS RSound, BYVAL dat AS _UNSIGNED _OFFSET, BYVAL sampleCount AS LONG)
+        SUB UnloadWave (wav AS Wave)
+        SUB UnloadSound (snd AS RSound)
+        FUNCTION ExportWave%% (wav AS Wave, fileName AS STRING)
+        FUNCTION ExportWaveAsCode%% (wav AS Wave, fileName AS STRING)
+        SUB PlaySound (snd AS RSound)
+        SUB StopSound (snd AS RSound)
+        SUB PauseSound (snd AS RSound)
+        SUB ResumeSound (snd AS RSound)
+        FUNCTION IsSoundPlaying%% (snd AS RSound)
+        SUB SetSoundVolume (snd AS RSound, BYVAL volume AS SINGLE)
+        SUB SetSoundPitch (snd AS RSound, BYVAL pitch AS SINGLE)
+        SUB SetSoundPan (snd AS RSound, BYVAL pan AS SINGLE)
+        SUB WaveCopy (wav AS Wave, retVal AS Wave)
+        SUB WaveCrop (wav AS Wave, BYVAL initSample AS LONG, BYVAL finalSample AS LONG)
+        SUB WaveFormat (wav AS Wave, BYVAL sampleRate AS LONG, BYVAL sampleSize AS LONG, BYVAL channels AS LONG)
+        FUNCTION LoadWaveSamples~%& (wav AS Wave)
         SUB UnloadWaveSamples (samples AS SINGLE)
         SUB __LoadMusicStream ALIAS LoadMusicStream (fileName AS STRING, retVal AS Music)
         SUB LoadMusicStreamFromMemory (fileType AS STRING, dat AS _UNSIGNED _OFFSET, BYVAL dataSize AS LONG, retVal AS Music)
@@ -1073,7 +1080,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
 
     ' Initialize the C-side glue code
     IF __init_raylib THEN
-        _DELAY 0.1 ' the delay is needed for the console window to appear
+        _DELAY 0.1! ' the delay is needed for the console window to appear
         _CONSOLE OFF ' hide the console by default
     ELSE
         PRINT "raylib initialization failed!"
