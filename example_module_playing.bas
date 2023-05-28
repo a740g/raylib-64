@@ -44,8 +44,8 @@ DIM i AS LONG
 FOR i = 0 TO MAX_CIRCLES - 1
     circles(i).alpha = 0
     circles(i).radius = GetRandomValue(10, 40)
-    circles(i).position.x = GetRandomValue(CINT(circles(i).radius), CINT(ScreenWidth - circles(i).radius))
-    circles(i).position.y = GetRandomValue(CINT(circles(i).radius), CINT(ScreenHeight - circles(i).radius))
+    circles(i).position.x = GetRandomValue(circles(i).radius, ScreenWidth - circles(i).radius)
+    circles(i).position.y = GetRandomValue(circles(i).radius, ScreenHeight - circles(i).radius)
     circles(i).speed = GetRandomValue(1, 100) / 2000!
     circles(i).clr = colors(GetRandomValue(0, 13))
 NEXT
@@ -100,8 +100,8 @@ DO UNTIL WindowShouldClose
         IF circles(i).alpha <= 0 THEN
             circles(i).alpha = 0
             circles(i).radius = GetRandomValue(10, 40)
-            circles(i).position.x = GetRandomValue(CINT(circles(i).radius), CINT(ScreenWidth - circles(i).radius))
-            circles(i).position.y = GetRandomValue(CINT(circles(i).radius), CINT(ScreenHeight - circles(i).radius))
+            circles(i).position.x = GetRandomValue(circles(i).radius, ScreenWidth - circles(i).radius)
+            circles(i).position.y = GetRandomValue(circles(i).radius, ScreenHeight - circles(i).radius)
             circles(i).clr = colors(GetRandomValue(0, 13))
             circles(i).speed = GetRandomValue(1, 100) / 2000!
         END IF
@@ -117,7 +117,7 @@ DO UNTIL WindowShouldClose
 
     ' Draw time bar
     DrawRectangle 20, ScreenHeight - 20 - 12, ScreenWidth - 40, 12, LIGHTGRAY
-    DrawRectangle 20, ScreenHeight - 20 - 12, CINT(timePlayed), 12, MAROON
+    DrawRectangle 20, ScreenHeight - 20 - 12, timePlayed, 12, MAROON
     DrawRectangleLines 20, ScreenHeight - 20 - 12, ScreenWidth - 40, 12, GRAY
 
     EndDrawing

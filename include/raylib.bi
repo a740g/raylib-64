@@ -381,6 +381,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
         AS _UNSIGNED _OFFSET boneWeights ' Vertex bone weight, up to 4 bones influence by vertex (skinning) (float *)
         ' OpenGL identifiers
         AS _UNSIGNED LONG vaoId ' OpenGL Vertex Array Object id
+        AS STRING * 4 padding
         AS _UNSIGNED _OFFSET vboId ' OpenGL Vertex Buffer Objects id (default vertex data) (unsigned int *)
     END TYPE
 
@@ -431,6 +432,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
         AS _UNSIGNED _OFFSET meshMaterial ' Mesh material number (int *)
         ' Animation data
         AS LONG boneCount ' Number of bones
+        AS STRING * 4 padding
         AS _UNSIGNED _OFFSET bones ' Bones information (skeleton) (BoneInfo *)
         AS _UNSIGNED _OFFSET bindPose ' Bones base transformation (pose) (Transform *)
     END TYPE
