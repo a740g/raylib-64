@@ -50,7 +50,7 @@ FOR i = 0 TO MAX_CIRCLES - 1
     circles(i).clr = colors(GetRandomValue(0, 13))
 NEXT
 
-DIM mus AS Music: __LoadMusicStream "assets/audio/mini1111.xm", mus
+DIM mus AS Music: LoadMusicStream "assets/audio/mini1111.xm", mus
 
 mus.looping = FALSE
 DIM pitch AS SINGLE: pitch = 1

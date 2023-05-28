@@ -17,13 +17,13 @@
 enum qb_bool : int8_t
 {
     QB_TRUE = -1,
-    QB_FALSE = 0
+    QB_FALSE = false
 };
 
-// We have to do this for the QB64 side
-#define TO_QB_BOOL(_exp_) ((_exp_) ? QB_TRUE : QB_FALSE)
 // This one is just for safety just in case someone is doing _exp_ == 1 inside raylib
-#define TO_C_BOOL(_exp_) ((_exp_) != 0)
+#define TO_C_BOOL(_exp_) ((_exp_) != false)
+// We have to do this for the QB64 side
+#define TO_QB_BOOL(_exp_) ((qb_bool)(-TO_C_BOOL(_exp_)))
 
 // Macro to create a packed RGBA value from individual component values
 #define MAKE_RGBA(_r_, _g_, _b_, _a_) ((uint32_t)(((uint8_t)(_a_) << 24) | ((uint8_t)(_b_) << 16) | ((uint8_t)(_g_) << 8) | (uint8_t)(_r_)))
@@ -1996,7 +1996,22 @@ qb_bool __init_raylib()
     return QB_TRUE;
 }
 
-// QB64 BGRA <> raylib RGBA color conversion helpers
+// Various interop functions that make life easy when working with external libs
+
+inline qb_bool ToQBBool(int x)
+{
+    return TO_QB_BOOL(x);
+}
+
+inline bool ToCBool(int x)
+{
+    return TO_C_BOOL(x);
+}
+
+inline uintptr_t CLngPtr(const void *p)
+{
+    return (uintptr_t)p;
+}
 
 inline uint32_t MakeRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
@@ -2028,7 +2043,10 @@ inline uint32_t GetRGBARGB(uint32_t rgba)
     return GET_RGBA_RGB(rgba);
 }
 
-inline uint32_t BGRAToRGBA(uint32_t bgra)
+/// @brief Helps convert QB64 BGRA color to raylib RGBA color
+/// @param bgra A QB64 BGRA color
+/// @return A raylib RGBA color
+inline uint32_t ToRGBA(uint32_t bgra)
 {
     return (bgra & 0xFF00FF00) | ((bgra & 0x00FF0000) >> 16) | ((bgra & 0x000000FF) << 16);
 }
