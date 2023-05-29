@@ -95,4 +95,4 @@ Does all of raylib work with QB64?
 - Bindings for raygui
 - Bindings for physac
 
-### <p style="text-align: center;">Made with ❤️</p>
+<p style="text-align: center;">Made with ❤️</p>
