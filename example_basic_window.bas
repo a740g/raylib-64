@@ -2,14 +2,14 @@
 
 '$INCLUDE:'include/raylib.bi'
 
-CONST screenWidth = 800
-CONST screenHeight = 450
+Const screenWidth = 800
+Const screenHeight = 450
 
 InitWindow screenWidth, screenHeight, "raylib [core] example - basic window"
 
 SetTargetFPS 60
 
-DO UNTIL WindowShouldClose
+Do Until WindowShouldClose
     BeginDrawing
 
     ClearBackground RAYWHITE
@@ -17,10 +17,10 @@ DO UNTIL WindowShouldClose
     DrawText "Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY
 
     EndDrawing
-LOOP
+Loop
 
 CloseWindow
 
-SYSTEM
+System
 
 '$INCLUDE:'include/raylib.bas'

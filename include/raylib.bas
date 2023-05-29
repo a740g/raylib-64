@@ -3,37 +3,44 @@
 ' Copyright (c) 2023 Samuel Gomes
 '-----------------------------------------------------------------------------------------------------------------------
 
+'-----------------------------------------------------------------------------------------------------------------------
+' HEADER FILES
+'-----------------------------------------------------------------------------------------------------------------------
 '$INCLUDE:'raylib.bi'
+'-----------------------------------------------------------------------------------------------------------------------
 
-$IF RAYLIB_BAS = UNDEFINED THEN
-    $LET RAYLIB_BAS = TRUE
+$If RAYLIB_BAS = UNDEFINED Then
+    $Let RAYLIB_BAS = TRUE
 
-    $CHECKING:OFF
+    $Checking:Off
 
+    '-------------------------------------------------------------------------------------------------------------------
+    ' FUNCTIONS & SUBROUTINES
+    '-------------------------------------------------------------------------------------------------------------------
     ' Just a convenience function for use when calling external libraries
-    FUNCTION BStrToCStr$ (s AS STRING)
-        BStrToCStr = s + CHR$(NULL)
-    END FUNCTION
+    Function BStrToCStr$ (s As String)
+        BStrToCStr = s + Chr$(NULL)
+    End Function
 
-    SUB InitWindow (W AS LONG, H AS LONG, caption AS STRING)
+    Sub InitWindow (W As Long, H As Long, caption As String)
         __InitWindow W, H, BStrToCStr(caption)
-    END SUB
+    End Sub
 
-    SUB SetWindowTitle (caption AS STRING)
+    Sub SetWindowTitle (caption As String)
         __SetWindowTitle BStrToCStr(caption)
-    END SUB
+    End Sub
 
-    SUB SetClipboardText (text AS STRING)
+    Sub SetClipboardText (text As String)
         __SetClipboardText BStrToCStr(text)
-    END SUB
+    End Sub
 
-    SUB DrawText (text AS STRING, posX AS LONG, posY AS LONG, fontSize AS LONG, clr AS _UNSIGNED LONG)
+    Sub DrawText (text As String, posX As Long, posY As Long, fontSize As Long, clr As _Unsigned Long)
         __DrawText BStrToCStr(text), posX, posY, fontSize, clr
-    END SUB
+    End Sub
 
-    SUB LoadMusicStream (fileName AS STRING, retVal AS Music)
+    Sub LoadMusicStream (fileName As String, retVal As Music)
         __LoadMusicStream BStrToCStr(fileName), retVal
-    END SUB
+    End Sub
 
     ' TODO: QB64 does not like byval UTD in expressions. Sigh!
     'FUNCTION GetShaderLocation& (shdr AS Shader, uniformName AS STRING)
@@ -43,8 +50,8 @@ $IF RAYLIB_BAS = UNDEFINED THEN
     'FUNCTION GetShaderLocationAttrib& (shdr AS Shader, attribName AS STRING)
     '    GetShaderLocationAttrib = __GetShaderLocationAttrib(shdr, BStrToCStr(attribName))
     'END FUNCTION
+    '-------------------------------------------------------------------------------------------------------------------
 
-    $CHECKING:ON
-
-$END IF
+    $Checking:On
+$End If
 '-----------------------------------------------------------------------------------------------------------------------

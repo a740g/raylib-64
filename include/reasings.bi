@@ -1,43 +1,43 @@
-'---------------------------------------------------------------------------------------------------------------------------------------------------------------
+'-----------------------------------------------------------------------------------------------------------------------
 ' QB64-PE bindings for reasings - raylib easings library, based on Robert Penner library
 ' Copyright (c) 2023 Samuel Gomes
-'---------------------------------------------------------------------------------------------------------------------------------------------------------------
+'-----------------------------------------------------------------------------------------------------------------------
 
-$IF REASINGS_BI = UNDEFINED THEN
-    $LET REASINGS_BI = TRUE
-    '-----------------------------------------------------------------------------------------------------------------------------------------------------------
+$If REASINGS_BI = UNDEFINED Then
+    $Let REASINGS_BI = TRUE
+    '-------------------------------------------------------------------------------------------------------------------
     ' EXTERNAL LIBRARIES
-    '-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    DECLARE LIBRARY "reasings"
-        FUNCTION EaseBackIn! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseBackInOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseBackOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseBounceIn! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseBounceInOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseBounceOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseCircIn! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseCircInOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseCircOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseCubicIn! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseCubicInOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseCubicOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseElasticIn! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseElasticInOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseElasticOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseExpoIn! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseExpoInOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseExpoOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseLinearIn! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseLinearInOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseLinearNone! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseLinearOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseQuadIn! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseQuadInOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseQuadOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseSineIn! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseSineInOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-        FUNCTION EaseSineOut! (BYVAL t AS SINGLE, BYVAL b AS SINGLE, BYVAL c AS SINGLE, BYVAL d AS SINGLE)
-    END DECLARE
-    '-----------------------------------------------------------------------------------------------------------------------------------------------------------
-$END IF
-'---------------------------------------------------------------------------------------------------------------------------------------------------------------
+    '-------------------------------------------------------------------------------------------------------------------
+    Declare Library "reasings"
+        Function EaseBackIn! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseBackInOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseBackOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseBounceIn! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseBounceInOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseBounceOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseCircIn! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseCircInOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseCircOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseCubicIn! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseCubicInOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseCubicOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseElasticIn! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseElasticInOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseElasticOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseExpoIn! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseExpoInOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseExpoOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseLinearIn! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseLinearInOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseLinearNone! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseLinearOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseQuadIn! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseQuadInOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseQuadOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseSineIn! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseSineInOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+        Function EaseSineOut! (ByVal t As Single, Byval b As Single, Byval c As Single, Byval d As Single)
+    End Declare
+    '-------------------------------------------------------------------------------------------------------------------
+$End If
+'-----------------------------------------------------------------------------------------------------------------------

@@ -2,18 +2,18 @@
 
 '$INCLUDE:'include/raylib.bi'
 
-CONST MAX_CIRCLES = 64
+Const MAX_CIRCLES = 64
 
-TYPE CircleWave
-    position AS Vector2
-    radius AS SINGLE
-    alpha AS SINGLE
-    speed AS SINGLE
-    clr AS _UNSIGNED LONG ' color (DWORD)
-END TYPE
+Type CircleWave
+    position As Vector2
+    radius As Single
+    alpha As Single
+    speed As Single
+    clr As _Unsigned Long ' color (DWORD)
+End Type
 
-CONST ScreenWidth = 800
-CONST ScreenHeight = 450
+Const ScreenWidth = 800
+Const ScreenHeight = 450
 
 SetConfigFlags FLAG_MSAA_4X_HINT ' NOTE: Try to enable MSAA 4X
 
@@ -21,7 +21,7 @@ InitWindow ScreenWidth, ScreenHeight, "raylib [audio] example - module playing (
 
 InitAudioDevice ' Initialize audio device
 
-DIM colors(0 TO 13) AS _UNSIGNED LONG
+Dim colors(0 To 13) As _Unsigned Long
 colors(0) = ORANGE
 colors(1) = RED
 colors(2) = GOLD
@@ -38,50 +38,50 @@ colors(12) = PURPLE
 colors(13) = BEIGE
 
 ' Creates some circles for visual effect
-DIM circles(0 TO MAX_CIRCLES) AS CircleWave
+Dim circles(0 To MAX_CIRCLES) As CircleWave
 
-DIM i AS LONG
-FOR i = 0 TO MAX_CIRCLES - 1
+Dim i As Long
+For i = 0 To MAX_CIRCLES - 1
     circles(i).alpha = 0
     circles(i).radius = GetRandomValue(10, 40)
     circles(i).position.x = GetRandomValue(circles(i).radius, ScreenWidth - circles(i).radius)
     circles(i).position.y = GetRandomValue(circles(i).radius, ScreenHeight - circles(i).radius)
     circles(i).speed = GetRandomValue(1, 100) / 2000!
     circles(i).clr = colors(GetRandomValue(0, 13))
-NEXT
+Next
 
-DIM mus AS Music: LoadMusicStream "assets/audio/mini1111.xm", mus
+Dim mus As Music: LoadMusicStream "assets/audio/mini1111.xm", mus
 
 mus.looping = FALSE
-DIM pitch AS SINGLE: pitch = 1
+Dim pitch As Single: pitch = 1
 
 PlayMusicStream mus
 
-DIM timePlayed AS SINGLE
-DIM pause AS _BYTE
+Dim timePlayed As Single
+Dim pause As _Byte
 
 SetTargetFPS 60 ' Set our game to run at 60 frames-per-second
 
-DO UNTIL WindowShouldClose
+Do Until WindowShouldClose
     UpdateMusicStream mus ' Update music buffer with new stream data
 
     ' Restart music playing (stop and play)
-    IF IsKeyPressed(KEY_SPACE) THEN
+    If IsKeyPressed(KEY_SPACE) Then
         StopMusicStream mus
         PlayMusicStream mus
-    END IF
+    End If
 
     ' Pause/Resume music playing
-    IF IsKeyPressed(KEY_P) THEN
-        pause = NOT pause
-        IF (pause) THEN PauseMusicStream mus ELSE ResumeMusicStream mus
-    END IF
+    If IsKeyPressed(KEY_P) Then
+        pause = Not pause
+        If (pause) Then PauseMusicStream mus Else ResumeMusicStream mus
+    End If
 
-    IF IsKeyDown(KEY_DOWN) THEN
+    If IsKeyDown(KEY_DOWN) Then
         pitch = pitch - 0.01!
-    ELSEIF IsKeyDown(KEY_UP) THEN
+    ElseIf IsKeyDown(KEY_UP) Then
         pitch = pitch + 0.01!
-    END IF
+    End If
 
     SetMusicPitch mus, pitch
 
@@ -89,31 +89,31 @@ DO UNTIL WindowShouldClose
     timePlayed = GetMusicTimePlayed(mus) / GetMusicTimeLength(mus) * (ScreenWidth - 40)
 
     ' Color circles animation
-    FOR i = MAX_CIRCLES - 1 TO 0 STEP -1
-        IF pause THEN EXIT FOR
+    For i = MAX_CIRCLES - 1 To 0 Step -1
+        If pause Then Exit For
 
         circles(i).alpha = circles(i).alpha + circles(i).speed
         circles(i).radius = circles(i).radius + circles(i).speed * 10!
 
-        IF circles(i).alpha > 1.0! THEN circles(i).speed = circles(i).speed * -1
+        If circles(i).alpha > 1.0! Then circles(i).speed = circles(i).speed * -1
 
-        IF circles(i).alpha <= 0 THEN
+        If circles(i).alpha <= 0 Then
             circles(i).alpha = 0
             circles(i).radius = GetRandomValue(10, 40)
             circles(i).position.x = GetRandomValue(circles(i).radius, ScreenWidth - circles(i).radius)
             circles(i).position.y = GetRandomValue(circles(i).radius, ScreenHeight - circles(i).radius)
             circles(i).clr = colors(GetRandomValue(0, 13))
             circles(i).speed = GetRandomValue(1, 100) / 2000!
-        END IF
-    NEXT
+        End If
+    Next
 
     BeginDrawing
 
     ClearBackground RAYWHITE
 
-    FOR i = MAX_CIRCLES - 1 TO 0 STEP -1
+    For i = MAX_CIRCLES - 1 To 0 Step -1
         DrawCircleV circles(i).position, circles(i).radius, Fade(circles(i).clr, circles(i).alpha)
-    NEXT
+    Next
 
     ' Draw time bar
     DrawRectangle 20, ScreenHeight - 20 - 12, ScreenWidth - 40, 12, LIGHTGRAY
@@ -121,7 +121,7 @@ DO UNTIL WindowShouldClose
     DrawRectangleLines 20, ScreenHeight - 20 - 12, ScreenWidth - 40, 12, GRAY
 
     EndDrawing
-LOOP
+Loop
 
 UnloadMusicStream mus ' Unload music stream buffers from RAM
 
@@ -129,6 +129,6 @@ CloseAudioDevice ' Close audio device (music streaming is automatically stopped)
 
 CloseWindow
 
-SYSTEM
+System
 
 '$INCLUDE:'include/raylib.bas'
