@@ -81,7 +81,7 @@ Does all of raylib work with QB64?
 ## ASSETS
 
 - The logo for this project was created by pillaging an awesome ANSI art by [grymmjack](https://16colo.rs/artist/grymmjack). I hope he likes it. Or better, makes me a new one. 😁
-- Remaining assets were pull directly from the [raylib repositoty](https://github.com/raysan5/raylib/tree/master/examples). So, the license information there applies.
+- Remaining assets were pull directly from the [raylib repository](https://github.com/raysan5/raylib/tree/master/examples). So, the license information there applies.
 
 ## HELP NEEDED
 
@@ -95,4 +95,4 @@ Does all of raylib work with QB64?
 - Bindings for raygui
 - Bindings for physac
 
-<p style="text-align: center;">Made with ❤️</p>
+### Made with ❤️
