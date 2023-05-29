@@ -58,11 +58,11 @@ More examples are available in the repository.
 
 Why are you loading the shared library using C/C++? Why not use QB64's built-in `DECLARE DYNAMIC LIBRARY`?
 
-- When I initially started out, I wanted to use `DECLARE DYNAMIC LIBRARY` to keep things simple. However, some QB64 language limiations got in the way. For example, you cannot return UTDs from functions and subs and functions cannot take UDT variables by value (yet). raylib does a lot of both. So, I had to make a hard choice of wrapping these functions in C in a QB64-friendly way. Also, I used an custom-written autogen program to do the heavy lifting and it made a lot of sense to do most of the autogen to C/C++.
+- When I initially started out, I wanted to use `DECLARE DYNAMIC LIBRARY` to keep things simple. However, some QB64 language limitations got in the way. For example, you cannot return UTDs from functions and subs and functions cannot take UDT variables by value (yet). raylib does a lot of both. So, I had to make a hard choice of wrapping these functions in C/C++ in a QB64-friendly way. Also, I used a custom autogen program to do the heavy lifting and it made a lot of sense to do the autogen to C/C++.
 
 Where is the source for the autogen program?
 
-- It served it's purpose and helped me kickstart the project and now it has retired. I am not goign to share it becuase I am not proud of the way I wrote it. 😁
+- It served it's purpose and helped me kickstart the project and now it has retired. I am not going to share it because I am not proud of the way I wrote it. 😁
 
 I found a bug. How can I help?
 
@@ -70,17 +70,18 @@ I found a bug. How can I help?
 
 Does all of raylib work with QB64?
 
-- Well, mostly. Callbacks are a chanllenge. But it can be done if you are willing to mix a little bit of C with QB64. Stuff requiring usage of pointers can be a little difficult. However, I plan to simplify these by carefully wrapping into QB64 routines.
+- Well, mostly. Callbacks are a chanllenge. But it can be done if you are willing to mix a little bit of C with QB64. Stuff requiring usage of pointers can be a little difficult. However, I plan to simplify these by carefully wrapping more raylib functions inside QB64 helper routines.
 
 ## NOTES
 
 - This requires the latest version of [QB64-PE](https://github.com/QB64-Phoenix-Edition/QB64pe/releases)
-- Some TYPEs and TYPE member variables had to be re-named to resolve clashes with QB64 keywords. E.g. Sound is RSound. Also QB64 does not support TYPE aliases. So, There is no Camera. It's just Camera2D or Camera3D. There is no Texture2D. It's just Texture.
+- Some TYPEs and TYPE member variables had to be renamed to resolve clashes with QB64 keywords. E.g. Sound is RSound. Also QB64 does not support TYPE aliases. So, There is no Camera. It's just Camera2D or Camera3D. There is no Texture2D. It's just Texture.
 - Lots of functions using strings are not wrapped yet. Use these carefully by null-terminating string before passing them off to raylib functions. If possible, help me wrap these functions. See [include/raylib.bas](include/raylib.bas) for details.
 
 ## ASSETS
 
-- [Icon](https://iconarchive.com/artist/tsukasa-tux.html) by Tsukasa-Tux (Azrael Jackie Lockheart)
+- The logo for this project was created by pillaging an awesome ANSI art by [grymmjack](https://16colo.rs/artist/grymmjack). I hope he likes it. Or better, makes me a new one. 😁
+- Remaining assets were pull directly from the [raylib repositoty](https://github.com/raysan5/raylib/tree/master/examples). So, the license information there applies.
 
 ## HELP NEEDED
 
@@ -93,3 +94,5 @@ Does all of raylib work with QB64?
 - Bindings for raymath
 - Bindings for raygui
 - Bindings for physac
+
+### <p style="text-align: center;">Made with ❤️</p>
