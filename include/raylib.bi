@@ -38,24 +38,9 @@ $IF RAYLIB_BI = UNDEFINED THEN
     CONST FALSE = 0, TRUE = NOT FALSE
     CONST NULL = 0
 
-    ' System/Window config flags
-    ' NOTE: Every bit registers one state (use it with bit masks)
-    ' By default all flags are set to 0
-    CONST FLAG_VSYNC_HINT = &H00000040 ' Set to try enabling V-Sync on GPU
-    CONST FLAG_FULLSCREEN_MODE = &H00000002 ' Set to run program in fullscreen
-    CONST FLAG_WINDOW_RESIZABLE = &H00000004 ' Set to allow resizable window
-    CONST FLAG_WINDOW_UNDECORATED = &H00000008 ' Set to disable window decoration (frame and buttons)
-    CONST FLAG_WINDOW_HIDDEN = &H00000080 ' Set to hide window
-    CONST FLAG_WINDOW_MINIMIZED = &H00000200 ' Set to minimize window (iconify)
-    CONST FLAG_WINDOW_MAXIMIZED = &H00000400 ' Set to maximize window (expanded to monitor)
-    CONST FLAG_WINDOW_UNFOCUSED = &H00000800 ' Set to window non focused
-    CONST FLAG_WINDOW_TOPMOST = &H00001000 ' Set to window always on top
-    CONST FLAG_WINDOW_ALWAYS_RUN = &H00000100 ' Set to allow windows running while minimized
-    CONST FLAG_WINDOW_TRANSPARENT = &H00000010 ' Set to allow transparent framebuffer
-    CONST FLAG_WINDOW_HIGHDPI = &H00002000 ' Set to support HighDPI
-    CONST FLAG_WINDOW_MOUSE_PASSTHROUGH = &H00004000 ' Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
-    CONST FLAG_MSAA_4X_HINT = &H00000020 ' Set to try enabling MSAA 4X
-    CONST FLAG_INTERLACED_HINT = &H00010000 ' Set to try enabling interlaced video format (for V3D)
+    CONST PI! = 3.14159265358979323846!
+    CONST DEG2RAD! = PI / 180.0!
+    CONST RAD2DEG! = 180.0! / PI
 
     ' Some Basic Colors
     ' NOTE: Custom raylib color palette for amazing visuals on WHITE background
@@ -85,6 +70,36 @@ $IF RAYLIB_BI = UNDEFINED THEN
     CONST BLANK = &H00000000 ' Blank (Transparent)
     CONST MAGENTA = &HFFFF00FF ' Magenta
     CONST RAYWHITE = &HFFF5F5F5 ' My own White (raylib logo)
+
+    ' System/Window config flags
+    ' NOTE: Every bit registers one state (use it with bit masks)
+    ' By default all flags are set to 0
+    CONST FLAG_VSYNC_HINT = &H00000040 ' Set to try enabling V-Sync on GPU
+    CONST FLAG_FULLSCREEN_MODE = &H00000002 ' Set to run program in fullscreen
+    CONST FLAG_WINDOW_RESIZABLE = &H00000004 ' Set to allow resizable window
+    CONST FLAG_WINDOW_UNDECORATED = &H00000008 ' Set to disable window decoration (frame and buttons)
+    CONST FLAG_WINDOW_HIDDEN = &H00000080 ' Set to hide window
+    CONST FLAG_WINDOW_MINIMIZED = &H00000200 ' Set to minimize window (iconify)
+    CONST FLAG_WINDOW_MAXIMIZED = &H00000400 ' Set to maximize window (expanded to monitor)
+    CONST FLAG_WINDOW_UNFOCUSED = &H00000800 ' Set to window non focused
+    CONST FLAG_WINDOW_TOPMOST = &H00001000 ' Set to window always on top
+    CONST FLAG_WINDOW_ALWAYS_RUN = &H00000100 ' Set to allow windows running while minimized
+    CONST FLAG_WINDOW_TRANSPARENT = &H00000010 ' Set to allow transparent framebuffer
+    CONST FLAG_WINDOW_HIGHDPI = &H00002000 ' Set to support HighDPI
+    CONST FLAG_WINDOW_MOUSE_PASSTHROUGH = &H00004000 ' Set to support mouse passthrough, only supported when FLAG_WINDOW_UNDECORATED
+    CONST FLAG_MSAA_4X_HINT = &H00000020 ' Set to try enabling MSAA 4X
+    CONST FLAG_INTERLACED_HINT = &H00010000 ' Set to try enabling interlaced video format (for V3D)
+
+    ' Trace log level
+    ' NOTE: Organized by priority level
+    CONST LOG_ALL = 0 ' Display all logs
+    CONST LOG_TRACE = 1 ' Trace logging, intended for internal use only
+    CONST LOG_DEBUG = 2 ' Debug logging, used for internal debugging, it should be disabled on release builds
+    CONST LOG_INFO = 3 ' Info logging, used for program execution info
+    CONST LOG_WARNING = 4 ' Warning logging, used on recoverable failures
+    CONST LOG_ERROR = 5 ' Error logging, used on unrecoverable failures
+    CONST LOG_FATAL = 6 ' Fatal logging, used to abort program: exit(EXIT_FAILURE)
+    CONST LOG_NONE = 7 ' Disable logging
 
     ' Keyboard keys (US keyboard layout)
     ' NOTE: Use GetKeyPressed() to allow redefining
@@ -203,6 +218,215 @@ $IF RAYLIB_BI = UNDEFINED THEN
     CONST KEY_MENU = 82 ' Key: Android menu button
     CONST KEY_VOLUME_UP = 24 ' Key: Android volume up button
     CONST KEY_VOLUME_DOWN = 25 ' Key: Android volume down button
+
+    ' Mouse buttons
+    CONST MOUSE_BUTTON_LEFT = 0 ' Mouse button left
+    CONST MOUSE_BUTTON_RIGHT = 1 ' Mouse button right
+    CONST MOUSE_BUTTON_MIDDLE = 2 ' Mouse button middle (pressed wheel)
+    CONST MOUSE_BUTTON_SIDE = 3 ' Mouse button side (advanced mouse device)
+    CONST MOUSE_BUTTON_EXTRA = 4 ' Mouse button extra (advanced mouse device)
+    CONST MOUSE_BUTTON_FORWARD = 5 ' Mouse button forward (advanced mouse device)
+    CONST MOUSE_BUTTON_BACK = 6 ' Mouse button back (advanced mouse device)
+    ' Add backwards compatibility support for deprecated names
+    CONST MOUSE_LEFT_BUTTON = MOUSE_BUTTON_LEFT
+    CONST MOUSE_RIGHT_BUTTON = MOUSE_BUTTON_RIGHT
+    CONST MOUSE_MIDDLE_BUTTON = MOUSE_BUTTON_MIDDLE
+
+    ' Mouse cursor
+    CONST MOUSE_CURSOR_DEFAULT = 0 ' Default pointer shape
+    CONST MOUSE_CURSOR_ARROW = 1 ' Arrow shape
+    CONST MOUSE_CURSOR_IBEAM = 2 ' Text writing cursor shape
+    CONST MOUSE_CURSOR_CROSSHAIR = 3 ' Cross shape
+    CONST MOUSE_CURSOR_POINTING_HAND = 4 ' Pointing hand cursor
+    CONST MOUSE_CURSOR_RESIZE_EW = 5 ' Horizontal resize/move arrow shape
+    CONST MOUSE_CURSOR_RESIZE_NS = 6 ' Vertical resize/move arrow shape
+    CONST MOUSE_CURSOR_RESIZE_NWSE = 7 ' Top-left to bottom-right diagonal resize/move arrow shape
+    CONST MOUSE_CURSOR_RESIZE_NESW = 8 ' The top-right to bottom-left diagonal resize/move arrow shape
+    CONST MOUSE_CURSOR_RESIZE_ALL = 9 ' The omnidirectional resize/move cursor shape
+    CONST MOUSE_CURSOR_NOT_ALLOWED = 10 ' The operation-not-allowed shape
+
+    ' Gamepad buttons
+    CONST GAMEPAD_BUTTON_UNKNOWN = 0 ' Unknown button, just for error checking
+    CONST GAMEPAD_BUTTON_LEFT_FACE_UP = 1 ' Gamepad left DPAD up button
+    CONST GAMEPAD_BUTTON_LEFT_FACE_RIGHT = 2 ' Gamepad left DPAD right button
+    CONST GAMEPAD_BUTTON_LEFT_FACE_DOWN = 3 ' Gamepad left DPAD down button
+    CONST GAMEPAD_BUTTON_LEFT_FACE_LEFT = 4 ' Gamepad left DPAD left button
+    CONST GAMEPAD_BUTTON_RIGHT_FACE_UP = 5 ' Gamepad right button up (i.e. PS3: Triangle, Xbox: Y)
+    CONST GAMEPAD_BUTTON_RIGHT_FACE_RIGHT = 6 ' Gamepad right button right (i.e. PS3: Square, Xbox: X)
+    CONST GAMEPAD_BUTTON_RIGHT_FACE_DOWN = 7 ' Gamepad right button down (i.e. PS3: Cross, Xbox: A)
+    CONST GAMEPAD_BUTTON_RIGHT_FACE_LEFT = 8 ' Gamepad right button left (i.e. PS3: Circle, Xbox: B)
+    CONST GAMEPAD_BUTTON_LEFT_TRIGGER_1 = 9 ' Gamepad top/back trigger left (first), it could be a trailing button
+    CONST GAMEPAD_BUTTON_LEFT_TRIGGER_2 = 10 ' Gamepad top/back trigger left (second), it could be a trailing button
+    CONST GAMEPAD_BUTTON_RIGHT_TRIGGER_1 = 11 ' Gamepad top/back trigger right (one), it could be a trailing button
+    CONST GAMEPAD_BUTTON_RIGHT_TRIGGER_2 = 12 ' Gamepad top/back trigger right (second), it could be a trailing button
+    CONST GAMEPAD_BUTTON_MIDDLE_LEFT = 13 ' Gamepad center buttons, left one (i.e. PS3: Select)
+    CONST GAMEPAD_BUTTON_MIDDLE = 14 ' Gamepad center buttons, middle one (i.e. PS3: PS, Xbox: XBOX)
+    CONST GAMEPAD_BUTTON_MIDDLE_RIGHT = 15 ' Gamepad center buttons, right one (i.e. PS3: Start)
+    CONST GAMEPAD_BUTTON_LEFT_THUMB = 16 ' Gamepad joystick pressed button left
+    CONST GAMEPAD_BUTTON_RIGHT_THUMB = 17 ' Gamepad joystick pressed button right
+
+    ' Gamepad axis
+    CONST GAMEPAD_AXIS_LEFT_X = 0 ' Gamepad left stick X axis
+    CONST GAMEPAD_AXIS_LEFT_Y = 1 ' Gamepad left stick Y axis
+    CONST GAMEPAD_AXIS_RIGHT_X = 2 ' Gamepad right stick X axis
+    CONST GAMEPAD_AXIS_RIGHT_Y = 3 ' Gamepad right stick Y axis
+    CONST GAMEPAD_AXIS_LEFT_TRIGGER = 4 ' Gamepad back trigger left, pressure level: [1..-1]
+    CONST GAMEPAD_AXIS_RIGHT_TRIGGER = 5 ' Gamepad back trigger right, pressure level: [1..-1]
+
+    ' Material map index
+    CONST MATERIAL_MAP_ALBEDO = 0 ' Albedo material (same as: MATERIAL_MAP_DIFFUSE)
+    CONST MATERIAL_MAP_METALNESS = 1 ' Metalness material (same as: MATERIAL_MAP_SPECULAR)
+    CONST MATERIAL_MAP_NORMAL = 2 ' Normal material
+    CONST MATERIAL_MAP_ROUGHNESS = 3 ' Roughness material
+    CONST MATERIAL_MAP_OCCLUSION = 4 ' Ambient occlusion material
+    CONST MATERIAL_MAP_EMISSION = 5 ' Emission material
+    CONST MATERIAL_MAP_HEIGHT = 6 ' Heightmap material
+    CONST MATERIAL_MAP_CUBEMAP = 7 ' Cubemap material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+    CONST MATERIAL_MAP_IRRADIANCE = 8 ' Irradiance material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+    CONST MATERIAL_MAP_PREFILTER = 9 ' Prefilter material (NOTE: Uses GL_TEXTURE_CUBE_MAP)
+    CONST MATERIAL_MAP_BRDF = 10 ' Brdf material
+    CONST MATERIAL_MAP_DIFFUSE = MATERIAL_MAP_ALBEDO
+    CONST MATERIAL_MAP_SPECULAR = MATERIAL_MAP_METALNESS
+
+    ' Shader location index
+    CONST SHADER_LOC_VERTEX_POSITION = 0 ' Shader location: vertex attribute: position
+    CONST SHADER_LOC_VERTEX_TEXCOORD01 = 1 ' Shader location: vertex attribute: texcoord01
+    CONST SHADER_LOC_VERTEX_TEXCOORD02 = 2 ' Shader location: vertex attribute: texcoord02
+    CONST SHADER_LOC_VERTEX_NORMAL = 3 ' Shader location: vertex attribute: normal
+    CONST SHADER_LOC_VERTEX_TANGENT = 4 ' Shader location: vertex attribute: tangent
+    CONST SHADER_LOC_VERTEX_COLOR = 5 ' Shader location: vertex attribute: color
+    CONST SHADER_LOC_MATRIX_MVP = 6 ' Shader location: matrix uniform: model-view-projection
+    CONST SHADER_LOC_MATRIX_VIEW = 7 ' Shader location: matrix uniform: view (camera transform)
+    CONST SHADER_LOC_MATRIX_PROJECTION = 8 ' Shader location: matrix uniform: projection
+    CONST SHADER_LOC_MATRIX_MODEL = 9 ' Shader location: matrix uniform: model (transform)
+    CONST SHADER_LOC_MATRIX_NORMAL = 10 ' Shader location: matrix uniform: normal
+    CONST SHADER_LOC_VECTOR_VIEW = 11 ' Shader location: vector uniform: view
+    CONST SHADER_LOC_COLOR_DIFFUSE = 12 ' Shader location: vector uniform: diffuse color
+    CONST SHADER_LOC_COLOR_SPECULAR = 13 ' Shader location: vector uniform: specular color
+    CONST SHADER_LOC_COLOR_AMBIENT = 14 ' Shader location: vector uniform: ambient color
+    CONST SHADER_LOC_MAP_ALBEDO = 15 ' Shader location: sampler2d texture: albedo (same as: SHADER_LOC_MAP_DIFFUSE)
+    CONST SHADER_LOC_MAP_METALNESS = 16 ' Shader location: sampler2d texture: metalness (same as: SHADER_LOC_MAP_SPECULAR)
+    CONST SHADER_LOC_MAP_NORMAL = 17 ' Shader location: sampler2d texture: normal
+    CONST SHADER_LOC_MAP_ROUGHNESS = 18 ' Shader location: sampler2d texture: roughness
+    CONST SHADER_LOC_MAP_OCCLUSION = 19 ' Shader location: sampler2d texture: occlusion
+    CONST SHADER_LOC_MAP_EMISSION = 20 ' Shader location: sampler2d texture: emission
+    CONST SHADER_LOC_MAP_HEIGHT = 21 ' Shader location: sampler2d texture: height
+    CONST SHADER_LOC_MAP_CUBEMAP = 22 ' Shader location: samplerCube texture: cubemap
+    CONST SHADER_LOC_MAP_IRRADIANCE = 23 ' Shader location: samplerCube texture: irradiance
+    CONST SHADER_LOC_MAP_PREFILTER = 24 ' Shader location: samplerCube texture: prefilter
+    CONST SHADER_LOC_MAP_BRDF = 25 ' Shader location: sampler2d texture: brdf
+    CONST SHADER_LOC_MAP_DIFFUSE = SHADER_LOC_MAP_ALBEDO
+    CONST SHADER_LOC_MAP_SPECULAR = SHADER_LOC_MAP_METALNESS
+
+    ' Shader uniform data type
+    CONST SHADER_UNIFORM_FLOAT = 0 ' Shader uniform type: float
+    CONST SHADER_UNIFORM_VEC2 = 1 ' Shader uniform type: vec2 (2 float)
+    CONST SHADER_UNIFORM_VEC3 = 2 ' Shader uniform type: vec3 (3 float)
+    CONST SHADER_UNIFORM_VEC4 = 3 ' Shader uniform type: vec4 (4 float)
+    CONST SHADER_UNIFORM_INT = 4 ' Shader uniform type: int
+    CONST SHADER_UNIFORM_IVEC2 = 5 ' Shader uniform type: ivec2 (2 int)
+    CONST SHADER_UNIFORM_IVEC3 = 6 ' Shader uniform type: ivec3 (3 int)
+    CONST SHADER_UNIFORM_IVEC4 = 7 ' Shader uniform type: ivec4 (4 int)
+    CONST SHADER_UNIFORM_SAMPLER2D = 8 ' Shader uniform type: sampler2d
+
+    ' Shader attribute data types
+    CONST SHADER_ATTRIB_FLOAT = 0 ' Shader attribute type: float
+    CONST SHADER_ATTRIB_VEC2 = 1 ' Shader attribute type: vec2 (2 float)
+    CONST SHADER_ATTRIB_VEC3 = 2 ' Shader attribute type: vec3 (3 float)
+    CONST SHADER_ATTRIB_VEC4 = 3 ' Shader attribute type: vec4 (4 float)
+
+    ' Pixel formats
+    ' NOTE: Support depends on OpenGL version and platform
+    CONST PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1 ' 8 bit per pixel (no alpha)
+    CONST PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA = 2 ' 8*2 bpp (2 channels)
+    CONST PIXELFORMAT_UNCOMPRESSED_R5G6B5 = 3 ' 16 bpp
+    CONST PIXELFORMAT_UNCOMPRESSED_R8G8B8 = 4 ' 24 bpp
+    CONST PIXELFORMAT_UNCOMPRESSED_R5G5B5A1 = 5 ' 16 bpp (1 bit alpha)
+    CONST PIXELFORMAT_UNCOMPRESSED_R4G4B4A4 = 6 ' 16 bpp (4 bit alpha)
+    CONST PIXELFORMAT_UNCOMPRESSED_R8G8B8A8 = 7 ' 32 bpp
+    CONST PIXELFORMAT_UNCOMPRESSED_R32 = 8 ' 32 bpp (1 channel - float)
+    CONST PIXELFORMAT_UNCOMPRESSED_R32G32B32 = 9 ' 32*3 bpp (3 channels - float)
+    CONST PIXELFORMAT_UNCOMPRESSED_R32G32B32A32 = 10 ' 32*4 bpp (4 channels - float)
+    CONST PIXELFORMAT_COMPRESSED_DXT1_RGB = 11 ' 4 bpp (no alpha)
+    CONST PIXELFORMAT_COMPRESSED_DXT1_RGBA = 12 ' 4 bpp (1 bit alpha)
+    CONST PIXELFORMAT_COMPRESSED_DXT3_RGBA = 13 ' 8 bpp
+    CONST PIXELFORMAT_COMPRESSED_DXT5_RGBA = 14 ' 8 bpp
+    CONST PIXELFORMAT_COMPRESSED_ETC1_RGB = 15 ' 4 bpp
+    CONST PIXELFORMAT_COMPRESSED_ETC2_RGB = 16 ' 4 bpp
+    CONST PIXELFORMAT_COMPRESSED_ETC2_EAC_RGBA = 17 ' 8 bpp
+    CONST PIXELFORMAT_COMPRESSED_PVRT_RGB = 18 ' 4 bpp
+    CONST PIXELFORMAT_COMPRESSED_PVRT_RGBA = 19 ' 4 bpp
+    CONST PIXELFORMAT_COMPRESSED_ASTC_4x4_RGBA = 20 ' 8 bpp
+    CONST PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA = 21 ' 2 bpp
+
+    ' Texture parameters: filter mode
+    ' NOTE 1: Filtering considers mipmaps if available in the texture
+    ' NOTE 2: Filter is accordingly set for minification and magnification
+    CONST TEXTURE_FILTER_POINT = 0 ' No filter, just pixel approximation
+    CONST TEXTURE_FILTER_BILINEAR = 1 ' Linear filtering
+    CONST TEXTURE_FILTER_TRILINEAR = 2 ' Trilinear filtering (linear with mipmaps)
+    CONST TEXTURE_FILTER_ANISOTROPIC_4X = 3 ' Anisotropic filtering 4x
+    CONST TEXTURE_FILTER_ANISOTROPIC_8X = 4 ' Anisotropic filtering 8x
+    CONST TEXTURE_FILTER_ANISOTROPIC_16X = 5 ' Anisotropic filtering 16x
+
+    ' Texture parameters: wrap mode
+    CONST TEXTURE_WRAP_REPEAT = 0 ' Repeats texture in tiled mode
+    CONST TEXTURE_WRAP_CLAMP = 1 ' Clamps texture to edge pixel in tiled mode
+    CONST TEXTURE_WRAP_MIRROR_REPEAT = 2 ' Mirrors and repeats the texture in tiled mode
+    CONST TEXTURE_WRAP_MIRROR_CLAMP = 3 ' Mirrors and clamps to border the texture in tiled mode
+
+    ' Cubemap layouts
+    CONST CUBEMAP_LAYOUT_AUTO_DETECT = 0 ' Automatically detect layout type
+    CONST CUBEMAP_LAYOUT_LINE_VERTICAL = 1 ' Layout is defined by a vertical line with faces
+    CONST CUBEMAP_LAYOUT_LINE_HORIZONTAL = 2 ' Layout is defined by a horizontal line with faces
+    CONST CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR = 3 ' Layout is defined by a 3x4 cross with cubemap faces
+    CONST CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE = 4 ' Layout is defined by a 4x3 cross with cubemap faces
+    CONST CUBEMAP_LAYOUT_PANORAMA = 5 ' Layout is defined by a panorama image (equirrectangular map)
+
+    ' Font type, defines generation method
+    CONST FONT_DEFAULT = 0 ' Default font generation, anti-aliased
+    CONST FONT_BITMAP = 1 ' Bitmap font generation, no anti-aliasing
+    CONST FONT_SDF = 2 ' SDF font generation, requires external shader
+
+    ' Color blending modes (pre-defined)
+    CONST BLEND_ALPHA = 0 ' Blend textures considering alpha (default)
+    CONST BLEND_ADDITIVE = 1 ' Blend textures adding colors
+    CONST BLEND_MULTIPLIED = 2 ' Blend textures multiplying colors
+    CONST BLEND_ADD_COLORS = 3 ' Blend textures adding colors (alternative)
+    CONST BLEND_SUBTRACT_COLORS = 4 ' Blend textures subtracting colors (alternative)
+    CONST BLEND_ALPHA_PREMULTIPLY = 5 ' Blend premultiplied textures considering alpha
+    CONST BLEND_CUSTOM = 6 ' Blend textures using custom src/dst factors (use rlSetBlendFactors())
+    CONST BLEND_CUSTOM_SEPARATE = 7 ' Blend textures using custom rgb/alpha separate src/dst factors (use rlSetBlendFactorsSeparate())
+
+    ' Gesture
+    ' NOTE: Provided as bit-wise flags to enable only desired gestures
+    CONST GESTURE_NONE = 0 ' No gesture
+    CONST GESTURE_TAP = 1 ' Tap gesture
+    CONST GESTURE_DOUBLETAP = 2 ' Double tap gesture
+    CONST GESTURE_HOLD = 4 ' Hold gesture
+    CONST GESTURE_DRAG = 8 ' Drag gesture
+    CONST GESTURE_SWIPE_RIGHT = 16 ' Swipe right gesture
+    CONST GESTURE_SWIPE_LEFT = 32 ' Swipe left gesture
+    CONST GESTURE_SWIPE_UP = 64 ' Swipe up gesture
+    CONST GESTURE_SWIPE_DOWN = 128 ' Swipe down gesture
+    CONST GESTURE_PINCH_IN = 256 ' Pinch in gesture
+    CONST GESTURE_PINCH_OUT = 512 ' Pinch out gesture
+
+    ' Camera system modes
+    CONST CAMERA_CUSTOM = 0 ' Custom camera
+    CONST CAMERA_FREE = 1 ' Free camera
+    CONST CAMERA_ORBITAL = 2 ' Orbital camera
+    CONST CAMERA_FIRST_PERSON = 3 ' First person camera
+    CONST CAMERA_THIRD_PERSON = 4 ' Third person camera
+
+    ' Camera projection
+    CONST CAMERA_PERSPECTIVE = 0 ' Perspective projection
+    CONST CAMERA_ORTHOGRAPHIC = 1 ' Orthographic projection
+
+    ' N-patch layout
+    CONST NPATCH_NINE_PATCH = 0 ' Npatch layout: 3x3 tiles
+    CONST NPATCH_THREE_PATCH_VERTICAL = 1 ' Npatch layout: 1x3 tiles
+    CONST NPATCH_THREE_PATCH_HORIZONTAL = 2 ' Npatch layout: 3x1 tiles
 
     ' Vector2, 2 components
     TYPE Vector2
@@ -613,9 +837,9 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB ClearBackground (BYVAL clr AS _UNSIGNED LONG)
         SUB BeginDrawing
         SUB EndDrawing
-        SUB BeginMode2D (camera AS Camera2D)
+        SUB BeginMode2D (cam AS Camera2D)
         SUB EndMode2D
-        SUB BeginMode3D (camera AS Camera3D)
+        SUB BeginMode3D (cam AS Camera3D)
         SUB EndMode3D
         SUB BeginTextureMode (target AS RenderTexture2D)
         SUB EndTextureMode
@@ -639,13 +863,13 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB SetShaderValueMatrix (shdr AS Shader, BYVAL locIndex AS LONG, mat AS Matrix)
         SUB SetShaderValueTexture (shdr AS Shader, BYVAL locIndex AS LONG, tex AS Texture2D)
         SUB UnloadShader (shdr AS Shader)
-        SUB GetMouseRay (mousePosition AS Vector2, camera AS Camera, retVal AS Ray)
-        SUB GetCameraMatrix (camera AS Camera, retVal AS Matrix)
-        SUB GetCameraMatrix2D (camera AS Camera2D, retVal AS Matrix)
-        SUB GetWorldToScreen (position AS Vector3, camera AS Camera, retVal AS Vector2)
-        SUB GetScreenToWorld2D (position AS Vector2, camera AS Camera2D, retVal AS Vector2)
-        SUB GetWorldToScreenEx (position AS Vector3, camera AS Camera, BYVAL W AS LONG, BYVAL H AS LONG, retVal AS Vector2)
-        SUB GetWorldToScreen2D (position AS Vector2, camera AS Camera2D, retVal AS Vector2)
+        SUB GetMouseRay (mousePosition AS Vector2, cam AS Camera3D, retVal AS Ray)
+        SUB GetCameraMatrix (cam AS Camera3D, retVal AS Matrix)
+        SUB GetCameraMatrix2D (cam AS Camera2D, retVal AS Matrix)
+        SUB GetWorldToScreen (position AS Vector3, cam AS Camera3D, retVal AS Vector2)
+        SUB GetScreenToWorld2D (position AS Vector2, cam AS Camera2D, retVal AS Vector2)
+        SUB GetWorldToScreenEx (position AS Vector3, cam AS Camera3D, BYVAL W AS LONG, BYVAL H AS LONG, retVal AS Vector2)
+        SUB GetWorldToScreen2D (position AS Vector2, cam AS Camera2D, retVal AS Vector2)
         SUB SetTargetFPS (BYVAL fps AS LONG)
         FUNCTION GetFPS&
         FUNCTION GetFrameTime!
@@ -743,8 +967,8 @@ $IF RAYLIB_BI = UNDEFINED THEN
         FUNCTION GetGestureDragAngle!
         SUB GetGesturePinchVector (retVal AS Vector2)
         FUNCTION GetGesturePinchAngle!
-        SUB UpdateCamera (camera AS Camera, BYVAL mode AS LONG)
-        SUB UpdateCameraPro (camera AS Camera, movement AS Vector3, rotation AS Vector3, BYVAL zoom AS SINGLE)
+        SUB UpdateCamera (cam AS Camera3D, BYVAL mode AS LONG)
+        SUB UpdateCameraPro (cam AS Camera3D, movement AS Vector3, rotation AS Vector3, BYVAL zoom AS SINGLE)
         SUB SetShapesTexture (tex AS Texture2D, source AS Rectangle)
         SUB DrawPixel (BYVAL posX AS LONG, BYVAL posY AS LONG, BYVAL clr AS _UNSIGNED LONG)
         SUB DrawPixelV (position AS Vector2, BYVAL clr AS _UNSIGNED LONG)
@@ -974,9 +1198,9 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB DrawModelWires (model AS Model, position AS Vector3, BYVAL scale AS SINGLE, BYVAL tint AS _UNSIGNED LONG)
         SUB DrawModelWiresEx (model AS Model, position AS Vector3, rotationAxis AS Vector3, BYVAL rotationAngle AS SINGLE, scale AS Vector3, BYVAL tint AS _UNSIGNED LONG)
         SUB DrawBoundingBox (box AS BoundingBox, BYVAL clr AS _UNSIGNED LONG)
-        SUB DrawBillboard (camera AS Camera, tex AS Texture2D, position AS Vector3, BYVAL size AS SINGLE, BYVAL tint AS _UNSIGNED LONG)
-        SUB DrawBillboardRec (camera AS Camera, tex AS Texture2D, source AS Rectangle, position AS Vector3, size AS Vector2, BYVAL tint AS _UNSIGNED LONG)
-        SUB DrawBillboardPro (camera AS Camera, tex AS Texture2D, source AS Rectangle, position AS Vector3, up AS Vector3, size AS Vector2, origin AS Vector2, BYVAL rotation AS SINGLE, BYVAL tint AS _UNSIGNED LONG)
+        SUB DrawBillboard (cam AS Camera3D, tex AS Texture2D, position AS Vector3, BYVAL size AS SINGLE, BYVAL tint AS _UNSIGNED LONG)
+        SUB DrawBillboardRec (cam AS Camera3D, tex AS Texture2D, source AS Rectangle, position AS Vector3, size AS Vector2, BYVAL tint AS _UNSIGNED LONG)
+        SUB DrawBillboardPro (cam AS Camera3D, tex AS Texture2D, source AS Rectangle, position AS Vector3, up AS Vector3, size AS Vector2, origin AS Vector2, BYVAL rotation AS SINGLE, BYVAL tint AS _UNSIGNED LONG)
         SUB UploadMesh (mesh AS Mesh, BYVAL dyna AS _BYTE)
         SUB UpdateMeshBuffer (mesh AS Mesh, BYVAL index AS LONG, BYVAL dat AS _UNSIGNED _OFFSET, BYVAL dataSize AS LONG, BYVAL offset AS LONG)
         SUB UnloadMesh (mesh AS Mesh)

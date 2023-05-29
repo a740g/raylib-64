@@ -24,4 +24,3 @@ CloseWindow
 SYSTEM
 
 '$INCLUDE:'include/raylib.bas'
-
