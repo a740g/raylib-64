@@ -42,14 +42,49 @@ $If RAYLIB_BAS = UNDEFINED Then
         __LoadMusicStream BStrToCStr(fileName), retVal
     End Sub
 
-    ' TODO: QB64 does not like byval UTD in expressions. Sigh!
-    'FUNCTION GetShaderLocation& (shdr AS Shader, uniformName AS STRING)
-    '    GetShaderLocation = __GetShaderLocation(shdr, uniformName)
-    'END FUNCTION
+    Sub LoadShader (vsFileName As String, fsFileName As String, retVal As Shader)
+        __LoadShader BStrToCStr(vsFileName), BStrToCStr(fsFileName), retVal
+    End Sub
 
-    'FUNCTION GetShaderLocationAttrib& (shdr AS Shader, attribName AS STRING)
-    '    GetShaderLocationAttrib = __GetShaderLocationAttrib(shdr, BStrToCStr(attribName))
-    'END FUNCTION
+    Sub LoadShaderFromMemory (vsCode As String, fsCode As String, retVal As Shader)
+        __LoadShaderFromMemory BStrToCStr(vsCode), BStrToCStr(fsCode), retVal
+    End Sub
+
+    Function GetShaderLocation& (shdr As Shader, uniformName As String)
+        GetShaderLocation = __GetShaderLocation(shdr, BStrToCStr(uniformName))
+    End Function
+
+    Function GetShaderLocationAttrib& (shdr As Shader, attribName As String)
+        GetShaderLocationAttrib = __GetShaderLocationAttrib(shdr, BStrToCStr(attribName))
+    End Function
+
+    Sub TakeScreenshot (fileName As String)
+        __TakeScreenshot BStrToCStr(fileName)
+    End Sub
+
+    Sub TraceLog (logLevel As Long, text As String)
+        __TraceLog logLevel, BStrToCStr(text)
+    End Sub
+
+    Sub TraceLogString (logLevel As Long, text As String, s As String)
+        __TraceLogString logLevel, BStrToCStr(text), BStrToCStr(s)
+    End Sub
+
+    Sub TraceLogLong (logLevel As Long, text As String, i As Long)
+        __TraceLogLong logLevel, BStrToCStr(text), i
+    End Sub
+
+    Sub TraceLogSingle (logLevel As Long, text As String, f As Single)
+        __TraceLogSingle logLevel, BStrToCStr(text), f
+    End Sub
+
+    Sub OpenURL (url As String)
+        __OpenURL BStrToCStr(url)
+    End Sub
+
+    Function LoadFileData~%& (fileName As String, bytesRead As _Unsigned Long)
+        LoadFileData = __LoadFileData(BStrToCStr(fileName), bytesRead)
+    End Function
     '-------------------------------------------------------------------------------------------------------------------
 
     $Checking:On
