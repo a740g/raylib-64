@@ -1,6 +1,6 @@
 # raylib for QB64-PE
 
-![raylib](/assets/logo/raylib-q64pe.png)
+![raylib](/assets/logo/raylib-64.png)
 
 [raylib for QB64-PE](https://github.com/a740g/raylib-64) is a [QB64-PE](https://github.com/QB64-Phoenix-Edition/QB64pe) binding library for [raylib](https://www.raylib.com).
 **raylib is a simple and easy-to-use library to enjoy videogames programming.**
