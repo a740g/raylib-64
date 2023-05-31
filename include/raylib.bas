@@ -85,6 +85,14 @@ $If RAYLIB_BAS = UNDEFINED Then
     Function LoadFileData~%& (fileName As String, bytesRead As _Unsigned Long)
         LoadFileData = __LoadFileData(BStrToCStr(fileName), bytesRead)
     End Function
+
+    Sub LoadImage (fileName As String, retVal As Image)
+        __LoadImage BStrToCStr(fileName), retVal
+    End Sub
+
+    Sub LoadTexture (fileName As String, retVal As Texture)
+        __LoadTexture BStrToCStr(fileName), retVal
+    End Sub
     '-------------------------------------------------------------------------------------------------------------------
 
     $Checking:On

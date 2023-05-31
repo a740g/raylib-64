@@ -1998,57 +1998,251 @@ qb_bool __init_raylib()
 
 // Various interop functions that make life easy when working with external libs
 
-inline qb_bool ToQBBool(int x)
+/// @brief Returns QB style bool
+/// @param x Any number
+/// @return 0 when x is 0 and -1 when x is non-zero
+inline qb_bool ToQBBool(int32_t x)
 {
     return TO_QB_BOOL(x);
 }
 
-inline bool ToCBool(int x)
+/// @brief Returns C style bool
+/// @param x Any number
+/// @return 0 when x is 0 and 1 when x is non-zero
+inline bool ToCBool(int32_t x)
 {
     return TO_C_BOOL(x);
 }
 
+/// @brief Casts a QB64 OFFSET to an unsigned integer
+/// @param p A pointer
+/// @return Pointer value
 inline uintptr_t CLngPtr(const void *p)
 {
     return (uintptr_t)p;
 }
 
+/// @brief Peeks a BYTE (8-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @return BYTE value
+inline uint8_t PeekByteAtOffset(uintptr_t p, uintptr_t o)
+{
+    return *((uint8_t *)p + o);
+}
+
+/// @brief Poke a BYTE (8-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @param n BYTE value
+inline void PokeByteAtOffset(uintptr_t p, uintptr_t o, uint8_t n)
+{
+    *((uint8_t *)p + o) = n;
+}
+
+/// @brief Peek an INTEGER (16-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @return INTEGER value
+inline uint16_t PeekIntegerAtOffset(uintptr_t p, uintptr_t o)
+{
+    return *((uint16_t *)p + o);
+}
+
+/// @brief Poke an INTEGER (16-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @param n INTEGER value
+inline void PokeIntegerAtOffset(uintptr_t p, uintptr_t o, uint16_t n)
+{
+    *((uint16_t *)p + o) = n;
+}
+
+/// @brief Peek a LONG (32-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @return LONG value
+inline uint32_t PeekLongAtOffset(uintptr_t p, uintptr_t o)
+{
+    return *((uint32_t *)p + o);
+}
+
+/// @brief Poke a LONG (32-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @param n LONG value
+inline void PokeLongAtOffset(uintptr_t p, uintptr_t o, uint32_t n)
+{
+    *((uint32_t *)p + o) = n;
+}
+
+/// @brief Peek a INTEGER64 (64-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @return INTEGER64 value
+inline uint64_t PeekInteger64AtOffset(uintptr_t p, uintptr_t o)
+{
+    return *((uint64_t *)p + o);
+}
+
+/// @brief Poke a INTEGER64 (64-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @param n INTEGER64 value
+inline void PokeInteger64AtOffset(uintptr_t p, uintptr_t o, uint64_t n)
+{
+    *((uint64_t *)p + o) = n;
+}
+
+/// @brief Peek a SINGLE (32-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @return SINGLE value
+inline float PeekSingleAtOffset(uintptr_t p, uintptr_t o)
+{
+    return *((float *)p + o);
+}
+
+/// @brief Poke a SINGLE (32-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @param n SINGLE value
+inline void PokeSingleAtOffset(uintptr_t p, uintptr_t o, float n)
+{
+    *((float *)p + o) = n;
+}
+
+/// @brief Peek a DOUBLE (64-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @return DOUBLE value
+inline double PeekDoubleAtOffset(uintptr_t p, uintptr_t o)
+{
+    return *((double *)p + o);
+}
+
+/// @brief Poke a DOUBLE (64-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @param n DOUBLE value
+inline void PokeDoubleAtOffset(uintptr_t p, uintptr_t o, double n)
+{
+    *((double *)p + o) = n;
+}
+
+/// @brief Peek an OFFSET (32/64-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @return DOUBLE value
+inline uintptr_t PeekOffsetAtOffset(uintptr_t p, uintptr_t o)
+{
+    return *((uintptr_t *)p + o);
+}
+
+/// @brief Poke an OFFSET (32/64-bits) value at p + o
+/// @param p Pointer base
+/// @param o Offset from base
+/// @param n DOUBLE value
+inline void PokeOffsetAtOffset(uintptr_t p, uintptr_t o, uintptr_t n)
+{
+    *((uintptr_t *)p + o) = n;
+}
+
+/// @brief Gets a UDT value from a pointer positon offset by o. Same as t = p[o]
+/// @param p The base pointer
+/// @param o Offset from base (each offset is t_size bytes)
+/// @param t A pointer to the UDT variable
+/// @param t_size The size of the UTD variable in bytes
+inline void PeekTypeAtOffset(uintptr_t p, uintptr_t o, uintptr_t t, size_t t_size)
+{
+    memcpy((void *)t, (const uint8_t *)p + (o * t_size), t_size);
+}
+
+/// @brief Sets a UDT value to a pointer position offset by o. Same as p[o] = t
+/// @param p The base pointer
+/// @param o Offset from base (each offset is t_size bytes)
+/// @param t A pointer to the UDT variable
+/// @param t_size The size of the UTD variable in bytes
+inline void PokeTypeAtOffset(uintptr_t p, uintptr_t o, uintptr_t t, size_t t_size)
+{
+    memcpy((uint8_t *)p + (o * t_size), (void *)t, t_size);
+}
+
+/// @brief Peek a character value in a string. Zero based, faster and unsafe than ASC
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @return The ASCII character at position o
+inline uint8_t PeekString(const uint8_t *s, uintptr_t o)
+{
+    return s[o];
+}
+
+/// @brief Poke a character value in a string. Zero based, faster and unsafe than ASC
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @param n The ASCII character at position o
+inline void PokeString(uint8_t *s, uintptr_t o, uint8_t n)
+{
+    s[o] = n;
+}
+
+/// @brief Makes a RGBA color from RGBA components (the return value is the same as raylib Color in memory)
+/// @param r Red (0 - 255)
+/// @param g Green (0 - 255)
+/// @param b Blue (0 - 255)
+/// @param a Alpha (0 - 255)
+/// @return Returns an RGBA color
 inline uint32_t MakeRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
     return MAKE_RGBA(r, g, b, a);
 }
 
+/// @brief Returns the Red component
+/// @param rgba An RGBA color
+/// @return Red
 inline uint8_t GetRGBARed(uint32_t rgba)
 {
     return GET_RGBA_R(rgba);
 }
 
+/// @brief Returns the Green component
+/// @param rgba An RGBA color
+/// @return Green
 inline uint8_t GetRGBAGreen(uint32_t rgba)
 {
     return GET_RGBA_G(rgba);
 }
 
+/// @brief Returns the Blue component
+/// @param rgba An RGBA color
+/// @return Blue
 inline uint8_t GetRGBABlue(uint32_t rgba)
 {
     return GET_RGBA_B(rgba);
 }
 
+/// @brief Returns the Alpha value
+/// @param rgba An RGBA color
+/// @return Alpha
 inline uint8_t GetRGBAAlpha(uint32_t rgba)
 {
     return GET_RGBA_A(rgba);
 }
 
+/// @brief Gets the RGB value without the alpha
+/// @param rgba An RGBA color
+/// @return RGB value
 inline uint32_t GetRGBARGB(uint32_t rgba)
 {
     return GET_RGBA_RGB(rgba);
 }
 
-/// @brief Helps convert QB64 BGRA color to raylib RGBA color
-/// @param bgra A QB64 BGRA color
-/// @return A raylib RGBA color
-inline uint32_t ToRGBA(uint32_t bgra)
+/// @brief Helps convert QB64 BGRA color to raylib RGBA color and back
+/// @param bgra A QB64 BGRA color or raylib RGBA color
+/// @return A raylib RGBA color or a QB64 BGRA color
+inline uint32_t SwapRedBlue(uint32_t clr)
 {
-    return (bgra & 0xFF00FF00) | ((bgra & 0x00FF0000) >> 16) | ((bgra & 0x000000FF) << 16);
+    return (clr & 0xFF00FF00) | ((clr & 0x00FF0000) >> 16) | ((clr & 0x000000FF) << 16);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
