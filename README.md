@@ -64,13 +64,21 @@ Where is the source for the autogen program?
 
 - It served it's purpose and helped me kickstart the project and now it has retired. I am not going to share it because I am not proud of the way I wrote it. 😁
 
-I found a bug. How can I help?
+On Windows, why does the program that I write using the library momentarily open a console Window?
 
-- Let me know using GitHub issues or fix it yourself and submit a PR!
+- raylib has it's own graphics windows and does it's own Window management. So we made the QB64 programs using the library `$Console:Only`. This ensures that other graphics feature in QB64 does not interfer with raylib. As a side-effect, this opens a console Window when compiled programs are lauched. The console window however is minimized by default.
+
+What QB64 statements and functions should I avoid while using raylib?
+
+- Any statement or functions that require the QB64 graphics OpenGL window (including all input stuff) should be avoided. Use the raylib alternatives for those.
 
 Does all of raylib work with QB64?
 
 - Well, mostly. Callbacks are a chanllenge. But it can be done if you are willing to mix a little bit of C with QB64. Stuff requiring usage of pointers can be a little difficult. However, I plan to simplify these by carefully wrapping more raylib functions inside QB64 helper routines.
+
+I found a bug. How can I help?
+
+- Let me know using GitHub issues or fix it yourself and submit a PR!
 
 ## NOTES
 
@@ -81,12 +89,13 @@ Does all of raylib work with QB64?
 ## ASSETS
 
 - The logo for this project was created by [grymmjack](https://16colo.rs/artist/grymmjack)
-- Remaining assets were pull directly from the [raylib repository](https://github.com/raysan5/raylib/tree/master/examples). So, the license information there applies
+- Remaining assets were pulled directly from the [raylib repository](https://github.com/raysan5/raylib/tree/master/examples). So, the license information there applies
 
 ## HELP NEEDED
 
 - Port all possible raylib examples from [raylib - examples](https://github.com/raysan5/raylib/tree/master/examples)
 - Wrap all possible raylib functions that take a string to ensure stings are null-terminated
+- Wrap all possible raylib functions that take pointers and C-style arrays
 - See TODO section below
 
 ## TODO
