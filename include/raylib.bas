@@ -59,6 +59,14 @@ $If RAYLIB_BAS = UNDEFINED Then
         __DrawText BStrToCStr(text), posX, posY, fontSize, clr
     End Sub
 
+    Sub DrawTextEx (fnt As Font, text As String, position As Vector2, fontSize As Single, spacing As Single, tint As _Unsigned Long)
+        __DrawTextEx fnt, BStrToCStr(text), position, fontSize, spacing, tint
+    End Sub
+
+    Sub DrawTextPro (fnt As Font, text As String, position As Vector2, origin As Vector2, rotation As Single, fontSize As Single, spacing As Single, tint As _Unsigned Long)
+        __DrawTextPro fnt, BStrToCStr(text), position, origin, rotation, fontSize, spacing, tint
+    End Sub
+
     Sub LoadMusicStream (fileName As String, retVal As Music)
         __LoadMusicStream BStrToCStr(fileName), retVal
     End Sub
@@ -126,6 +134,14 @@ $If RAYLIB_BAS = UNDEFINED Then
     Function TextFormatSingle$ (text As String, f As Single)
         TextFormatSingle = CStrToBStr(__TextFormatSingle(BStrToCStr(text), f))
     End Function
+
+    Function MeasureText (text As String, fontSize As Long)
+        MeasureText = __MeasureText(BStrToCStr(text), fontSize)
+    End Function
+
+    Sub MeasureTextEx (fnt As Font, text As String, fontSize As Single, spacing As Single, retVal As Vector2)
+        __MeasureTextEx fnt, BStrToCStr(text), fontSize, spacing, retVal
+    End Sub
     '-------------------------------------------------------------------------------------------------------------------
 
     $Checking:On

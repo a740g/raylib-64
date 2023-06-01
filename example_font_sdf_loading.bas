@@ -26,7 +26,7 @@ fontDefault.glyphCount = 95
 
 ' Loading font data from memory data
 ' Parameters > font size: 16, no glyphs array provided (0), glyphs count: 95 (autogenerate chars array)
-fontDefault.glyphs = LoadFontData(fileData, fileSize, 16, 0, 95, FONT_DEFAULT)
+fontDefault.glyphs = LoadFontData(fileData, fileSize, 16, NULL, 95, FONT_DEFAULT)
 ' Parameters > glyphs count: 95, font size: 16, glyphs padding in image: 4 px, pack method: 0 (default)
 Dim As Image atlas: GenImageFontAtlas fontDefault.glyphs, fontDefault.recs, 95, 16, 4, 0, atlas
 LoadTextureFromImage atlas, fontDefault.tex
@@ -37,7 +37,7 @@ Dim As Font fontSDF
 fontSDF.baseSize = 16
 fontSDF.glyphCount = 95
 ' Parameters > font size: 16, no glyphs array provided (0), glyphs count: 0 (defaults to 95)
-fontSDF.glyphs = LoadFontData(fileData, fileSize, 16, 0, 0, FONT_SDF)
+fontSDF.glyphs = LoadFontData(fileData, fileSize, 16, NULL, 0, FONT_SDF)
 ' Parameters > glyphs count: 95, font size: 16, glyphs padding in image: 0 px, pack method: 1 (Skyline algorythm)
 GenImageFontAtlas fontSDF.glyphs, fontSDF.recs, 95, 16, 0, 1, atlas
 LoadTextureFromImage atlas, fontSDF.tex
@@ -73,8 +73,8 @@ While Not WindowShouldClose ' Detect window close button or ESC key
         MeasureTextEx fontSDF, msg, fontSize, 0, textSize
     End If
 
-    fontPosition.x = GetScreenWidth \ 2 - textSize.x \ 2
-    fontPosition.y = GetScreenHeight \ 2 - textSize.y \ 2 + 80
+    fontPosition.x = GetScreenWidth / 2 - textSize.x / 2
+    fontPosition.y = GetScreenHeight / 2 - textSize.y / 2 + 80
     '----------------------------------------------------------------------------------
 
     ' Draw
@@ -84,7 +84,7 @@ While Not WindowShouldClose ' Detect window close button or ESC key
     ClearBackground RAYWHITE
 
     If currentFont = 1 Then
-        ' NOTE: SDF fonts require a custom SDf shader to compute fragment color
+        ' NOTE: SDF fonts require a custom SDF shader to compute fragment color
         BeginShaderMode shader ' Activate SDF font shader
         DrawTextEx fontSDF, msg, fontPosition, fontSize, 0, BLACK
         EndShaderMode ' Activate our default shader for next drawings
