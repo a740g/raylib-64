@@ -1,4 +1,4 @@
-' raylib [core] example - Basic window                                                                                                             ````
+' raylib [core] example - first person maze                                                                                                        ````
 
 '$INCLUDE:'include/raylib.bi'
 
@@ -27,7 +27,7 @@ Dim As MaterialMap matrlmap: PeekTypeAtOffset matrl.maps, MATERIAL_MAP_DIFFUSE, 
 matrlmap.tex = tex: PokeTypeAtOffset matrl.maps, MATERIAL_MAP_DIFFUSE, _Offset(matrlmap), Len(matrlmap) ' Set map diffuse texture
 
 ' Get map image data to be used for collision detection
-Dim As _Offset mapPixels: mapPixels = LoadImageColors(imMap)
+Dim As _Unsigned _Offset mapPixels: mapPixels = LoadImageColors(imMap)
 UnloadImage imMap ' Unload image from RAM
 
 Dim As Vector3 mapPosition: mapPosition.x = -16.0!: mapPosition.y = 0.0!: mapPosition.z = -8.0! ' Set model position
@@ -99,12 +99,13 @@ Loop
 
 ' De-Initialization
 UnloadImageColors mapPixels ' Unload color array
-
 UnloadTexture cubicmap ' Unload cubicmap texture
 UnloadTexture tex ' Unload map texture
 UnloadModel mdl ' Unload map model
 
 CloseWindow ' Close window and OpenGL context
+
+
 
 System
 

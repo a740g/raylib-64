@@ -2014,12 +2014,12 @@ inline bool ToCBool(int32_t x)
     return TO_C_BOOL(x);
 }
 
-/// @brief Casts a QB64 OFFSET to an unsigned integer
-/// @param p A pointer
-/// @return Pointer value
-inline uintptr_t CLngPtr(const void *p)
+/// @brief Casts a QB64 _OFFSET to an unsigned integer. Needed becuase QB64 does not allow converting or using _OFFSET in expressions (fully)
+/// @param p A pointer (_OFFSET)
+/// @return Pointer value (uintptr_t)
+inline uintptr_t CLngPtr(uintptr_t p)
 {
-    return (uintptr_t)p;
+    return p;
 }
 
 /// @brief Peeks a BYTE (8-bits) value at p + o

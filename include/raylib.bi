@@ -1040,7 +1040,7 @@ $If RAYLIB_BI = UNDEFINED Then
         Function LoadImageColors~%& (img As Image)
         Function LoadImagePalette~%& (img As Image, Byval maxPaletteSize As Long, colorCount As Long)
         Sub UnloadImageColors (colors As _Unsigned _Offset)
-        Sub UnloadImagePalette (colors As _Unsigned Long)
+        Sub UnloadImagePalette (colors As _Unsigned _Offset)
         Sub GetImageAlphaBorder (img As Image, Byval threshold As Single, retVal As Rectangle)
         Function GetImageColor~& (img As Image, Byval x As Long, Byval y As Long)
         Sub ImageClearBackground (dst As Image, Byval clr As _Unsigned Long)
