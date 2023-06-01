@@ -2800,9 +2800,9 @@ inline unsigned char *LoadFileData(const char *fileName, unsigned int *bytesRead
     return _LoadFileData(fileName, bytesRead);
 }
 
-inline void UnloadFileData(unsigned char *data)
+inline void UnloadFileData(uintptr_t data)
 {
-    _UnloadFileData(data);
+    _UnloadFileData((unsigned char *)data);
 }
 
 inline qb_bool SaveFileData(const char *fileName, void *data, unsigned int bytesToWrite)
@@ -3960,17 +3960,17 @@ inline qb_bool IsFontReady(void *font)
     return TO_QB_BOOL(_IsFontReady(*(Font *)font));
 }
 
-inline void *LoadFontData(const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, int type)
+inline uintptr_t LoadFontData(uintptr_t fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, int type)
 {
-    return (void *)_LoadFontData(fileData, dataSize, fontSize, fontChars, glyphCount, type);
+    return (uintptr_t)_LoadFontData((const unsigned char *)fileData, dataSize, fontSize, fontChars, glyphCount, type);
 }
 
-inline void GenImageFontAtlas(void *chars, void *recs, int glyphCount, int fontSize, int padding, int packMethod, void *ret)
+inline void GenImageFontAtlas(uintptr_t chars, uintptr_t *recs, int glyphCount, int fontSize, int padding, int packMethod, void *ret)
 {
     *(Image *)ret = _GenImageFontAtlas((const GlyphInfo *)chars, (RRectangle **)recs, glyphCount, fontSize, padding, packMethod);
 }
 
-inline void UnloadFontData(void *chars, int glyphCount)
+inline void UnloadFontData(uintptr_t chars, int glyphCount)
 {
     _UnloadFontData((GlyphInfo *)chars, glyphCount);
 }

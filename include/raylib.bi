@@ -475,7 +475,7 @@ $If RAYLIB_BI = UNDEFINED Then
 
     ' Image, pixel data stored in CPU memory (RAM)
     Type Image
-        As _Offset dat ' Image raw data
+        As _Unsigned _Offset dat ' Image raw data
         As Long W ' Image base width
         As Long H ' Image base height
         As Long mipmaps ' Mipmap levels, 1 by default
@@ -571,7 +571,7 @@ $If RAYLIB_BI = UNDEFINED Then
     Type Shader
         As Long id ' Shader program id
         As String * 4 padding
-        As _Offset locs ' Shader locations array (RL_MAX_SHADER_LOCATIONS)
+        As _Unsigned _Offset locs ' Shader locations array (RL_MAX_SHADER_LOCATIONS)
     End Type
 
     ' MaterialMap
@@ -873,9 +873,9 @@ $If RAYLIB_BI = UNDEFINED Then
         Sub SetLoadFileTextCallback (ByVal callback As _Unsigned _Offset)
         Sub SetSaveFileTextCallback (ByVal callback As _Unsigned _Offset)
         Function __LoadFileData~%& Alias LoadFileData (fileName As String, bytesRead As _Unsigned Long)
-        Sub UnloadFileData (dat As _Unsigned _Offset)
+        Sub UnloadFileData (ByVal dat As _Unsigned _Offset)
         Function SaveFileData%% (fileName As String, Byval dat As _Unsigned _Offset, Byval bytesToWrite As _Unsigned Long)
-        Function ExportDataAsCode%% (dat As _Unsigned _Byte, Byval size As _Unsigned Long, fileName As String)
+        Function ExportDataAsCode%% (ByVal dat As _Unsigned _Offset, Byval size As _Unsigned Long, fileName As String)
         Function LoadFileText$ (fileName As String)
         Sub UnloadFileText (text As String)
         Function SaveFileText%% (fileName As String, text As String)
@@ -899,15 +899,15 @@ $If RAYLIB_BI = UNDEFINED Then
         Sub LoadDroppedFiles (retVal As FilePathList)
         Sub UnloadDroppedFiles (files As FilePathList)
         Function GetFileModTime& (fileName As String)
-        Function CompressData~%& (dat As _Unsigned _Byte, Byval dataSize As Long, compDataSize As Long)
-        Function DecompressData~%& (compData As _Unsigned _Byte, Byval compDataSize As Long, dataSize As Long)
-        Function EncodeDataBase64$ (dat As _Unsigned _Byte, Byval dataSize As Long, outputSize As Long)
-        Function DecodeDataBase64~%& (dat As _Unsigned _Byte, outputSize As Long)
-        Function IsKeyPressed%% (ByVal key As Long)
-        Function IsKeyDown%% (ByVal key As Long)
-        Function IsKeyReleased%% (ByVal key As Long)
-        Function IsKeyUp%% (ByVal key As Long)
-        Sub SetExitKey (ByVal key As Long)
+        Function CompressData~%& (ByVal dat As _Unsigned _Offset, Byval dataSize As Long, compDataSize As Long)
+        Function DecompressData~%& (ByVal compData As _Unsigned _Offset, Byval compDataSize As Long, dataSize As Long)
+        Function EncodeDataBase64$ (ByVal dat As _Unsigned _Offset, Byval dataSize As Long, outputSize As Long)
+        Function DecodeDataBase64~%& (ByVal dat As _Unsigned _Offset, outputSize As Long)
+        Function IsKeyPressed%% (ByVal kbKey As Long)
+        Function IsKeyDown%% (ByVal kbKey As Long)
+        Function IsKeyReleased%% (ByVal kbKey As Long)
+        Function IsKeyUp%% (ByVal kbKey As Long)
+        Sub SetExitKey (ByVal kbKey As Long)
         Function GetKeyPressed&
         Function GetCharPressed&
         Function IsGamepadAvailable%% (ByVal gamepad As Long)
@@ -1000,7 +1000,7 @@ $If RAYLIB_BI = UNDEFINED Then
         Sub __LoadImage Alias LoadImage (fileName As String, retVal As Image)
         Sub LoadImageRaw (fileName As String, Byval W As Long, Byval H As Long, Byval format As Long, Byval headerSize As Long, retVal As Image)
         Sub LoadImageAnim (fileName As String, frames As Long, retVal As Image)
-        Sub LoadImageFromMemory (fileType As String, fileData As _Unsigned _Byte, Byval dataSize As Long, retVal As Image)
+        Sub LoadImageFromMemory (fileType As String, Byval fileData As _Unsigned _Offset, Byval dataSize As Long, retVal As Image)
         Sub LoadImageFromTexture (tex As Texture, retVal As Image)
         Sub LoadImageFromScreen (retVal As Image)
         Function IsImageReady%% (img As Image)
@@ -1102,12 +1102,12 @@ $If RAYLIB_BI = UNDEFINED Then
         Sub GetFontDefault (retVal As Font)
         Sub LoadFont (fileName As String, retVal As Font)
         Sub LoadFontEx (fileName As String, Byval fontSize As Long, fontChars As Long, Byval glyphCount As Long, retVal As Font)
-        Sub LoadFontFromImage (img As Image, Byval key As _Unsigned Long, Byval firstChar As Long, retVal As Font)
-        Sub LoadFontFromMemory (fileType As String, fileData As _Unsigned _Byte, Byval dataSize As Long, Byval fontSize As Long, fontChars As Long, Byval glyphCount As Long, retVal As Font)
+        Sub LoadFontFromImage (img As Image, Byval colorKey As _Unsigned Long, Byval firstChar As Long, retVal As Font)
+        Sub LoadFontFromMemory (fileType As String, Byval fileData As _Unsigned _Offset, Byval dataSize As Long, Byval fontSize As Long, fontChars As Long, Byval glyphCount As Long, retVal As Font)
         Function IsFontReady%% (font As Font)
-        Function LoadFontData~%& (fileData As _Unsigned _Byte, Byval dataSize As Long, Byval fontSize As Long, fontChars As Long, Byval glyphCount As Long, Byval type As Long)
-        Sub GenImageFontAtlas (chars As GlyphInfo, Byval recs As _Unsigned _Offset, Byval glyphCount As Long, Byval fontSize As Long, Byval padding As Long, Byval packMethod As Long, retVal As Image)
-        Sub UnloadFontData (chars As GlyphInfo, Byval glyphCount As Long)
+        Function LoadFontData~%& (ByVal fileData As _Unsigned _Offset, Byval dataSize As Long, Byval fontSize As Long, fontChars As Long, Byval glyphCount As Long, Byval type As Long)
+        Sub GenImageFontAtlas (ByVal chars As _Unsigned _Offset, recs As _Unsigned _Offset, Byval glyphCount As Long, Byval fontSize As Long, Byval padding As Long, Byval packMethod As Long, retVal As Image)
+        Sub UnloadFontData (ByVal chars As _Unsigned _Offset, Byval glyphCount As Long)
         Sub UnloadFont (font As Font)
         Function ExportFontAsCode%% (font As Font, fileName As String)
         Sub DrawFPS (ByVal posX As Long, Byval posY As Long)
@@ -1224,7 +1224,7 @@ $If RAYLIB_BI = UNDEFINED Then
         Function IsAudioDeviceReady%%
         Sub SetMasterVolume (ByVal volume As Single)
         Sub LoadWave (fileName As String, retVal As Wave)
-        Sub LoadWaveFromMemory (fileType As String, fileData As _Unsigned _Byte, Byval dataSize As Long, retVal As Wave)
+        Sub LoadWaveFromMemory (fileType As String, Byval fileData As _Unsigned _Offset, Byval dataSize As Long, retVal As Wave)
         Function IsWaveReady%% (wav As Wave)
         Sub LoadSound (fileName As String, retVal As RSound)
         Sub LoadSoundFromWave (wav As Wave, retVal As RSound)
@@ -1248,7 +1248,7 @@ $If RAYLIB_BI = UNDEFINED Then
         Function LoadWaveSamples~%& (wav As Wave)
         Sub UnloadWaveSamples (samples As Single)
         Sub __LoadMusicStream Alias LoadMusicStream (fileName As String, retVal As Music)
-        Sub LoadMusicStreamFromMemory (fileType As String, dat As _Unsigned _Offset, Byval dataSize As Long, retVal As Music)
+        Sub LoadMusicStreamFromMemory (fileType As String, Byval dat As _Unsigned _Offset, Byval dataSize As Long, retVal As Music)
         Function IsMusicReady%% (mus As Music)
         Sub UnloadMusicStream (mus As Music)
         Sub PlayMusicStream (mus As Music)
