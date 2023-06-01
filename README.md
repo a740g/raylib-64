@@ -7,9 +7,9 @@
 
 raylib is highly inspired by Borland BGI graphics lib and by XNA framework and it's specially well suited for prototyping, tooling, graphical applications, embedded systems and education.
 
-![Screenshot](assets/screenshots/screenshot1.png)
-![Screenshot](assets/screenshots/screenshot2.png)
-![Screenshot](assets/screenshots/screenshot3.png)
+![Screenshot](assets/screenshot/screenshot1.png)
+![Screenshot](assets/screenshot/screenshot2.png)
+![Screenshot](assets/screenshot/screenshot3.png)
 
 ## SUPPORTED PLATFORMS
 
