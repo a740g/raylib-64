@@ -123,6 +123,14 @@ $If RAYLIB_BAS = UNDEFINED Then
         __LoadTexture BStrToCStr(fileName), retVal
     End Sub
 
+    Sub LoadFont (fileName As String, retVal As Font)
+        __LoadFont BStrToCStr(fileName), retVal
+    End Sub
+
+    Sub LoadFontEx (fileName As String, fontSize As Long, fontChars As _Unsigned _Offset, glyphCount As Long, retVal As Font)
+        __LoadFontEx BStrToCStr(fileName), fontSize, fontChars, glyphCount, retVal
+    End Sub
+
     Function TextFormatString$ (text As String, s As String)
         TextFormatString = CStrToBStr(__TextFormatString(BStrToCStr(text), BStrToCStr(s)))
     End Function

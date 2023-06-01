@@ -3940,9 +3940,9 @@ inline void LoadFont(const char *fileName, void *ret)
     *(Font *)ret = _LoadFont(fileName);
 }
 
-inline void LoadFontEx(const char *fileName, int fontSize, int *fontChars, int glyphCount, void *ret)
+inline void LoadFontEx(const char *fileName, int fontSize, uintptr_t fontChars, int glyphCount, void *ret)
 {
-    *(Font *)ret = _LoadFontEx(fileName, fontSize, fontChars, glyphCount);
+    *(Font *)ret = _LoadFontEx(fileName, fontSize, (int *)fontChars, glyphCount);
 }
 
 inline void LoadFontFromImage(void *image, uint32_t key, int firstChar, void *ret)
@@ -3950,9 +3950,9 @@ inline void LoadFontFromImage(void *image, uint32_t key, int firstChar, void *re
     *(Font *)ret = _LoadFontFromImage(*(Image *)image, key, firstChar);
 }
 
-inline void LoadFontFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, void *ret)
+inline void LoadFontFromMemory(const char *fileType, const unsigned char *fileData, int dataSize, int fontSize, uintptr_t fontChars, int glyphCount, void *ret)
 {
-    *(Font *)ret = _LoadFontFromMemory(fileType, fileData, dataSize, fontSize, fontChars, glyphCount);
+    *(Font *)ret = _LoadFontFromMemory(fileType, fileData, dataSize, fontSize, (int *)fontChars, glyphCount);
 }
 
 inline qb_bool IsFontReady(void *font)
@@ -3960,9 +3960,9 @@ inline qb_bool IsFontReady(void *font)
     return TO_QB_BOOL(_IsFontReady(*(Font *)font));
 }
 
-inline uintptr_t LoadFontData(uintptr_t fileData, int dataSize, int fontSize, int *fontChars, int glyphCount, int type)
+inline uintptr_t LoadFontData(uintptr_t fileData, int dataSize, int fontSize, uintptr_t fontChars, int glyphCount, int type)
 {
-    return (uintptr_t)_LoadFontData((const unsigned char *)fileData, dataSize, fontSize, fontChars, glyphCount, type);
+    return (uintptr_t)_LoadFontData((const unsigned char *)fileData, dataSize, fontSize, (int *)fontChars, glyphCount, type);
 }
 
 inline void GenImageFontAtlas(uintptr_t chars, uintptr_t *recs, int glyphCount, int fontSize, int padding, int packMethod, void *ret)
