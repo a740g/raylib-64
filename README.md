@@ -66,7 +66,7 @@ Where is the source for the autogen program?
 
 On Windows, why does the program that I write using the library momentarily open a console Window?
 
-- raylib has it's own graphics windows and does it's own Window management. So we made the QB64 programs using the library `$Console:Only`. This ensures that other graphics feature in QB64 does not interfer with raylib. As a side-effect, this opens a console Window when compiled programs are lauched. The console window however is minimized by default.
+- raylib has it's own graphics window and does it's own window management. So, any program using the library will by default be `$Console:Only`. This ensures that other graphics feature in QB64 does not interfere with raylib. As a side-effect, this opens a console Window when compiled programs are launched. The console window however is minimized by default.
 
 What QB64 statements and functions should I avoid while using raylib?
 
