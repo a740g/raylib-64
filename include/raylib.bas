@@ -17,6 +17,27 @@ $If RAYLIB_BAS = UNDEFINED Then
     '-------------------------------------------------------------------------------------------------------------------
     ' FUNCTIONS & SUBROUTINES
     '-------------------------------------------------------------------------------------------------------------------
+    ' Returns a BASIC string (bstring) from a NULL terminated C string (cstring) pointer
+    Function CStrPtrToBStr$ (cStrPtr As _Unsigned _Offset)
+        If cStrPtr <> NULL Then
+            Dim bufferSize As _Unsigned _Offset: bufferSize = StrLen(cStrPtr)
+
+            If bufferSize > NULL Then
+                Dim buffer As String: buffer = String$(bufferSize + 1, NULL)
+
+                StrNCpy _Offset(buffer), cStrPtr, bufferSize
+
+                CStrPtrToBStr = Left$(buffer, bufferSize)
+            End If
+        End If
+    End Function
+
+    ' Returns a BASIC string (bstring) from NULL terminated C string (cstring)
+    Function CStrToBStr$ (cStr As String)
+        Dim zeroPos As Long: zeroPos = InStr(cStr, Chr$(NULL))
+        If zeroPos > NULL Then CStrToBStr = Left$(cStr, zeroPos - 1) Else CStrToBStr = cStr
+    End Function
+
     ' Just a convenience function for use when calling external libraries
     Function BStrToCStr$ (s As String)
         BStrToCStr = s + Chr$(NULL)
@@ -93,6 +114,18 @@ $If RAYLIB_BAS = UNDEFINED Then
     Sub LoadTexture (fileName As String, retVal As Texture)
         __LoadTexture BStrToCStr(fileName), retVal
     End Sub
+
+    Function TextFormatString$ (text As String, s As String)
+        TextFormatString = CStrToBStr(__TextFormatString(BStrToCStr(text), BStrToCStr(s)))
+    End Function
+
+    Function TextFormatLong$ (text As String, i As Long)
+        TextFormatLong = CStrToBStr(__TextFormatLong(BStrToCStr(text), i))
+    End Function
+
+    Function TextFormatSingle$ (text As String, f As Single)
+        TextFormatSingle = CStrToBStr(__TextFormatSingle(BStrToCStr(text), f))
+    End Function
     '-------------------------------------------------------------------------------------------------------------------
 
     $Checking:On
