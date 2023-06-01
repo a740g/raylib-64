@@ -25,19 +25,6 @@ enum qb_bool : int8_t
 // We have to do this for the QB64 side
 #define TO_QB_BOOL(_exp_) ((qb_bool)(-TO_C_BOOL(_exp_)))
 
-// Macro to create a packed RGBA value from individual component values
-#define MAKE_RGBA(_r_, _g_, _b_, _a_) ((uint32_t)(((uint8_t)(_a_) << 24) | ((uint8_t)(_b_) << 16) | ((uint8_t)(_g_) << 8) | (uint8_t)(_r_)))
-// Macro to extract the red component from a packed RGBA value
-#define GET_RGBA_R(_rgba_) ((uint8_t)((uint32_t)(_rgba_)&0xFF))
-// Macro to extract the green component from a packed RGBA value
-#define GET_RGBA_G(_rgba_) ((uint8_t)(((uint32_t)(_rgba_) >> 8) & 0xFF))
-// Macro to extract the blue component from a packed RGBA value
-#define GET_RGBA_B(_rgba_) ((uint8_t)(((uint32_t)(_rgba_) >> 16) & 0xFF))
-// Macro to extract the alpha component from a packed RGBA value
-#define GET_RGBA_A(_rgba_) ((uint8_t)(((uint32_t)(_rgba_) >> 24) & 0xFF))
-// Macro to extract the RGB value (ignoring the alpha component) from a packed RGBA value
-#define GET_RGBA_RGB(_rgba_) ((uint32_t)((uint32_t)(_rgba_)&0xFFFFFF))
-
 // Vector2, 2 components
 struct Vector2
 {
@@ -2194,7 +2181,7 @@ inline void PokeString(uint8_t *s, uintptr_t o, uint8_t n)
 /// @return Returns an RGBA color
 inline uint32_t MakeRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
-    return MAKE_RGBA(r, g, b, a);
+    return ((uint32_t)a << 24) | ((uint32_t)b << 16) | ((uint32_t)g << 8) | (uint32_t)(r);
 }
 
 /// @brief Returns the Red component
@@ -2202,7 +2189,7 @@ inline uint32_t MakeRGBA(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 /// @return Red
 inline uint8_t GetRGBARed(uint32_t rgba)
 {
-    return GET_RGBA_R(rgba);
+    return (uint8_t)(rgba & 0xFF);
 }
 
 /// @brief Returns the Green component
@@ -2210,7 +2197,7 @@ inline uint8_t GetRGBARed(uint32_t rgba)
 /// @return Green
 inline uint8_t GetRGBAGreen(uint32_t rgba)
 {
-    return GET_RGBA_G(rgba);
+    return (uint8_t)((rgba >> 8) & 0xFF);
 }
 
 /// @brief Returns the Blue component
@@ -2218,7 +2205,7 @@ inline uint8_t GetRGBAGreen(uint32_t rgba)
 /// @return Blue
 inline uint8_t GetRGBABlue(uint32_t rgba)
 {
-    return GET_RGBA_B(rgba);
+    return (uint8_t)((rgba >> 16) & 0xFF);
 }
 
 /// @brief Returns the Alpha value
@@ -2226,7 +2213,7 @@ inline uint8_t GetRGBABlue(uint32_t rgba)
 /// @return Alpha
 inline uint8_t GetRGBAAlpha(uint32_t rgba)
 {
-    return GET_RGBA_A(rgba);
+    return (uint8_t)((rgba >> 24) & 0xFF);
 }
 
 /// @brief Gets the RGB value without the alpha
@@ -2234,12 +2221,12 @@ inline uint8_t GetRGBAAlpha(uint32_t rgba)
 /// @return RGB value
 inline uint32_t GetRGBARGB(uint32_t rgba)
 {
-    return GET_RGBA_RGB(rgba);
+    return rgba & 0xFFFFFF;
 }
 
-/// @brief Helps convert QB64 BGRA color to raylib RGBA color and back
-/// @param bgra A QB64 BGRA color or raylib RGBA color
-/// @return A raylib RGBA color or a QB64 BGRA color
+/// @brief Helps convert a BGRA color to an RGBA color and back
+/// @param bgra A BGRA color or an RGBA color
+/// @return An RGBA color or a BGRA color
 inline uint32_t SwapRedBlue(uint32_t clr)
 {
     return (clr & 0xFF00FF00) | ((clr & 0x00FF0000) >> 16) | ((clr & 0x000000FF) << 16);
@@ -3663,22 +3650,22 @@ inline void ImageColorReplace(void *image, uint32_t color, uint32_t replace)
     _ImageColorReplace((Image *)image, color, replace);
 }
 
-inline void *LoadImageColors(void *image)
+inline uintptr_t LoadImageColors(void *image)
 {
-    return (void *)_LoadImageColors(*(Image *)image);
+    return (uintptr_t)_LoadImageColors(*(Image *)image);
 }
 
-inline void *LoadImagePalette(void *image, int maxPaletteSize, int *colorCount)
+inline uintptr_t LoadImagePalette(void *image, int maxPaletteSize, int *colorCount)
 {
-    return (void *)_LoadImagePalette(*(Image *)image, maxPaletteSize, colorCount);
+    return (uintptr_t)_LoadImagePalette(*(Image *)image, maxPaletteSize, colorCount);
 }
 
-inline void UnloadImageColors(void *colors)
+inline void UnloadImageColors(uintptr_t colors)
 {
     _UnloadImageColors((uint32_t *)colors);
 }
 
-inline void UnloadImagePalette(void *colors)
+inline void UnloadImagePalette(uintptr_t colors)
 {
     _UnloadImagePalette((uint32_t *)colors);
 }

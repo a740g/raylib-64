@@ -102,10 +102,7 @@ UnloadImageColors mapPixels ' Unload color array
 UnloadTexture cubicmap ' Unload cubicmap texture
 UnloadTexture tex ' Unload map texture
 UnloadModel mdl ' Unload map model
-
 CloseWindow ' Close window and OpenGL context
-
-
 
 System
 
