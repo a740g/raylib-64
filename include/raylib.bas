@@ -17,139 +17,188 @@ $If RAYLIB_BAS = UNDEFINED Then
     '-------------------------------------------------------------------------------------------------------------------
     ' FUNCTIONS & SUBROUTINES
     '-------------------------------------------------------------------------------------------------------------------
-    ' Returns a BASIC string (bstring) from a NULL terminated C string (cstring) pointer
-    Function CStrPtrToBStr$ (cStrPtr As _Unsigned _Offset)
-        If cStrPtr <> NULL Then
-            Dim bufferSize As _Unsigned _Offset: bufferSize = StrLen(cStrPtr)
-
-            If bufferSize > NULL Then
-                Dim buffer As String: buffer = String$(bufferSize + 1, NULL)
-
-                StrNCpy _Offset(buffer), cStrPtr, bufferSize
-
-                CStrPtrToBStr = Left$(buffer, bufferSize)
-            End If
-        End If
-    End Function
-
     ' Returns a BASIC string (bstring) from NULL terminated C string (cstring)
-    Function CStrToBStr$ (cStr As String)
-        Dim zeroPos As Long: zeroPos = InStr(cStr, Chr$(NULL))
-        If zeroPos > NULL Then CStrToBStr = Left$(cStr, zeroPos - 1) Else CStrToBStr = cStr
+    Function ToBString$ (s As String)
+        Dim zeroPos As Long: zeroPos = InStr(s, Chr$(NULL))
+        If zeroPos > NULL Then ToBString = Left$(s, zeroPos - 1) Else ToBString = s
     End Function
 
     ' Just a convenience function for use when calling external libraries
-    Function BStrToCStr$ (s As String)
-        BStrToCStr = s + Chr$(NULL)
+    Function ToCString$ (s As String)
+        ToCString = s + Chr$(NULL)
     End Function
 
     Sub InitWindow (W As Long, H As Long, caption As String)
-        __InitWindow W, H, BStrToCStr(caption)
+        __InitWindow W, H, ToCString(caption)
     End Sub
 
     Sub SetWindowTitle (caption As String)
-        __SetWindowTitle BStrToCStr(caption)
+        __SetWindowTitle ToCString(caption)
     End Sub
 
     Sub SetClipboardText (text As String)
-        __SetClipboardText BStrToCStr(text)
+        __SetClipboardText ToCString(text)
     End Sub
 
     Sub DrawText (text As String, posX As Long, posY As Long, fontSize As Long, clr As _Unsigned Long)
-        __DrawText BStrToCStr(text), posX, posY, fontSize, clr
+        __DrawText ToCString(text), posX, posY, fontSize, clr
     End Sub
 
     Sub DrawTextEx (fnt As Font, text As String, position As Vector2, fontSize As Single, spacing As Single, tint As _Unsigned Long)
-        __DrawTextEx fnt, BStrToCStr(text), position, fontSize, spacing, tint
+        __DrawTextEx fnt, ToCString(text), position, fontSize, spacing, tint
     End Sub
 
     Sub DrawTextPro (fnt As Font, text As String, position As Vector2, origin As Vector2, rotation As Single, fontSize As Single, spacing As Single, tint As _Unsigned Long)
-        __DrawTextPro fnt, BStrToCStr(text), position, origin, rotation, fontSize, spacing, tint
+        __DrawTextPro fnt, ToCString(text), position, origin, rotation, fontSize, spacing, tint
     End Sub
 
     Sub LoadMusicStream (fileName As String, retVal As Music)
-        __LoadMusicStream BStrToCStr(fileName), retVal
+        __LoadMusicStream ToCString(fileName), retVal
     End Sub
 
     Sub LoadShader (vsFileName As String, fsFileName As String, retVal As Shader)
-        __LoadShader BStrToCStr(vsFileName), BStrToCStr(fsFileName), retVal
+        __LoadShader ToCString(vsFileName), ToCString(fsFileName), retVal
     End Sub
 
     Sub LoadShaderFromMemory (vsCode As String, fsCode As String, retVal As Shader)
-        __LoadShaderFromMemory BStrToCStr(vsCode), BStrToCStr(fsCode), retVal
+        __LoadShaderFromMemory ToCString(vsCode), ToCString(fsCode), retVal
     End Sub
 
     Function GetShaderLocation& (shdr As Shader, uniformName As String)
-        GetShaderLocation = __GetShaderLocation(shdr, BStrToCStr(uniformName))
+        GetShaderLocation = __GetShaderLocation(shdr, ToCString(uniformName))
     End Function
 
     Function GetShaderLocationAttrib& (shdr As Shader, attribName As String)
-        GetShaderLocationAttrib = __GetShaderLocationAttrib(shdr, BStrToCStr(attribName))
+        GetShaderLocationAttrib = __GetShaderLocationAttrib(shdr, ToCString(attribName))
     End Function
 
     Sub TakeScreenshot (fileName As String)
-        __TakeScreenshot BStrToCStr(fileName)
+        __TakeScreenshot ToCString(fileName)
     End Sub
 
     Sub TraceLog (logLevel As Long, text As String)
-        __TraceLog logLevel, BStrToCStr(text)
+        __TraceLog logLevel, ToCString(text)
     End Sub
 
     Sub TraceLogString (logLevel As Long, text As String, s As String)
-        __TraceLogString logLevel, BStrToCStr(text), BStrToCStr(s)
+        __TraceLogString logLevel, ToCString(text), ToCString(s)
     End Sub
 
     Sub TraceLogLong (logLevel As Long, text As String, i As Long)
-        __TraceLogLong logLevel, BStrToCStr(text), i
+        __TraceLogLong logLevel, ToCString(text), i
     End Sub
 
     Sub TraceLogSingle (logLevel As Long, text As String, f As Single)
-        __TraceLogSingle logLevel, BStrToCStr(text), f
+        __TraceLogSingle logLevel, ToCString(text), f
     End Sub
 
     Sub OpenURL (url As String)
-        __OpenURL BStrToCStr(url)
+        __OpenURL ToCString(url)
     End Sub
 
     Function LoadFileData~%& (fileName As String, bytesRead As _Unsigned Long)
-        LoadFileData = __LoadFileData(BStrToCStr(fileName), bytesRead)
+        LoadFileData = __LoadFileData(ToCString(fileName), bytesRead)
     End Function
 
     Sub LoadImage (fileName As String, retVal As Image)
-        __LoadImage BStrToCStr(fileName), retVal
+        __LoadImage ToCString(fileName), retVal
     End Sub
 
     Sub LoadTexture (fileName As String, retVal As Texture)
-        __LoadTexture BStrToCStr(fileName), retVal
+        __LoadTexture ToCString(fileName), retVal
     End Sub
 
     Sub LoadFont (fileName As String, retVal As Font)
-        __LoadFont BStrToCStr(fileName), retVal
+        __LoadFont ToCString(fileName), retVal
     End Sub
 
     Sub LoadFontEx (fileName As String, fontSize As Long, fontChars As _Unsigned _Offset, glyphCount As Long, retVal As Font)
-        __LoadFontEx BStrToCStr(fileName), fontSize, fontChars, glyphCount, retVal
+        __LoadFontEx ToCString(fileName), fontSize, fontChars, glyphCount, retVal
+    End Sub
+
+    Sub LoadModel (fileName As String, retVal As Model)
+        __LoadModel ToCString(fileName), retVal
     End Sub
 
     Function TextFormatString$ (text As String, s As String)
-        TextFormatString = CStrToBStr(__TextFormatString(BStrToCStr(text), BStrToCStr(s)))
+        TextFormatString = __TextFormatString(ToCString(text), ToCString(s))
     End Function
 
     Function TextFormatLong$ (text As String, i As Long)
-        TextFormatLong = CStrToBStr(__TextFormatLong(BStrToCStr(text), i))
+        TextFormatLong = __TextFormatLong(ToCString(text), i)
     End Function
 
     Function TextFormatSingle$ (text As String, f As Single)
-        TextFormatSingle = CStrToBStr(__TextFormatSingle(BStrToCStr(text), f))
+        TextFormatSingle = __TextFormatSingle(ToCString(text), f)
     End Function
 
-    Function MeasureText (text As String, fontSize As Long)
-        MeasureText = __MeasureText(BStrToCStr(text), fontSize)
+    Function MeasureText& (text As String, fontSize As Long)
+        MeasureText = __MeasureText(ToCString(text), fontSize)
     End Function
 
     Sub MeasureTextEx (fnt As Font, text As String, fontSize As Single, spacing As Single, retVal As Vector2)
-        __MeasureTextEx fnt, BStrToCStr(text), fontSize, spacing, retVal
+        __MeasureTextEx fnt, ToCString(text), fontSize, spacing, retVal
     End Sub
+
+    Function SaveFileText%% (fileName As String, text As String)
+        SaveFileText = __SaveFileText(ToCString(fileName), ToCString(text))
+    End Function
+
+    Function FileExists%% (fileName As String)
+        FileExists = __FileExists(ToCString(fileName))
+    End Function
+
+    Function DirectoryExists%% (dirPath As String)
+        DirectoryExists = __DirectoryExists(ToCString(dirPath))
+    End Function
+
+    Function IsFileExtension%% (fileName As String, ext As String)
+        IsFileExtension = __IsFileExtension(ToCString(fileName), ToCString(ext))
+    End Function
+
+    Function GetFileLength& (fileName As String)
+        GetFileLength = __GetFileLength(ToCString(fileName))
+    End Function
+
+    Function GetFileExtension$ (fileName As String)
+        GetFileExtension = __GetFileExtension(ToCString(fileName))
+    End Function
+
+    Function GetFileName$ (filePath As String)
+        GetFileName = __GetFileName(ToCString(filePath))
+    End Function
+
+    Function GetFileNameWithoutExt$ (filePath As String)
+        GetFileNameWithoutExt = __GetFileNameWithoutExt(ToCString(filePath))
+    End Function
+
+    Function GetDirectoryPath$ (filePath As String)
+        GetDirectoryPath = __GetDirectoryPath(ToCString(filePath))
+    End Function
+
+    Function GetPrevDirectoryPath$ (dirPath As String)
+        GetPrevDirectoryPath = __GetPrevDirectoryPath(ToCString(dirPath))
+    End Function
+
+    Function ChangeDirectory%% (dir As String)
+        ChangeDirectory = __ChangeDirectory(ToCString(dir))
+    End Function
+
+    Function IsPathFile%% (path As String)
+        IsPathFile = __IsPathFile(ToCString(path))
+    End Function
+
+    Sub LoadDirectoryFiles (dirPath As String, retVal As FilePathList)
+        __LoadDirectoryFiles ToCString(dirPath), retVal
+    End Sub
+
+    Sub LoadDirectoryFilesEx (basePath As String, filter As String, scanSubdirs As _Byte, retVal As FilePathList)
+        __LoadDirectoryFilesEx ToCString(basePath), ToCString(filter), scanSubdirs, retVal
+    End Sub
+
+    Function GetFileModTime& (fileName As String)
+        GetFileModTime = __GetFileModTime(ToCString(fileName))
+    End Function
     '-------------------------------------------------------------------------------------------------------------------
 
     $Checking:On

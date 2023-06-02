@@ -47,7 +47,7 @@ While Not WindowShouldClose ' Detect window close button or ESC key
                 GetMousePosition bunnies(bunniesCount).position
                 bunnies(bunniesCount).speed.x = GetRandomValue(-250, 250) / 60.0!
                 bunnies(bunniesCount).speed.y = GetRandomValue(-250, 250) / 60.0!
-                bunnies(bunniesCount).clr = MakeRGBA(GetRandomValue(50, 240), GetRandomValue(80, 240), GetRandomValue(100, 240), 255)
+                bunnies(bunniesCount).clr = ToRGBA(GetRandomValue(50, 240), GetRandomValue(80, 240), GetRandomValue(100, 240), 255)
                 bunniesCount = bunniesCount + 1
             End If
         Next

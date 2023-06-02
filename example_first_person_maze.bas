@@ -22,9 +22,9 @@ Dim As Model mdl: LoadModelFromMesh msh, mdl
 
 ' NOTE: By default each cube is mapped to one part of texture atlas
 Dim As Texture tex: LoadTexture "assets/image/cubicmap_atlas.png", tex ' Load map texture
-Dim As Material matrl: PeekTypeAtOffset mdl.materials, 0, _Offset(matrl), Len(matrl)
-Dim As MaterialMap matrlmap: PeekTypeAtOffset matrl.maps, MATERIAL_MAP_DIFFUSE, _Offset(matrlmap), Len(matrlmap)
-matrlmap.tex = tex: PokeTypeAtOffset matrl.maps, MATERIAL_MAP_DIFFUSE, _Offset(matrlmap), Len(matrlmap) ' Set map diffuse texture
+Dim As Material matrl: PeekType mdl.materials, 0, _Offset(matrl), Len(matrl)
+Dim As MaterialMap matrlmap: PeekType matrl.maps, MATERIAL_MAP_DIFFUSE, _Offset(matrlmap), Len(matrlmap)
+matrlmap.tex = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _Offset(matrlmap), Len(matrlmap) ' Set map diffuse texture
 
 ' Get map image data to be used for collision detection
 Dim As _Unsigned _Offset mapPixels: mapPixels = LoadImageColors(imMap)
@@ -67,7 +67,7 @@ Do Until WindowShouldClose
     Dim r As Rectangle
     For y = 0 To cubicmap.H - 1
         For x = 0 To cubicmap.W - 1
-            If GetRGBARed(PeekLongAtOffset(mapPixels, y * cubicmap.W + x)) = 255 Then ' Collision: white pixel, only check R channel
+            If GetRed(PeekLong(mapPixels, y * cubicmap.W + x)) = 255 Then ' Collision: white pixel, only check R channel
                 r.x = mapPosition.x - 0.5! + x * 1.0!: r.y = mapPosition.z - 0.5! + y * 1.0!: r.W = 1.0!: r.H = 1.0!
                 If CheckCollisionCircleRec(playerPos, playerRadius, r) Then
                     ' Collision detected, reset camera position

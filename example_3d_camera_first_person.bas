@@ -25,7 +25,7 @@ Dim i As Long
 For i = 0 To MAX_COLUMNS
     heights(i) = GetRandomValue(1, 12)
     v.x = GetRandomValue(-15, 15): v.y = heights(i) / 2.0!: v.z = GetRandomValue(-15, 15): positions(i) = v
-    clr(i) = MakeRGBA(GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255)
+    clr(i) = ToRGBA(GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255)
 Next
 
 DisableCursor ' Limit cursor to relative movement inside the window
