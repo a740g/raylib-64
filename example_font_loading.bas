@@ -10,8 +10,7 @@ Const screenHeight = 450
 InitWindow screenWidth, screenHeight, "raylib [text] example - font loading"
 
 ' Define characters to draw
-' NOTE: raylib supports UTF-8 encoding, following list is actually codified as UTF8 internally
-Const msg = "!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHI\nJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmn\nopqrstuvwxyz{|}~¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓ\nÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷\nøùúûüışÿ"
+Dim msg As String: msg = "~!@#$%^&*()_+QWERTYUIOP{}|" + Chr$(10) + "ASDFGHJKL:" + Chr$(34) + "ZXCVBNM<>?" + Chr$(10) + "`1234567890-=qwertyuiop[]\" + Chr$(10) + "asdfghjkl;'zxcvbnm,./"
 
 ' NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
 
