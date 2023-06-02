@@ -2221,7 +2221,7 @@ inline uint8_t GetBlue(uint32_t rgba)
 /// @return Alpha
 inline uint8_t GetAlpha(uint32_t rgba)
 {
-    return (uint8_t)((rgba >> 24) & 0xFF);
+    return (uint8_t)(rgba >> 24);
 }
 
 /// @brief Gets the RGB value without the alpha
