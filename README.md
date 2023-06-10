@@ -70,6 +70,10 @@ On Windows, why does the program that I write using the library momentarily open
 
 What QB64 statements and functions should I avoid while using raylib?
 
+- Why have you changed a lot of raylib functions like `LoadTexture`, `GetMousePosition`, `GetMonitorPosition` etc. to QB64 `SUB`s? Should't these be `FUNCTIONS`s?
+
+Unfortunately, QB64 does not support returning UDTs from `FUNCTION`s and many raylib functions return UTDs. So, to work around this limitation, I changed many raylib funtions to `SUB`s that would otherwise be a `FUNCTION`. The return value is returned to the caller via a SUB parameter. This is usually the last parameter and has the name `retVal`.
+
 - Any statement or functions that require the QB64 graphics OpenGL window (including all input stuff) should be avoided. Use the raylib alternatives for those.
 
 Does all of raylib work with QB64?
@@ -84,7 +88,7 @@ I found a bug. How can I help?
 
 - This requires the latest version of [QB64-PE](https://github.com/QB64-Phoenix-Edition/QB64pe/releases)
 - Some TYPEs and TYPE member variables had to be renamed to resolve clashes with QB64 keywords. E.g. Sound is RSound. Also QB64 does not support TYPE aliases. So, There is no Camera. It's just Camera2D or Camera3D. There is no Texture2D. It's just Texture.
-- Lots of functions using strings are not wrapped yet. Use these carefully by null-terminating string before passing them off to raylib functions. If possible, help me wrap these functions. See [include/raylib.bas](include/raylib.bas) for details.
+- Lots of functions using strings are not wrapped yet. Use these carefully by null-terminating strings before passing them off to raylib functions. If possible, help me wrap these functions. See [include/raylib.bas](include/raylib.bas) for details.
 
 ## ASSETS
 
