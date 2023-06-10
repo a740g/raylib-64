@@ -72,7 +72,7 @@ What QB64 statements and functions should I avoid while using raylib?
 
 - Why have you changed a lot of raylib functions like `LoadTexture`, `GetMousePosition`, `GetMonitorPosition` etc. to QB64 `SUB`s? Should't these be `FUNCTIONS`s?
 
-Unfortunately, QB64 does not support returning UDTs from `FUNCTION`s and many raylib functions return UTDs. So, to work around this limitation, I changed many raylib funtions to `SUB`s that would otherwise be a `FUNCTION`. The return value is returned to the caller via a SUB parameter. This is usually the last parameter and has the name `retVal`.
+Unfortunately, QB64 does not support returning UDTs from `FUNCTION`s and many raylib functions return UDTs. So, to work around this limitation, I changed many raylib funtions to `SUB`s that would otherwise be a `FUNCTION`. The return value is returned to the caller via a SUB parameter. This is usually the last parameter and has the name `retVal`.
 
 - Any statement or functions that require the QB64 graphics OpenGL window (including all input stuff) should be avoided. Use the raylib alternatives for those.
 
