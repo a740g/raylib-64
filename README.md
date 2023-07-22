@@ -18,7 +18,7 @@ raylib is highly inspired by Borland BGI graphics lib and by XNA framework and i
 | --- | ---------------- | -------------- | -------------- |
 | core | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | reasings | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
-| physac | :heavy_check_mark | :heavy_check_mark | :heavy_check_mark |
+| physac | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | raymath | :construction: | :construction: | :construction: |
 | raygui | :x: | :x: | :x: |
 
