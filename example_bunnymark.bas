@@ -2,65 +2,65 @@
 
 '$INCLUDE:'include/raylib.bi'
 
-Const MAX_BUNNIES = 50000 ' 50K bunnies limit
+CONST MAX_BUNNIES = 50000 ' 50K bunnies limit
 
 ' This is the maximum amount of elements (quads) per batch
 ' NOTE: This value is defined in [rlgl] module and can be changed there
-Const MAX_BATCH_ELEMENTS = 8192
+CONST MAX_BATCH_ELEMENTS = 8192
 
-Type Bunny
-    As Vector2 position
-    As Vector2 speed
-    As _Unsigned Long clr
-End Type
+TYPE Bunny
+    AS Vector2 position
+    AS Vector2 speed
+    AS _UNSIGNED LONG clr
+END TYPE
 
 '------------------------------------------------------------------------------------
 ' Program main entry point
 '------------------------------------------------------------------------------------
 ' Initialization
 '--------------------------------------------------------------------------------------
-Const screenWidth = 800
-Const screenHeight = 450
+CONST screenWidth = 800
+CONST screenHeight = 450
 
 InitWindow screenWidth, screenHeight, "raylib [textures] example - bunnymark"
 
 ' Load bunny texture
-Dim As Texture texBunny: LoadTexture "assets/image/wabbit_alpha.png", texBunny
+DIM AS Texture texBunny: LoadTexture "assets/image/wabbit_alpha.png", texBunny
 
-Dim bunnies(0 To MAX_BUNNIES - 1) As Bunny ' Bunnies array
+DIM bunnies(0 TO MAX_BUNNIES - 1) AS Bunny ' Bunnies array
 
-Dim bunniesCount As Long ' Bunnies counter
+DIM bunniesCount AS LONG ' Bunnies counter
 
 SetTargetFPS 60 ' Set our game to run at 60 frames-per-second
 '--------------------------------------------------------------------------------------
 
 ' Main game loop
-While Not WindowShouldClose ' Detect window close button or ESC key
+WHILE NOT WindowShouldClose ' Detect window close button or ESC key
 
     ' Update
     '----------------------------------------------------------------------------------
-    If (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) Then
+    IF (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) THEN
         ' Create more bunnies
-        Dim i As Long
-        For i = 0 To 99
-            If bunniesCount < MAX_BUNNIES Then
+        DIM i AS LONG
+        FOR i = 0 TO 99
+            IF bunniesCount < MAX_BUNNIES THEN
                 GetMousePosition bunnies(bunniesCount).position
                 bunnies(bunniesCount).speed.x = GetRandomValue(-250, 250) / 60.0!
                 bunnies(bunniesCount).speed.y = GetRandomValue(-250, 250) / 60.0!
                 bunnies(bunniesCount).clr = ToRGBA(GetRandomValue(50, 240), GetRandomValue(80, 240), GetRandomValue(100, 240), 255)
                 bunniesCount = bunniesCount + 1
-            End If
-        Next
-    End If
+            END IF
+        NEXT
+    END IF
 
     ' Update bunnies
-    For i = 0 To bunniesCount - 1
+    FOR i = 0 TO bunniesCount - 1
         bunnies(i).position.x = bunnies(i).position.x + bunnies(i).speed.x
         bunnies(i).position.y = bunnies(i).position.y + bunnies(i).speed.y
 
-        If (((bunnies(i).position.x + texBunny.W \ 2) > GetScreenWidth) Or ((bunnies(i).position.x + texBunny.W \ 2) < 0)) Then bunnies(i).speed.x = bunnies(i).speed.x * -1
-        If (((bunnies(i).position.y + texBunny.H \ 2) > GetScreenHeight) Or ((bunnies(i).position.y + texBunny.H \ 2 - 40) < 0)) Then bunnies(i).speed.y = bunnies(i).speed.y * -1
-    Next
+        IF (((bunnies(i).position.x + texBunny.W \ 2) > GetScreenWidth) OR ((bunnies(i).position.x + texBunny.W \ 2) < 0)) THEN bunnies(i).speed.x = bunnies(i).speed.x * -1
+        IF (((bunnies(i).position.y + texBunny.H \ 2) > GetScreenHeight) OR ((bunnies(i).position.y + texBunny.H \ 2 - 40) < 0)) THEN bunnies(i).speed.y = bunnies(i).speed.y * -1
+    NEXT
     '----------------------------------------------------------------------------------
 
     ' Draw
@@ -69,7 +69,7 @@ While Not WindowShouldClose ' Detect window close button or ESC key
 
     ClearBackground RAYWHITE
 
-    For i = 0 To bunniesCount - 1
+    FOR i = 0 TO bunniesCount - 1
         ' NOTE: When internal batch buffer limit is reached (MAX_BATCH_ELEMENTS),
         ' a draw call is launched and buffer starts being filled again;
         ' before issuing a draw call, updated vertex data from internal CPU buffer is send to GPU...
@@ -77,7 +77,7 @@ While Not WindowShouldClose ' Detect window close button or ESC key
         ' processed for drawing while new data is tried to be sent (updating current in-use buffers)
         ' it could generates a stall and consequently a frame drop, limiting the number of drawn bunnies
         DrawTexture texBunny, bunnies(i).position.x, bunnies(i).position.y, bunnies(i).clr
-    Next
+    NEXT
 
     DrawRectangle 0, 0, screenWidth, 40, BLACK
     DrawText TextFormatLong("bunnies: %i", bunniesCount), 120, 10, 20, GREEN
@@ -87,7 +87,7 @@ While Not WindowShouldClose ' Detect window close button or ESC key
 
     EndDrawing
     '----------------------------------------------------------------------------------
-Wend
+WEND
 
 ' De-Initialization
 '--------------------------------------------------------------------------------------
@@ -96,6 +96,6 @@ UnloadTexture texBunny ' Unload bunny texture
 CloseWindow ' Close window and OpenGL context
 '--------------------------------------------------------------------------------------
 
-System
+SYSTEM
 
 '$INCLUDE:'include/raylib.bas'

@@ -25,12 +25,15 @@ enum qb_bool : int8_t
 // We have to do this for the QB64 side
 #define TO_QB_BOOL(_exp_) ((qb_bool)(-TO_C_BOOL(_exp_)))
 
+#if !defined(RL_VECTOR2_TYPE)
 // Vector2, 2 components
 struct Vector2
 {
     float x; // Vector x component
     float y; // Vector y component
 };
+#define RL_VECTOR2_TYPE 1
+#endif
 
 // Vector3, 3 components
 struct Vector3
@@ -2167,7 +2170,7 @@ inline void PokeType(uintptr_t p, uintptr_t o, uintptr_t t, size_t t_size)
 /// @param s A QB64 string
 /// @param o Offset from base (zero based)
 /// @return The ASCII character at position o
-inline uint8_t PeekString(const uint8_t *s, uintptr_t o)
+inline int8_t PeekStringByte(const char *s, uintptr_t o)
 {
     return s[o];
 }
@@ -2176,9 +2179,137 @@ inline uint8_t PeekString(const uint8_t *s, uintptr_t o)
 /// @param s A QB64 string
 /// @param o Offset from base (zero based)
 /// @param n The ASCII character at position o
-inline void PokeString(uint8_t *s, uintptr_t o, uint8_t n)
+inline void PokeStringByte(char *s, uintptr_t o, int8_t n)
 {
     s[o] = n;
+}
+
+/// @brief Peek an integer value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @return The integer at position o
+inline int16_t PeekStringInteger(const char *s, uintptr_t o)
+{
+    return *reinterpret_cast<const int16_t *>(&s[o * sizeof(int16_t)]);
+}
+
+/// @brief Poke an integer value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @param n The integer at position o
+inline void PokeStringInteger(char *s, uintptr_t o, int16_t n)
+{
+    *reinterpret_cast<int16_t *>(&s[o * sizeof(int16_t)]) = n;
+}
+
+/// @brief Peek a long value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @return The long at position o
+inline int32_t PeekStringLong(const char *s, uintptr_t o)
+{
+    return *reinterpret_cast<const int32_t *>(&s[o * sizeof(int32_t)]);
+}
+
+/// @brief Poke an long value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @param n The long at position o
+inline void PokeStringLong(char *s, uintptr_t o, int32_t n)
+{
+    *reinterpret_cast<int32_t *>(&s[o * sizeof(int32_t)]) = n;
+}
+
+/// @brief Peek an integer64 value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @return The integer64 at position o
+inline int64_t PeekStringInteger64(const char *s, uintptr_t o)
+{
+    return *reinterpret_cast<const int64_t *>(&s[o * sizeof(int64_t)]);
+}
+
+/// @brief Poke an integer64 value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @param n The integer64 at position o
+inline void PokeStringInteger64(char *s, uintptr_t o, int64_t n)
+{
+    *reinterpret_cast<int64_t *>(&s[o * sizeof(int64_t)]) = n;
+}
+
+/// @brief Peek a single value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @return The single at position o
+inline float PeekStringSingle(const char *s, uintptr_t o)
+{
+    return *reinterpret_cast<const float *>(&s[o * sizeof(float)]);
+}
+
+/// @brief Poke a single value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @param n The single at position o
+inline void PokeStringSingle(char *s, uintptr_t o, float n)
+{
+    *reinterpret_cast<float *>(&s[o * sizeof(float)]) = n;
+}
+
+/// @brief Peek a double value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @return The double at position o
+inline double PeekStringDouble(const char *s, uintptr_t o)
+{
+    return *reinterpret_cast<const double *>(&s[o * sizeof(double)]);
+}
+
+/// @brief Poke a double value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @param n The double at position o
+inline void PokeStringDouble(char *s, uintptr_t o, double n)
+{
+    *reinterpret_cast<double *>(&s[o * sizeof(double)]) = n;
+}
+
+/// @brief Peek an Offset value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @return The Offset at position o
+inline uintptr_t PeekStringOffset(const char *s, uintptr_t o)
+{
+    return *reinterpret_cast<const uintptr_t *>(&s[o * sizeof(uint64_t)]);
+}
+
+/// @brief Poke an Offset value in a string
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @param n The Offset at position o
+inline void PokeStringOffset(char *s, uintptr_t o, uintptr_t n)
+{
+    *reinterpret_cast<uintptr_t *>(&s[o * sizeof(uint64_t)]) = n;
+}
+
+/// @brief Gets a UDT value from a string offset
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @param t A pointer to the UDT variable
+/// @param t_size The size of the UTD variable in bytes
+inline void PeekStringType(const char *s, uintptr_t o, uintptr_t t, size_t t_size)
+{
+    memcpy((void *)t, s + (o * t_size), t_size);
+}
+
+/// @brief Sets a UDT value to a string offset
+/// @param s A QB64 string
+/// @param o Offset from base (zero based)
+/// @param t A pointer to the UDT variable
+/// @param t_size The size of the UTD variable in bytes
+inline void PokeStringType(char *s, uintptr_t o, uintptr_t t, size_t t_size)
+{
+    memcpy(s + (o * t_size), (void *)t, t_size);
 }
 
 /// @brief Makes a RGBA color from RGBA components (the return value is the same as raylib Color in memory)

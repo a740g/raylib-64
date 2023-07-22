@@ -17,9 +17,9 @@ raylib is highly inspired by Borland BGI graphics lib and by XNA framework and i
 | --- | ---------------- | -------------- | -------------- |
 | core | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | reasings | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| physac | :heavy_check_mark | :heavy_check_mark | :heavy_check_mark |
 | raymath | :construction: | :construction: | :construction: |
 | raygui | :x: | :x: | :x: |
-| physac | :x: | :x: | :x: |
 
 ## EXAMPLE
 
@@ -90,17 +90,19 @@ I found a bug. How can I help?
 - Some TYPEs and TYPE member variables had to be renamed to resolve clashes with QB64 keywords. E.g. Sound is RSound. Also QB64 does not support TYPE aliases. So, There is no Camera. It's just Camera2D or Camera3D. There is no Texture2D. It's just Texture.
 - Lots of functions using strings are not wrapped yet. Use these carefully by null-terminating strings before passing them off to raylib functions. If possible, help me wrap these functions. See [include/raylib.bas](include/raylib.bas) for details.
 
-## ASSETS
+## CREDITS
 
-- The logo for this project was created by [grymmjack](https://16colo.rs/artist/grymmjack)
-- Remaining assets were pulled directly from the [raylib repository](https://github.com/raysan5/raylib/tree/master/examples). So, the license information there applies
+- [Ramon Santamaria](https://github.com/raysan5) for the awesome [raylib library](https://github.com/raysan5/raylib)
+- [grymmjack](https://16colo.rs/artist/grymmjack) for the raylib-64 logo
+- [Martin Olivier](https://github.com/martin-olivier) for [Dylib](https://github.com/martin-olivier/dylib) (cross-platform dynamic library loader)
+- Various artists for the example assets taken directly from the [raylib repository](https://github.com/raysan5/raylib/tree/master/examples)
 
 ## HELP NEEDED
 
 - Port all possible raylib examples from [raylib - examples](https://github.com/raysan5/raylib/tree/master/examples)
 - Wrap all possible raylib functions that take a string to ensure stings are null-terminated
 - Wrap all possible raylib functions that take pointers and C-style arrays
-- See TODO section below
+- Also see TODO section below
 
 ## TODO
 

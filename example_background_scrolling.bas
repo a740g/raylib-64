@@ -2,8 +2,8 @@
 
 '$INCLUDE:'include/raylib.bi'
 
-Const screenWidth = 800
-Const screenHeight = 450
+CONST screenWidth = 800
+CONST screenHeight = 450
 
 ' Initialization
 '--------------------------------------------------------------------------------------
@@ -11,18 +11,18 @@ InitWindow screenWidth, screenHeight, "raylib [textures] example - background sc
 
 ' NOTE: Be careful, background width must be equal or bigger than screen width
 ' if not, texture should be draw more than two times for scrolling effect
-Dim As Texture background: LoadTexture "assets/image/cyberpunk_street_background.png", background
-Dim As Texture midground: LoadTexture "assets/image/cyberpunk_street_midground.png", midground
-Dim As Texture foreground: LoadTexture "assets/image/cyberpunk_street_foreground.png", foreground
+DIM AS Texture background: LoadTexture "assets/image/cyberpunk_street_background.png", background
+DIM AS Texture midground: LoadTexture "assets/image/cyberpunk_street_midground.png", midground
+DIM AS Texture foreground: LoadTexture "assets/image/cyberpunk_street_foreground.png", foreground
 
-Dim As Single scrollingBack, scrollingMid, scrollingFore
-Dim v As Vector2
+DIM AS SINGLE scrollingBack, scrollingMid, scrollingFore
+DIM v AS Vector2
 
 SetTargetFPS 60 ' Set our game to run at 60 frames-per-second
 '--------------------------------------------------------------------------------------
 
 ' Main game loop
-Do Until WindowShouldClose ' Detect window close button or ESC key
+DO UNTIL WindowShouldClose ' Detect window close button or ESC key
     ' Update
     '----------------------------------------------------------------------------------
     scrollingBack = scrollingBack - 0.1!
@@ -30,9 +30,9 @@ Do Until WindowShouldClose ' Detect window close button or ESC key
     scrollingFore = scrollingFore - 1.0!
 
     ' NOTE: Texture is scaled twice its size, so it sould be considered on scrolling
-    If scrollingBack <= -background.W * 2 Then scrollingBack = 0
-    If scrollingMid <= -midground.W * 2 Then scrollingMid = 0
-    If scrollingFore <= -foreground.W * 2 Then scrollingFore = 0
+    IF scrollingBack <= -background.W * 2 THEN scrollingBack = 0
+    IF scrollingMid <= -midground.W * 2 THEN scrollingMid = 0
+    IF scrollingFore <= -foreground.W * 2 THEN scrollingFore = 0
     '----------------------------------------------------------------------------------
 
     ' Draw
@@ -59,7 +59,7 @@ Do Until WindowShouldClose ' Detect window close button or ESC key
 
     EndDrawing
     '----------------------------------------------------------------------------------
-Loop
+LOOP
 
 ' De-Initialization
 '--------------------------------------------------------------------------------------
@@ -70,6 +70,6 @@ UnloadTexture foreground ' Unload foreground texture
 CloseWindow ' Close window and OpenGL context
 '--------------------------------------------------------------------------------------
 
-System
+SYSTEM
 
 '$INCLUDE:'include/raylib.bas'
