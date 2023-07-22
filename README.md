@@ -109,6 +109,5 @@ I found a bug. How can I help?
 
 - Bindings for raymath
 - Bindings for raygui
-- Bindings for physac
 
 ***Made with ❤️***
