@@ -79,7 +79,7 @@ What QB64 statements and functions should I avoid while using raylib?
 
 Does all of raylib work with QB64?
 
-- Well, mostly. Callbacks are a chanllenge. But it can be done if you are willing to mix a little bit of C with QB64. Stuff requiring usage of pointers can be a little difficult. However, I plan to simplify these by carefully wrapping more raylib functions inside QB64 helper routines.
+- Well, mostly. Callbacks are a challenge. But, it can be done if you are willing to mix a little bit of C with QB64. Stuff requiring usage of pointers can be a little difficult. I plan to simplify these by carefully wrapping more raylib functions inside QB64 friendly routines. Also, I have included pointer support routines for cases where you have to work with raylib structs that contain pointers and arrays.
 
 I found a bug. How can I help?
 
