@@ -6,7 +6,7 @@
 #pragma once
 
 #include <cstdint>
-#include "dylib.hpp"
+#include "external/dylib.hpp"
 
 #define RAYLIB_DEBUG_PRINT(_fmt_, _args_...) fprintf(stderr, "\e[1;37mDEBUG: %s:%d:%s(): \e[1;33m" _fmt_ "\e[1;37m\n", __FILE__, __LINE__, __func__, ##_args_)
 #define RAYLIB_DEBUG_CHECK(_exp_) \
