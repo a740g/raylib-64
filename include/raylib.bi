@@ -13,7 +13,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
     '   3. 32-bit machines and OSes are not mainstream anymore
     '   4. I clearly lack the motivation for adding 32-bit support. If anyone wants to do it, then please open a PR!
     $IF VERSION < 3.8 OR 32BIT THEN
-            $ERROR This requires the latest 64-bit version of QB64-PE from https://github.com/QB64-Phoenix-Edition/QB64pe/releases
+            $ERROR This requires the latest 64-bit version of QB64-PE from https://github.com/QB64-Phoenix-Edition/QB64pe/releases/latest
     $END IF
 
     ' All identifiers must default to long (32-bits). This results in fastest code execution on x86 & x64
