@@ -2764,14 +2764,14 @@ inline int GetShaderLocationAttrib(void *shader, const char *attribName)
     return _GetShaderLocationAttrib(*(Shader *)shader, attribName);
 }
 
-inline void SetShaderValue(void *shader, int locIndex, const void *value, int uniformType)
+inline void SetShaderValue(void *shader, int locIndex, uintptr_t value, int uniformType)
 {
-    _SetShaderValue(*(Shader *)shader, locIndex, value, uniformType);
+    _SetShaderValue(*(Shader *)shader, locIndex, (const void *)value, uniformType);
 }
 
-inline void SetShaderValueV(void *shader, int locIndex, const void *value, int uniformType, int count)
+inline void SetShaderValueV(void *shader, int locIndex, uintptr_t value, int uniformType, int count)
 {
-    _SetShaderValueV(*(Shader *)shader, locIndex, value, uniformType, count);
+    _SetShaderValueV(*(Shader *)shader, locIndex, (const void *)value, uniformType, count);
 }
 
 inline void SetShaderValueMatrix(void *shader, int locIndex, void *mat)
