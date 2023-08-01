@@ -37,6 +37,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
     ' Some common and useful constants
     CONST FALSE = 0, TRUE = NOT FALSE
     CONST NULL = 0
+    CONST EMPTY_STRING = ""
 
     CONST SIZE_OF_BYTE = 1
     CONST SIZE_OF_INTEGER = 2

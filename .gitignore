@@ -8,3 +8,5 @@
 *.exe
 # Ignore .vscode dir
 .vscode
+# Ignore macOS stuff
+.DS_Store

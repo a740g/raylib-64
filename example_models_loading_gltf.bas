@@ -55,42 +55,42 @@ SetTargetFPS 60
 '    // Detect window close button or ESC key
 WHILE NOT WindowShouldClose
 
-  '    // Update
-  '    //----------------------------------------------------------------------------------
-  UpdateCamera camera, CAMERA_THIRD_PERSON
-  '    // Select current animation
-  IF IsKeyPressed(KEY_ONE) THEN
-    animIndex = (animIndex + 1) MOD animsCount
-  ELSE
-    IF IsKeyPressed(KEY_TWO) THEN
-      animIndex = (animIndex + animsCount - 1) MOD animsCount
+    '    // Update
+    '    //----------------------------------------------------------------------------------
+    UpdateCamera camera, CAMERA_THIRD_PERSON
+    '    // Select current animation
+    IF IsKeyPressed(KEY_ONE) THEN
+        animIndex = (animIndex + 1) MOD animsCount
+    ELSE
+        IF IsKeyPressed(KEY_TWO) THEN
+            animIndex = (animIndex + animsCount - 1) MOD animsCount
+        END IF
     END IF
-  END IF
 
-  '    // Update model animation
-  DIM AS ModelAnimation anim: PeekType mdlAnim, animIndex, _OFFSET(anim), LEN(anim)
-  animCurrentFrame = (animCurrentFrame + 1) MOD anim.frameCount
-  UpdateModelAnimation mdl, anim, animCurrentFrame
-  '    //----------------------------------------------------------------------------------
+    '    // Update model animation
+    DIM AS ModelAnimation anim: PeekType mdlAnim, animIndex, _OFFSET(anim), LEN(anim)
+    animCurrentFrame = (animCurrentFrame + 1) MOD anim.frameCount
+    UpdateModelAnimation mdl, anim, animCurrentFrame
+    '    //----------------------------------------------------------------------------------
 
-  '    // Draw
-  '    //----------------------------------------------------------------------------------
-  BeginDrawing
+    '    // Draw
+    '    //----------------------------------------------------------------------------------
+    BeginDrawing
 
-  ClearBackground RAYWHITE
+    ClearBackground RAYWHITE
 
-  BeginMode3D camera
+    BeginMode3D camera
 
-  '    // Draw animated model
-  DrawModel mdl, position, 1.0!, WHITE
-  DrawGrid 10, 1.0!
+    '    // Draw animated model
+    DrawModel mdl, position, 1.0!, WHITE
+    DrawGrid 10, 1.0!
 
-  EndMode3D
+    EndMode3D
 
-  DrawText "Use the [1][2] keys to switch animation", 10, 10, 20, GRAY
+    DrawText "Use the [1][2] keys to switch animation", 10, 10, 20, GRAY
 
-  EndDrawing
-  '   //----------------------------------------------------------------------------------
+    EndDrawing
+    '   //----------------------------------------------------------------------------------
 
 WEND
 '    // De-Initialization
@@ -104,4 +104,3 @@ CloseWindow
 SYSTEM
 
 '$INCLUDE:'include/raylib.bas'
-

@@ -111,54 +111,54 @@ SetTargetFPS 60 ' Set our game to run at 60 frames-per-second
 
 ' Main game loop
 WHILE NOT WindowShouldClose ' Detect window close button or ESC key
-  ' Update
-  '----------------------------------------------------------------------------------
-  UpdateCamera cam, CAMERA_ORBITAL
+    ' Update
+    '----------------------------------------------------------------------------------
+    UpdateCamera cam, CAMERA_ORBITAL
 
-  IF IsKeyPressed(KEY_RIGHT) THEN
-    currentShader = currentShader + 1
-  ELSE IF IsKeyPressed(KEY_LEFT) THEN
-      currentShader = currentShader - 1
+    IF IsKeyPressed(KEY_RIGHT) THEN
+        currentShader = currentShader + 1
+    ELSE IF IsKeyPressed(KEY_LEFT) THEN
+            currentShader = currentShader - 1
+        END IF
     END IF
-  END IF
 
-  IF currentShader >= MAX_POSTPRO_SHADERS THEN currentShader = 0
-  IF currentShader < 0 THEN currentShader = MAX_POSTPRO_SHADERS - 1
+    IF currentShader >= MAX_POSTPRO_SHADERS THEN currentShader = 0
+    IF currentShader < 0 THEN currentShader = MAX_POSTPRO_SHADERS - 1
 
-  '----------------------------------------------------------------------------------
-  ' Draw
-  '----------------------------------------------------------------------------------
-  BeginTextureMode target ' Enable drawing to texture
-  ClearBackground RAYWHITE ' Clear texture background
-  BeginMode3D cam ' Begin 3d mode drawing
-  DrawModel model, position, 0.1!, WHITE ' Draw 3d model with texture
-  DrawGrid 10, 1.0! ' Draw a grid
-  EndMode3D ' End 3d mode drawing, returns to orthographic 2d mode
-  EndTextureMode 'End drawing to texture (now we have a texture available for the next passes)
+    '----------------------------------------------------------------------------------
+    ' Draw
+    '----------------------------------------------------------------------------------
+    BeginTextureMode target ' Enable drawing to texture
+    ClearBackground RAYWHITE ' Clear texture background
+    BeginMode3D cam ' Begin 3d mode drawing
+    DrawModel model, position, 0.1!, WHITE ' Draw 3d model with texture
+    DrawGrid 10, 1.0! ' Draw a grid
+    EndMode3D ' End 3d mode drawing, returns to orthographic 2d mode
+    EndTextureMode 'End drawing to texture (now we have a texture available for the next passes)
 
-  BeginDrawing
+    BeginDrawing
 
-  ClearBackground RAYWHITE 'Clear Screen Background
-  ' Render generated texture using selected postprocessing shader
-  BeginShaderMode shaders(currentShader)
-  targetRec.x = 0: targetRec.y = 0
-  targetRec.W = target.tex.W: targetRec.H = -target.tex.H
-  targetPos.x = 0: targetPos.y = 0
-  ' NOTE: render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
-  DrawTextureRec target.tex, targetRec, targetPos, WHITE
-  EndShaderMode
+    ClearBackground RAYWHITE 'Clear Screen Background
+    ' Render generated texture using selected postprocessing shader
+    BeginShaderMode shaders(currentShader)
+    targetRec.x = 0: targetRec.y = 0
+    targetRec.W = target.tex.W: targetRec.H = -target.tex.H
+    targetPos.x = 0: targetPos.y = 0
+    ' NOTE: render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
+    DrawTextureRec target.tex, targetRec, targetPos, WHITE
+    EndShaderMode
 
-  ' Draw 2d shapes and text over drawn texture
-  DrawRectangle 0, 9, 580, 30, Fade(LIGHTGRAY, 0.7!)
+    ' Draw 2d shapes and text over drawn texture
+    DrawRectangle 0, 9, 580, 30, Fade(LIGHTGRAY, 0.7!)
 
-  DrawText "(c) Church 3d model by Alberto Cano", screenWidth - 200, screenHeight - 20, 10, GRAY
-  DrawText "CURRENT POSTPRO SHADER", 10, 15, 20, BLACK
-  DrawText postproShaderText(currentShader), 330, 15, 20, RED
-  DrawText "< >", 540, 10, 30, DARKBLUE
-  DrawFPS 700, 15
+    DrawText "(c) Church 3d model by Alberto Cano", screenWidth - 200, screenHeight - 20, 10, GRAY
+    DrawText "CURRENT POSTPRO SHADER", 10, 15, 20, BLACK
+    DrawText postproShaderText(currentShader), 330, 15, 20, RED
+    DrawText "< >", 540, 10, 30, DARKBLUE
+    DrawFPS 700, 15
 
-  EndDrawing
-  '----------------------------------------------------------------------------------
+    EndDrawing
+    '----------------------------------------------------------------------------------
 WEND
 
 ' De-Initialization
@@ -166,7 +166,7 @@ WEND
 ' Unload all postpro shaders
 DIM i AS LONG
 FOR i = 0 TO MAX_POSTPRO_SHADERS - 1
-  UnloadShader shaders(i)
+    UnloadShader shaders(i)
 NEXT
 UnloadTexture tex ' Unload texture
 UnloadModel model ' Unload model
@@ -178,4 +178,3 @@ CloseWindow ' Close window and OpenGL context
 SYSTEM
 
 '$INCLUDE:'include/raylib.bas'
-
