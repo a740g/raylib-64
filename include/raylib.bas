@@ -27,7 +27,9 @@ $IF RAYLIB_BAS = UNDEFINED THEN
 
     SUB CloseWindow
         __CloseWindow
-        _CONSOLE ON ' restore the console
+        $IF WINDOWS THEN
+                _CONSOLE ON ' restore the console
+        $END IF
     END SUB
 
     SUB SetWindowTitle (caption AS STRING)
