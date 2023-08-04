@@ -65,9 +65,9 @@ Where is the source for the autogen program?
 
 - It served it's purpose and helped me kickstart the project and now it has retired. I am not going to share it because I am not proud of the way I wrote it. 😁
 
-On Windows, why does the program that I write using the library momentarily open a console Window?
+Why does some raylib TYPEs like Camera, Texture2D, Sound etc. generate an error?
 
-- raylib has it's own graphics window and does it's own window management. So, any program using the library will by default be `$Console:Only`. This ensures that other graphics feature in QB64 does not interfere with raylib. As a side-effect, this opens a console Window when compiled programs are launched. The console window however is minimized by default.
+- Some TYPEs and TYPE member variables had to be renamed to resolve clashes with QB64 keywords. E.g. Sound is RSound. Also QB64 does not support TYPE aliases. So, there is no Camera. It's just Camera2D or Camera3D. There is no Texture2D. It's just Texture.
 
 Why have you changed a lot of raylib functions like `LoadTexture`, `GetMousePosition`, `GetMonitorPosition` etc. to QB64 `SUB`s? Should't these be `FUNCTIONS`s?
 
@@ -81,14 +81,16 @@ Does all of raylib work with QB64?
 
 - Well, mostly. Callbacks are a challenge. But, it can be done if you are willing to mix a little bit of C with QB64. Stuff requiring usage of pointers can be a little difficult. I plan to simplify these by carefully wrapping more raylib functions inside QB64 friendly routines. Also, I have included pointer support routines for cases where you have to work with raylib structs (TYPEs) that contain pointers and arrays.
 
+Which version of QB64 should I use with raylib-64?
+
+- Always use the latest version of [QB64-PE](https://github.com/QB64-Phoenix-Edition) from <https://github.com/QB64-Phoenix-Edition/QB64pe/releases/latest>. QB64-PE has hade a number of bug fixes and improvements that make this library possible. QB64 v2.0.2 or other forks of QB64 are not suppoted and may not work at all.
+
 I found a bug. How can I help?
 
 - Let me know using GitHub issues or fix it yourself and submit a PR!
 
-## NOTES
+## NOTE
 
-- This requires the latest version of [QB64-PE](https://github.com/QB64-Phoenix-Edition/QB64pe/releases)
-- Some TYPEs and TYPE member variables had to be renamed to resolve clashes with QB64 keywords. E.g. Sound is RSound. Also QB64 does not support TYPE aliases. So, There is no Camera. It's just Camera2D or Camera3D. There is no Texture2D. It's just Texture.
 - Lots of functions using strings are not wrapped yet. Use these carefully by null-terminating strings before passing them off to raylib functions. If possible, help me wrap these functions. See [include/raylib.bas](include/raylib.bas) for details.
 
 ## CREDITS
