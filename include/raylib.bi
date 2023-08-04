@@ -31,8 +31,8 @@ $IF RAYLIB_BI = UNDEFINED THEN
     ' Start array lower bound from 1. If 0 is required, then it should be explicitly specified as (0 To X)
     OPTION BASE 1
 
-    ' raylib uses it's own window. So, we force QB64-PE to generate a console only executable. The console can be used for debugging
-    $CONSOLE:ONLY
+    ' raylib uses it's own window. So, we force QB64-PE to hide it's own OpenGL window
+    $SCREENHIDE
 
     ' Some common and useful constants
     CONST FALSE = 0, TRUE = NOT FALSE
@@ -785,7 +785,7 @@ $IF RAYLIB_BI = UNDEFINED THEN
 
         SUB __InitWindow ALIAS InitWindow (BYVAL W AS LONG, BYVAL H AS LONG, title AS STRING)
         FUNCTION WindowShouldClose%%
-        SUB __CloseWindow ALIAS CloseWindow
+        SUB CloseWindow
         FUNCTION IsWindowReady%%
         FUNCTION IsWindowFullscreen%%
         FUNCTION IsWindowHidden%%
@@ -1307,13 +1307,9 @@ $IF RAYLIB_BI = UNDEFINED THEN
         SUB DetachAudioMixedProcessor (BYVAL processor AS _UNSIGNED _OFFSET)
     END DECLARE
 
-    ' Initialize the C-side glue code
-    IF __init_raylib THEN
-        _DELAY 0.1! ' the delay is needed for the console window to appear
-        _CONSOLE OFF ' hide the console by default
-    ELSE
-        PRINT "raylib initialization failed!"
-        END 1
+    IF NOT __init_raylib THEN
+        _MESSAGEBOX "raylib-64 Error", "raylib-64 initialization failed! Application execution will be terminated. Please ensure raylib shared library or dynamic link library is in the path.", "error"
+        SYSTEM LOG_FATAL
     END IF
 
 $END IF

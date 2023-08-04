@@ -25,13 +25,6 @@ $IF RAYLIB_BAS = UNDEFINED THEN
         __InitWindow W, H, ToCString(caption)
     END SUB
 
-    SUB CloseWindow
-        __CloseWindow
-        $IF WINDOWS THEN
-                _CONSOLE ON ' restore the console
-        $END IF
-    END SUB
-
     SUB SetWindowTitle (caption AS STRING)
         __SetWindowTitle ToCString(caption)
     END SUB
