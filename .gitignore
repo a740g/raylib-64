@@ -10,4 +10,4 @@
 .vscode
 # Ignore macOS stuff
 .DS_Store
-.command
+*.command
