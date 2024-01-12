@@ -83,7 +83,7 @@ Does all of raylib work with QB64?
 
 Which version of QB64 should I use with raylib-64?
 
-- Always use the latest version of [QB64-PE](https://github.com/QB64-Phoenix-Edition) from <https://github.com/QB64-Phoenix-Edition/QB64pe/releases/latest>. QB64-PE has hade a number of bug fixes and improvements that make this library possible. QB64 v2.0.2 or other forks of QB64 are not suppoted and may not work at all.
+- Always use the latest version of [QB64-PE](https://github.com/QB64-Phoenix-Edition) from <https://github.com/QB64-Phoenix-Edition/QB64pe/releases/latest>. QB64-PE has hade a number of bug fixes and improvements that make this library possible. QB64 v2.0.2 or other forks of QB64 are not supported and may not work at all.
 
 I found a bug. How can I help?
 

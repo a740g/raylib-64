@@ -14,11 +14,13 @@
     RAYLIB_DEBUG_PRINT("\e[0;31mCondition (%s) failed", #_exp_)
 
 // QB64 false is 0 and true is -1 (sad, but true XD)
-enum qb_bool : int8_t
-{
-    QB_TRUE = -1,
-    QB_FALSE = false
-};
+// QB64 false is 0 and true is -1 (sad, but true XD)
+typedef int8_t qb_bool;
+
+#ifndef INC_COMMON_CPP
+#define QB_TRUE -1
+#define QB_FALSE 0
+#endif
 
 // This one is just for safety just in case someone is doing _exp_ == 1 inside raylib
 #define TO_C_BOOL(_exp_) ((_exp_) != false)
