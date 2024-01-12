@@ -1,5 +1,5 @@
 
-' QB64-PE Json library, version QB64PE_JSON_VERSION
+' QB64-PE Json library, version 0.1.0
 '
 ' This library is designed to allow easy usage of JSON structures with QB64-PE
 ' code. It can be used to both parse existing JSON and create new JSON structures.

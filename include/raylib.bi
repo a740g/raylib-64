@@ -12,8 +12,8 @@ $IF RAYLIB_BI = UNDEFINED THEN
     '   2. The TYPES below are aligned for x86-64 arch. Padded with extra bytes wherever needed
     '   3. 32-bit machines and OSes are not mainstream anymore
     '   4. I clearly lack the motivation for adding 32-bit support. If anyone wants to do it, then please open a PR!
-    $IF VERSION < 3.8 OR 32BIT THEN
-            $ERROR This requires the latest 64-bit version of QB64-PE from https://github.com/QB64-Phoenix-Edition/QB64pe/releases/latest
+    $IF VERSION < 3.11.0 OR 32BIT THEN
+            $ERROR 'This requires the latest 64-bit version of QB64-PE from https://github.com/QB64-Phoenix-Edition/QB64pe/releases/latest'
     $END IF
 
     ' All identifiers must default to long (32-bits). This results in fastest code execution on x86 & x64
@@ -35,8 +35,8 @@ $IF RAYLIB_BI = UNDEFINED THEN
     $SCREENHIDE
 
     ' Some common and useful constants
-    CONST FALSE = 0, TRUE = NOT FALSE
-    CONST NULL = 0
+    CONST FALSE%% = 0%%, TRUE%% = NOT FALSE
+    CONST NULL~%% = 0~%%
     CONST EMPTY_STRING = ""
 
     CONST SIZE_OF_BYTE = 1
