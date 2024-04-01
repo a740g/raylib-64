@@ -120,7 +120,7 @@ WHILE NOT WindowShouldClose ' Detect window close button or ESC key
                 IF j + 1 < vertexCount THEN jj = j + 1 ELSE jj = 0 ' Get next vertex or first to close the shape
                 DIM AS Vector2 vertexB: GetPhysicsShapeVertex bodyPtr, jj, vertexB
 
-                DrawLineV vertexA, vertexB, GREEN ' Draw a line between two vertex positions
+                DrawLineV vertexA, vertexB, RGREEN ' Draw a line between two vertex positions
             NEXT
         END IF
     NEXT

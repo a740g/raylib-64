@@ -20,7 +20,7 @@ DIM AS _UNSIGNED LONG fileSize
 DIM AS _UNSIGNED _OFFSET fileData: fileData = LoadFileData("assets/font/anonymous_pro_bold.ttf", fileSize)
 
 ' Default font generation from TTF font
-DIM AS Font fontDefault
+DIM AS RFont fontDefault
 fontDefault.baseSize = 16
 fontDefault.glyphCount = 95
 
@@ -29,25 +29,25 @@ fontDefault.glyphCount = 95
 fontDefault.glyphs = LoadFontData(fileData, fileSize, 16, NULL, 95, FONT_DEFAULT)
 ' Parameters > glyphs count: 95, font size: 16, glyphs padding in image: 4 px, pack method: 0 (default)
 DIM AS Image atlas: GenImageFontAtlas fontDefault.glyphs, fontDefault.recs, 95, 16, 4, 0, atlas
-LoadTextureFromImage atlas, fontDefault.tex
+LoadTextureFromImage atlas, fontDefault.texture
 UnloadImage atlas
 
 ' SDF font generation from TTF font
-DIM AS Font fontSDF
+DIM AS RFont fontSDF
 fontSDF.baseSize = 16
 fontSDF.glyphCount = 95
 ' Parameters > font size: 16, no glyphs array provided (0), glyphs count: 0 (defaults to 95)
 fontSDF.glyphs = LoadFontData(fileData, fileSize, 16, NULL, 0, FONT_SDF)
 ' Parameters > glyphs count: 95, font size: 16, glyphs padding in image: 0 px, pack method: 1 (Skyline algorythm)
 GenImageFontAtlas fontSDF.glyphs, fontSDF.recs, 95, 16, 0, 1, atlas
-LoadTextureFromImage atlas, fontSDF.tex
+LoadTextureFromImage atlas, fontSDF.texture
 UnloadImage atlas
 
 UnloadFileData fileData ' Free memory from loaded file
 
 ' Load SDF required shader (we use default vertex shader)
 DIM AS Shader shader: LoadShader "", TextFormatLong("assets/shader/glsl%i/sdf.fs", GLSL_VERSION), shader
-SetTextureFilter fontSDF.tex, TEXTURE_FILTER_BILINEAR ' Required for SDF font
+SetTextureFilter fontSDF.texture, TEXTURE_FILTER_BILINEAR ' Required for SDF font
 
 DIM AS Vector2 fontPosition: fontPosition.x = 40: fontPosition.y = screenHeight / 2.0! - 50
 DIM AS Vector2 textSize
@@ -89,13 +89,13 @@ WHILE NOT WindowShouldClose ' Detect window close button or ESC key
         DrawTextEx fontSDF, msg, fontPosition, fontSize, 0, BLACK
         EndShaderMode ' Activate our default shader for next drawings
 
-        DrawTexture fontSDF.tex, 10, 10, BLACK
+        DrawTexture fontSDF.texture, 10, 10, BLACK
     ELSE
         DrawTextEx fontDefault, msg, fontPosition, fontSize, 0, BLACK
-        DrawTexture fontDefault.tex, 10, 10, BLACK
+        DrawTexture fontDefault.texture, 10, 10, BLACK
     END IF
 
-    IF currentFont = 1 THEN DrawText "SDF!", 320, 20, 80, RED ELSE DrawText "default font", 315, 40, 30, GRAY
+    IF currentFont = 1 THEN DrawText "SDF!", 320, 20, 80, RRED ELSE DrawText "default font", 315, 40, 30, GRAY
 
     DrawText "FONT SIZE: 16.0", GetScreenWidth - 240, 20, 20, DARKGRAY
     DrawText TextFormatSingle("RENDER SIZE: %02.02f", fontSize), GetScreenWidth - 240, 50, 20, DARKGRAY

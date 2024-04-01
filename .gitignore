@@ -6,9 +6,9 @@
 !*/
 # Ignore all exe files
 *.exe
-# Ignore .vscode dir
+# Ignore VSCode stuff
 .vscode
+.fake
 # Ignore macOS stuff
 .DS_Store
 *.command
-.fake

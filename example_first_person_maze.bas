@@ -15,7 +15,7 @@ v.x = 0.0!: v.y = 1.0!: v.z = 0.0!: camera.up = v ' Camera up vector (rotation t
 camera.fovy = 45.0! ' Camera field-of-view Y
 camera.projection = CAMERA_PERSPECTIVE ' Camera projection type
 
-DIM AS Image imMap: LoadImage "assets/image/cubicmap.png", imMap ' Load cubicmap image (RAM)
+DIM AS Image imMap: RLoadImage "assets/image/cubicmap.png", imMap ' Load cubicmap image (RAM)
 DIM AS Texture cubicmap: LoadTextureFromImage imMap, cubicmap ' Convert image to texture to display (VRAM)
 DIM AS Mesh msh: v.x = 1.0!: v.y = 1.0!: v.z = 1.0!: GenMeshCubicmap imMap, v, msh
 DIM AS Model mdl: LoadModelFromMesh msh, mdl
@@ -24,7 +24,7 @@ DIM AS Model mdl: LoadModelFromMesh msh, mdl
 DIM AS Texture tex: LoadTexture "assets/image/cubicmap_atlas.png", tex ' Load map texture
 DIM AS Material matrl: PeekType mdl.materials, 0, _OFFSET(matrl), LEN(matrl)
 DIM AS MaterialMap matrlmap: PeekType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlmap), LEN(matrlmap)
-matrlmap.tex = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlmap), LEN(matrlmap) ' Set map diffuse texture
+matrlmap.texture = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlmap), LEN(matrlmap) ' Set map diffuse texture
 
 ' Get map image data to be used for collision detection
 DIM AS _UNSIGNED _OFFSET mapPixels: mapPixels = LoadImageColors(imMap)
@@ -51,24 +51,24 @@ DO UNTIL WindowShouldClose
     ' Out-of-limits security check
     IF playerCellX < 0 THEN
         playerCellX = 0
-    ELSEIF playerCellX >= cubicmap.W THEN
-        playerCellX = cubicmap.W - 1
+    ELSEIF playerCellX >= cubicmap.Rwidth THEN
+        playerCellX = cubicmap.Rwidth - 1
     END IF
 
     IF playerCellY < 0 THEN
         playerCellY = 0
-    ELSEIF playerCellY >= cubicmap.H THEN
-        playerCellY = cubicmap.H - 1
+    ELSEIF playerCellY >= cubicmap.Rheight THEN
+        playerCellY = cubicmap.Rheight - 1
     END IF
 
     ' Check map collisions using image data and player position
     ' TODO: Improvement: Just check player surrounding cells for collision
     DIM AS LONG x, y
     DIM r AS Rectangle
-    FOR y = 0 TO cubicmap.H - 1
-        FOR x = 0 TO cubicmap.W - 1
-            IF GetRed(PeekLong(mapPixels, y * cubicmap.W + x)) = 255 THEN ' Collision: white pixel, only check R channel
-                r.x = mapPosition.x - 0.5! + x * 1.0!: r.y = mapPosition.z - 0.5! + y * 1.0!: r.W = 1.0!: r.H = 1.0!
+    FOR y = 0 TO cubicmap.Rheight - 1
+        FOR x = 0 TO cubicmap.Rwidth - 1
+            IF GetRed(PeekLong(mapPixels, y * cubicmap.Rwidth + x)) = 255 THEN ' Collision: white pixel, only check R channel
+                r.x = mapPosition.x - 0.5! + x * 1.0!: r.y = mapPosition.z - 0.5! + y * 1.0!: r.Rwidth = 1.0!: r.Rheight = 1.0!
                 IF CheckCollisionCircleRec(playerPos, playerRadius, r) THEN
                     ' Collision detected, reset camera position
                     camera.position = oldCamPos
@@ -85,12 +85,12 @@ DO UNTIL WindowShouldClose
     DrawModel mdl, mapPosition, 1.0!, WHITE ' Draw maze map
     EndMode3D
 
-    DIM v2 AS Vector2: v2.x = GetScreenWidth - cubicmap.W * 4.0! - 20: v2.y = 20.0!
+    DIM v2 AS Vector2: v2.x = GetScreenWidth - cubicmap.Rwidth * 4.0! - 20: v2.y = 20.0!
     DrawTextureEx cubicmap, v2, 0.0!, 4.0!, WHITE
-    DrawRectangleLines GetScreenWidth - cubicmap.W * 4 - 20, 20, cubicmap.W * 4, cubicmap.H * 4, GREEN
+    DrawRectangleLines GetScreenWidth - cubicmap.Rwidth * 4 - 20, 20, cubicmap.Rwidth * 4, cubicmap.Rheight * 4, RGREEN
 
     ' Draw player position radar
-    DrawRectangle GetScreenWidth - cubicmap.W * 4 - 20 + playerCellX * 4, 20 + playerCellY * 4, 4, 4, RED
+    DrawRectangle GetScreenWidth - cubicmap.Rwidth * 4 - 20 + playerCellX * 4, 20 + playerCellY * 4, 4, 4, RRED
 
     DrawFPS 10, 10
 

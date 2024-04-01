@@ -30,9 +30,9 @@ DO UNTIL WindowShouldClose ' Detect window close button or ESC key
     scrollingFore = scrollingFore - 1.0!
 
     ' NOTE: Texture is scaled twice its size, so it sould be considered on scrolling
-    IF scrollingBack <= -background.W * 2 THEN scrollingBack = 0
-    IF scrollingMid <= -midground.W * 2 THEN scrollingMid = 0
-    IF scrollingFore <= -foreground.W * 2 THEN scrollingFore = 0
+    IF scrollingBack <= -background.Rwidth * 2 THEN scrollingBack = 0
+    IF scrollingMid <= -midground.Rwidth * 2 THEN scrollingMid = 0
+    IF scrollingFore <= -foreground.Rwidth * 2 THEN scrollingFore = 0
     '----------------------------------------------------------------------------------
 
     ' Draw
@@ -44,17 +44,17 @@ DO UNTIL WindowShouldClose ' Detect window close button or ESC key
     ' Draw background image twice
     ' NOTE: Texture is scaled twice its size
     v.x = scrollingBack: v.y = 20: DrawTextureEx background, v, 0.0!, 2.0!, WHITE
-    v.x = background.W * 2 + scrollingBack: v.y = 20: DrawTextureEx background, v, 0.0!, 2.0!, WHITE
+    v.x = background.Rwidth * 2 + scrollingBack: v.y = 20: DrawTextureEx background, v, 0.0!, 2.0!, WHITE
 
     ' Draw midground image twice
     v.x = scrollingMid: v.y = 20: DrawTextureEx midground, v, 0.0!, 2.0!, WHITE
-    v.x = midground.W * 2 + scrollingMid: v.y = 20: DrawTextureEx midground, v, 0.0!, 2.0!, WHITE
+    v.x = midground.Rwidth * 2 + scrollingMid: v.y = 20: DrawTextureEx midground, v, 0.0!, 2.0!, WHITE
 
     ' Draw foreground image twice
     v.x = scrollingFore: v.y = 70: DrawTextureEx foreground, v, 0.0!, 2.0!, WHITE
-    v.x = foreground.W * 2 + scrollingFore: v.y = 70: DrawTextureEx foreground, v, 0.0!, 2.0!, WHITE
+    v.x = foreground.Rwidth * 2 + scrollingFore: v.y = 70: DrawTextureEx foreground, v, 0.0!, 2.0!, WHITE
 
-    DrawText "BACKGROUND SCROLLING & PARALLAX", 10, 10, 20, RED
+    DrawText "BACKGROUND SCROLLING & PARALLAX", 10, 10, 20, RRED
     DrawText "(c) Cyberpunk Street Environment by Luis Zuno (@ansimuz)", screenWidth - 330, screenHeight - 20, 10, RAYWHITE
 
     EndDrawing

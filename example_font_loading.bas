@@ -15,11 +15,11 @@ DIM msg AS STRING: msg = "~!@#$%^&*()_+QWERTYUIOP{}|" + CHR$(10) + "ASDFGHJKL:" 
 ' NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
 
 ' BMFont (AngelCode) : Font data and image atlas have been generated using external program
-DIM AS Font fontBm: LoadFont "assets/font/pixantiqua.fnt", fontBm
+DIM AS RFont fontBm: RLoadFont "assets/font/pixantiqua.fnt", fontBm
 
 ' TTF font : Font data and atlas are generated directly from TTF
 ' NOTE: We define a font base size of 32 pixels tall and up-to 250 characters
-DIM AS Font fontTtf: LoadFontEx "assets/font/pixantiqua.ttf", 32, NULL, 250, fontTtf
+DIM AS RFont fontTtf: LoadFontEx "assets/font/pixantiqua.ttf", 32, NULL, 250, fontTtf
 
 DIM useTtf AS _BYTE, v AS Vector2: v.x = 20!: v.y = 100!
 

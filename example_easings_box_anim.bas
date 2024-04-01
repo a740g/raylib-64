@@ -8,7 +8,7 @@ CONST screenHeight = 450
 
 InitWindow screenWidth, screenHeight, "raylib [shapes] example - easings box anim"
 
-DIM rec AS Rectangle: rec.x = GetScreenWidth / 2.0!: rec.y = -100: rec.W = 100: rec.H = 100
+DIM rec AS Rectangle: rec.x = GetScreenWidth / 2.0!: rec.y = -100: rec.Rwidth = 100: rec.Rheight = 100
 DIM rotation AS SINGLE
 DIM alpha AS SINGLE: alpha = 1.0!
 DIM vec AS Vector2
@@ -34,8 +34,8 @@ DO UNTIL WindowShouldClose
 
         CASE 1 ' Scale box to an horizontal bar
             framesCounter = framesCounter + 1
-            rec.H = EaseBounceOut(framesCounter, 100, -90, 120)
-            rec.W = EaseBounceOut(framesCounter, 100, GetScreenWidth, 120)
+            rec.Rheight = EaseBounceOut(framesCounter, 100, -90, 120)
+            rec.Rwidth = EaseBounceOut(framesCounter, 100, GetScreenWidth, 120)
 
             IF framesCounter >= 120 THEN
                 framesCounter = 0
@@ -53,7 +53,7 @@ DO UNTIL WindowShouldClose
 
         CASE 3 ' Increase bar size to fill all screen
             framesCounter = framesCounter + 1
-            rec.H = EaseCircOut(framesCounter, 10, GetScreenWidth, 120)
+            rec.Rheight = EaseCircOut(framesCounter, 10, GetScreenWidth, 120)
 
             IF framesCounter >= 120 THEN
                 framesCounter = 0
@@ -72,7 +72,7 @@ DO UNTIL WindowShouldClose
 
     ' Reset animation at any moment
     IF IsKeyPressed(KEY_SPACE) THEN
-        rec.x = GetScreenWidth / 2.0!: rec.y = -100: rec.W = 100: rec.H = 100
+        rec.x = GetScreenWidth / 2.0!: rec.y = -100: rec.Rwidth = 100: rec.Rheight = 100
         rotation = 0.0!
         alpha = 1.0!
         state = 0
@@ -84,7 +84,7 @@ DO UNTIL WindowShouldClose
 
     ClearBackground RAYWHITE
 
-    vec.x = rec.W / 2: vec.y = rec.H / 2
+    vec.x = rec.Rwidth / 2: vec.y = rec.Rheight / 2
     DrawRectanglePro rec, vec, rotation, Fade(BLACK, alpha)
 
     DrawText "PRESS [SPACE] TO RESET BOX ANIMATION!", 10, GetScreenHeight - 25, 20, LIGHTGRAY

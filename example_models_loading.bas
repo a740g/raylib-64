@@ -21,7 +21,7 @@ DIM AS Model mdl: LoadModel "assets/model/obj/castle.obj", mdl ' Load model
 DIM AS Texture tex: LoadTexture "assets/model/obj/castle_diffuse.png", tex ' Load model texture
 DIM AS Material matrl: PeekType mdl.materials, 0, _OFFSET(matrl), LEN(matrl)
 DIM AS MaterialMap matrlMap: PeekType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap)
-matrlMap.tex = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap) ' Set map diffuse texture
+matrlMap.texture = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap) ' Set map diffuse texture
 
 DIM AS Vector3 position ' Set model position
 
@@ -61,7 +61,7 @@ WHILE NOT WindowShouldClose ' Detect window close button or ESC key
                 'model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture
                 PeekType mdl.materials, 0, _OFFSET(matrl), LEN(matrl)
                 PeekType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap)
-                matrlMap.tex = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap) ' Set current map diffuse texture
+                matrlMap.texture = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap) ' Set current map diffuse texture
 
                 PeekType mdl.meshes, 0, _OFFSET(msh), LEN(msh)
                 GetMeshBoundingBox msh, bounds
@@ -74,7 +74,7 @@ WHILE NOT WindowShouldClose ' Detect window close button or ESC key
                 'model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture
                 PeekType mdl.materials, 0, _OFFSET(matrl), LEN(matrl)
                 PeekType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap)
-                matrlMap.tex = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap) ' Set current map diffuse texture
+                matrlMap.texture = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap) ' Set current map diffuse texture
             END IF
         END IF
 
@@ -103,12 +103,12 @@ WHILE NOT WindowShouldClose ' Detect window close button or ESC key
 
     DrawGrid 20, 10.0! ' Draw a grid
 
-    IF selected THEN DrawBoundingBox bounds, GREEN ' Draw selection box
+    IF selected THEN DrawBoundingBox bounds, RGREEN ' Draw selection box
 
     EndMode3D
 
     DrawText "Drag & drop model to load mesh/texture.", 10, GetScreenHeight - 20, 10, DARKGRAY
-    IF selected THEN DrawText "MODEL SELECTED", GetScreenWidth - 110, 10, 10, GREEN
+    IF selected THEN DrawText "MODEL SELECTED", GetScreenWidth - 110, 10, 10, RGREEN
 
     DrawText "(c) Castle 3D model by Alberto Cano", screenWidth - 200, screenHeight - 20, 10, GRAY
 

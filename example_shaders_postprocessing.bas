@@ -74,7 +74,7 @@ DIM AS Texture tex: LoadTexture "assets/model/obj/castle_diffuse.png", tex ' Loa
 
 DIM AS Material matrl: PeekType model.materials, 0, _OFFSET(matrl), LEN(matrl)
 DIM AS MaterialMap matrlMap: PeekType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap)
-matrlMap.tex = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap) ' Set map diffuse texture
+matrlMap.texture = tex: PokeType matrl.maps, MATERIAL_MAP_DIFFUSE, _OFFSET(matrlMap), LEN(matrlMap) ' Set map diffuse texture
 
 
 DIM AS Vector3 position: position.x = 0.0!: position.y = 0.0!: position.z = 0.0! ' Set model position
@@ -142,10 +142,10 @@ WHILE NOT WindowShouldClose ' Detect window close button or ESC key
     ' Render generated texture using selected postprocessing shader
     BeginShaderMode shaders(currentShader)
     targetRec.x = 0: targetRec.y = 0
-    targetRec.W = target.tex.W: targetRec.H = -target.tex.H
+    targetRec.Rwidth = target.texture.Rwidth: targetRec.Rheight = -target.texture.Rheight
     targetPos.x = 0: targetPos.y = 0
     ' NOTE: render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
-    DrawTextureRec target.tex, targetRec, targetPos, WHITE
+    DrawTextureRec target.texture, targetRec, targetPos, WHITE
     EndShaderMode
 
     ' Draw 2d shapes and text over drawn texture
@@ -153,7 +153,7 @@ WHILE NOT WindowShouldClose ' Detect window close button or ESC key
 
     DrawText "(c) Church 3d model by Alberto Cano", screenWidth - 200, screenHeight - 20, 10, GRAY
     DrawText "CURRENT POSTPRO SHADER", 10, 15, 20, BLACK
-    DrawText postproShaderText(currentShader), 330, 15, 20, RED
+    DrawText postproShaderText(currentShader), 330, 15, 20, RRED
     DrawText "< >", 540, 10, 30, DARKBLUE
     DrawFPS 700, 15
 

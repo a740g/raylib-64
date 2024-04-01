@@ -58,8 +58,8 @@ WHILE NOT WindowShouldClose ' Detect window close button or ESC key
         bunnies(i).position.x = bunnies(i).position.x + bunnies(i).speed.x
         bunnies(i).position.y = bunnies(i).position.y + bunnies(i).speed.y
 
-        IF (((bunnies(i).position.x + texBunny.W \ 2) > GetScreenWidth) OR ((bunnies(i).position.x + texBunny.W \ 2) < 0)) THEN bunnies(i).speed.x = bunnies(i).speed.x * -1
-        IF (((bunnies(i).position.y + texBunny.H \ 2) > GetScreenHeight) OR ((bunnies(i).position.y + texBunny.H \ 2 - 40) < 0)) THEN bunnies(i).speed.y = bunnies(i).speed.y * -1
+        IF (((bunnies(i).position.x + texBunny.Rwidth \ 2) > GetScreenWidth) OR ((bunnies(i).position.x + texBunny.Rwidth \ 2) < 0)) THEN bunnies(i).speed.x = bunnies(i).speed.x * -1
+        IF (((bunnies(i).position.y + texBunny.Rheight \ 2) > GetScreenHeight) OR ((bunnies(i).position.y + texBunny.Rheight \ 2 - 40) < 0)) THEN bunnies(i).speed.y = bunnies(i).speed.y * -1
     NEXT
     '----------------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ WHILE NOT WindowShouldClose ' Detect window close button or ESC key
     NEXT
 
     DrawRectangle 0, 0, screenWidth, 40, BLACK
-    DrawText TextFormatLong("bunnies: %i", bunniesCount), 120, 10, 20, GREEN
+    DrawText TextFormatLong("bunnies: %i", bunniesCount), 120, 10, 20, RGREEN
     DrawText TextFormatLong("batched draw calls: %i", 1 + bunniesCount / MAX_BATCH_ELEMENTS), 320, 10, 20, MAROON
 
     DrawFPS 10, 10

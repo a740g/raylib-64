@@ -23,16 +23,16 @@ InitAudioDevice ' Initialize audio device
 
 DIM colors(0 TO 13) AS _UNSIGNED LONG
 colors(0) = ORANGE
-colors(1) = RED
+colors(1) = RRED
 colors(2) = GOLD
 colors(3) = LIME
-colors(4) = BLUE
+colors(4) = RBLUE
 colors(5) = VIOLET
 colors(6) = BROWN
 colors(7) = LIGHTGRAY
 colors(8) = PINK
 colors(9) = YELLOW
-colors(10) = GREEN
+colors(10) = RGREEN
 colors(11) = SKYBLUE
 colors(12) = PURPLE
 colors(13) = BEIGE

@@ -11,9 +11,9 @@ InitWindow screenWidth, screenHeight, "raylib [core] example - 3d camera first p
 
 DIM v AS Vector3
 DIM AS Camera3D cam
-v.x = 0!: v.y = 2!: v.z = 4!: cam.position = v
-v.x = 0!: v.y = 2!: v.z = 0!: cam.target = v
-v.x = 0!: v.y = 1!: v.z = 0!: cam.up = v
+SetVector3 v, 0!, 2!, 4!: cam.position = v
+SetVector3 v, 0!, 2!, 0!: cam.target = v
+SetVector3 v, 0!, 1!, 0!: cam.up = v
 cam.fovy = 60!
 cam.projection = CAMERA_PERSPECTIVE
 
@@ -44,7 +44,7 @@ WHILE NOT WindowShouldClose
     BeginMode3D cam
 
     v.x = 0!: v.y = 0!: v.z = 0!: vs.x = 32!: vs.y = 32!: DrawPlane v, vs, LIGHTGRAY ' Draw ground
-    v.x = -16.0!: v.y = 2.5!: v.z = 0.0!: DrawCube v, 1.0, 5.0, 32.0, BLUE ' Draw a blue wall
+    v.x = -16.0!: v.y = 2.5!: v.z = 0.0!: DrawCube v, 1.0, 5.0, 32.0, RBLUE ' Draw a blue wall
     v.x = 16.0!: v.y = 2.5!: v.z = 0.0!: DrawCube v, 1.0, 5.0, 32.0, LIME ' Draw a green wall
     v.x = 0.0!: v.y = 2.5!: v.z = 16.0!: DrawCube v, 32.0, 5.0, 1.0, GOLD ' Draw a yellow wall
 
@@ -57,7 +57,7 @@ WHILE NOT WindowShouldClose
     EndMode3D
 
     DrawRectangle 10, 10, 220, 70, Fade(SKYBLUE, 0.5!)
-    DrawRectangleLines 10, 10, 220, 70, BLUE
+    DrawRectangleLines 10, 10, 220, 70, RBLUE
 
     DrawText "First person camera default controls:", 20, 20, 10, BLACK
     DrawText "- Move with keys: W, A, S, D", 40, 40, 10, DARKGRAY

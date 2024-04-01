@@ -18,7 +18,7 @@ CONST MAX_PARTICLES = 200
 '// Particle structure with basic data
 TYPE Particle
     position AS Vector2
-    colour AS RGBA
+    colour AS RColor
     alpha AS SINGLE
     size AS SINGLE
     rotation AS SINGLE
@@ -111,14 +111,14 @@ WHILE NOT WindowShouldClose '// Detect window close button or ESC key
         IF mouseTail(i).active THEN
             sourceRect.x = 0
             sourceRect.y = 0
-            sourceRect.W = smoke.W
-            sourceRect.H = smoke.H
+            sourceRect.Rwidth = smoke.Rwidth
+            sourceRect.Rheight = smoke.Rheight
             destRect.x = mouseTail(i).position.x
             destRect.y = mouseTail(i).position.y
-            destRect.W = smoke.W * mouseTail(i).size
-            destRect.H = smoke.H * mouseTail(i).size
-            origin.x = smoke.W * mouseTail(i).size / 2.0!
-            origin.y = smoke.H * mouseTail(i).size / 2.0!
+            destRect.Rwidth = smoke.Rwidth * mouseTail(i).size
+            destRect.Rheight = smoke.Rheight * mouseTail(i).size
+            origin.x = smoke.Rwidth * mouseTail(i).size / 2.0!
+            origin.y = smoke.Rheight * mouseTail(i).size / 2.0!
             c = _RGB32(mouseTail(i).colour.r, mouseTail(i).colour.g, mouseTail(i).colour.b)
             DrawTexturePro smoke, sourceRect, destRect, origin, mouseTail(i).rotation, Fade(c, mouseTail(i).alpha)
         END IF
