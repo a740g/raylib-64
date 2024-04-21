@@ -856,8 +856,14 @@ DECLARE STATIC LIBRARY "raylib"
     SUB SetVector3 (v AS Vector3, BYVAL x AS SINGLE, BYVAL y AS SINGLE, BYVAL z AS SINGLE)
     ' Sets a Vector4 variable
     SUB SetVector4 (v AS Vector4, BYVAL x AS SINGLE, BYVAL y AS SINGLE, BYVAL z AS SINGLE, BYVAL w AS SINGLE)
+    ' Sets a Rectangle variable
+    SUB SetRectangle (r AS Rectangle, BYVAL x AS SINGLE, BYVAL y AS SINGLE, BYVAL Rwidth AS SINGLE, BYVAL Rheight AS SINGLE)
     ' Sets a RColor variable
-    SUB SetColor (c AS RColor, BYVAL r AS _UNSIGNED _BYTE, BYVAL g AS _UNSIGNED _BYTE, BYVAL b AS _UNSIGNED _BYTE, BYVAL a AS _UNSIGNED _BYTE)
+    SUB SetRColor (c AS RColor, BYVAL r AS _UNSIGNED _BYTE, BYVAL g AS _UNSIGNED _BYTE, BYVAL b AS _UNSIGNED _BYTE, BYVAL a AS _UNSIGNED _BYTE)
+    ' Converts a RColor object to a 32-bit RGBA color value
+    FUNCTION RColorToRGBA~& (c AS RColor)
+    ' Converts a 32-bit RGBA color value to a RColor object
+    SUB RGBAToRColor (BYVAL rgba AS _UNSIGNED LONG, retVal AS RColor)
     ' Close window and unload OpenGL context
     SUB CloseWindow
     ' Check if application should close (KEY_ESCAPE pressed or windows close icon clicked)

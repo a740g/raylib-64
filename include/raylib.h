@@ -2521,15 +2521,42 @@ inline void SetVector4(void *v, float x, float y, float z, float w)
     (*reinterpret_cast<Vector4 *>(v)) = {x, y, z, w};
 }
 
-/// @brief Sets a RColor variable
+/// @brief Sets a RRectangle variable
+/// @param r The RRectangle variable
+/// @param x The x component
+/// @param y The y component
+/// @param width The width
+/// @param height The height
+inline void SetRectangle(void *r, float x, float y, float width, float height)
+{
+    (*reinterpret_cast<RRectangle *>(r)) = {x, y, width, height};
+}
+
+/// @brief Sets a SetColor variable
 /// @param c The RColor variable
 /// @param r The r component
 /// @param g The g component
 /// @param b The b component
 /// @param a The a component
-inline void SetColor(void *c, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+inline void SetRColor(void *c, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
     (*reinterpret_cast<RColor *>(c)) = {r, g, b, a};
+}
+
+/// @brief Converts a RColor object to a 32-bit RGBA color value
+/// @param c The RColor object
+/// @return The 32-bit RGBA color value
+inline uint32_t RColorToRGBA(void *c)
+{
+    return *(uint32_t *)c;
+}
+
+/// @brief Converts a 32-bit RGBA color value to a RColor object
+/// @param rgba The 32-bit RGBA color value
+/// @param retVal A pointer to the RColor object where the converted color will be stored
+inline void RGBAToRColor(uint32_t rgba, void *retVal)
+{
+    *(uint32_t *)retVal = rgba;
 }
 
 // Initialize window and OpenGL context

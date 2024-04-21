@@ -86,18 +86,18 @@ DIM AS Vector3 position: position.x = 0.0!: position.y = 0.0!: position.z = 0.0!
 DIM AS Shader shaders(0 TO MAX_POSTPRO_SHADERS)
 
 ' NOTE: Defining 0 (NULL) for vertex shader forces usage of internal default vertex shader
-LoadShader "", TextFormatLong("assets/shader/glsl%i/grayscale.fs", GLSL_VERSION), shaders(FX_GRAYSCALE)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/posterization.fs", GLSL_VERSION), shaders(FX_POSTERIZATION)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/dream_vision.fs", GLSL_VERSION), shaders(FX_DREAM_VISION)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/pixelizer.fs", GLSL_VERSION), shaders(FX_PIXELIZER)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/cross_hatching.fs", GLSL_VERSION), shaders(FX_CROSS_HATCHING)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/cross_stitching.fs", GLSL_VERSION), shaders(FX_CROSS_STITCHING)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/predator.fs", GLSL_VERSION), shaders(FX_PREDATOR_VIEW)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/scanlines.fs", GLSL_VERSION), shaders(FX_SCANLINES)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/fisheye.fs", GLSL_VERSION), shaders(FX_FISHEYE)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/sobel.fs", GLSL_VERSION), shaders(FX_SOBEL)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/bloom.fs", GLSL_VERSION), shaders(FX_BLOOM)
-LoadShader "", TextFormatLong("assets/shader/glsl%i/blur.fs", GLSL_VERSION), shaders(FX_BLUR)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/grayscale.fs", GLSL_VERSION), shaders(FX_GRAYSCALE)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/posterization.fs", GLSL_VERSION), shaders(FX_POSTERIZATION)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/dream_vision.fs", GLSL_VERSION), shaders(FX_DREAM_VISION)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/pixelizer.fs", GLSL_VERSION), shaders(FX_PIXELIZER)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/cross_hatching.fs", GLSL_VERSION), shaders(FX_CROSS_HATCHING)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/cross_stitching.fs", GLSL_VERSION), shaders(FX_CROSS_STITCHING)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/predator.fs", GLSL_VERSION), shaders(FX_PREDATOR_VIEW)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/scanlines.fs", GLSL_VERSION), shaders(FX_SCANLINES)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/fisheye.fs", GLSL_VERSION), shaders(FX_FISHEYE)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/sobel.fs", GLSL_VERSION), shaders(FX_SOBEL)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/bloom.fs", GLSL_VERSION), shaders(FX_BLOOM)
+LoadShader STRING_EMPTY, TextFormatLong("assets/shader/glsl%i/blur.fs", GLSL_VERSION), shaders(FX_BLUR)
 
 DIM AS LONG currentShader: currentShader = FX_GRAYSCALE
 

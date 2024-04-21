@@ -10,7 +10,7 @@ CONST screenHeight = 450
 InitWindow screenWidth, screenHeight, "raylib [text] example - font loading"
 
 ' Define characters to draw
-DIM msg AS STRING: msg = "~!@#$%^&*()_+QWERTYUIOP{}|" + CHR$(10) + "ASDFGHJKL:" + CHR$(34) + "ZXCVBNM<>?" + CHR$(10) + "`1234567890-=qwertyuiop[]\" + CHR$(10) + "asdfghjkl;'zxcvbnm,./"
+CONST msg = "~!@#$%^&*()_+QWERTYUIOP{}|" + CHR$(10) + "ASDFGHJKL:" + CHR$(34) + "ZXCVBNM<>?" + CHR$(10) + "`1234567890-=qwertyuiop[]\" + CHR$(10) + "asdfghjkl;'zxcvbnm,./"
 
 ' NOTE: Textures/Fonts MUST be loaded after Window initialization (OpenGL context is required)
 
