@@ -778,21 +778,21 @@ DECLARE STATIC LIBRARY "raylib"
     ' Copies count bytes from src to dst
     SUB CopyMemory ALIAS RCopyMemory (BYVAL dst AS _UNSIGNED _OFFSET, BYVAL src AS _UNSIGNED _OFFSET, BYVAL count AS _UNSIGNED _OFFSET)
     ' Peeks a BYTE (8-bits) value at ptr + ofs
-    FUNCTION PeekByte~%% (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
+    FUNCTION PeekByte%% (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
     ' Poke a BYTE (8-bits) value at ptr + ofs
-    SUB PokeByte (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS _UNSIGNED _BYTE)
+    SUB PokeByte (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS _BYTE)
     ' Peek an INTEGER (16-bits) value at ptr + ofs
-    FUNCTION PeekInteger~% (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
+    FUNCTION PeekInteger% (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
     ' Poke an INTEGER (16-bits) value at ptr + ofs
-    SUB PokeInteger (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS _UNSIGNED INTEGER)
+    SUB PokeInteger (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS INTEGER)
     ' Peek a LONG (32-bits) value at ptr + ofs
-    FUNCTION PeekLong~& (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
+    FUNCTION PeekLong& (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
     ' Poke a LONG (32-bits) value at ptr + ofs
-    SUB PokeLong (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS _UNSIGNED LONG)
+    SUB PokeLong (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS LONG)
     ' Peek a INTEGER64 (64-bits) value at ptr + ofs
-    FUNCTION PeekInteger64~&& (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
+    FUNCTION PeekInteger64&& (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
     ' Poke a INTEGER64 (64-bits) value at ptr + ofs
-    SUB PokeInteger64 (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS _UNSIGNED _INTEGER64)
+    SUB PokeInteger64 (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS _INTEGER64)
     ' Peek a SINGLE (32-bits) value at ptr + ofs
     FUNCTION PeekSingle! (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
     ' Poke a SINGLE (32-bits) value at ptr + ofs
@@ -802,7 +802,7 @@ DECLARE STATIC LIBRARY "raylib"
     ' Poke a DOUBLE (64-bits) value at ptr + ofs
     SUB PokeDouble (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS DOUBLE)
     ' Peek an OFFSET (32/64-bits) value at ptr + ofs
-    FUNCTION PeekOffset%& (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
+    FUNCTION PeekOffset~%& (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET)
     ' Poke an OFFSET (32/64-bits) value at ptr + ofs
     SUB PokeOffset (BYVAL ptr AS _UNSIGNED _OFFSET, BYVAL ofs AS _UNSIGNED _OFFSET, BYVAL n AS _UNSIGNED _OFFSET)
     ' Gets a UDT value from a pointer position ptr, offset by ofs. Same as typeVar = ptr[ofs]
@@ -1056,7 +1056,7 @@ DECLARE STATIC LIBRARY "raylib"
     ' Load random values sequence, no values repeated
     FUNCTION LoadRandomSequence~%& (BYVAL count AS _UNSIGNED LONG, BYVAL min AS LONG, BYVAL max AS LONG)
     ' Unload random values sequence
-    SUB UnloadRandomSequence (sequence AS LONG)
+    SUB UnloadRandomSequence (BYVAL sequence AS _UNSIGNED _OFFSET)
     ' Setup init configuration flags (view FLAGS)
     SUB SetConfigFlags (BYVAL flags AS _UNSIGNED LONG)
     ' Set the current threshold (minimum) log level
@@ -1722,7 +1722,7 @@ DECLARE STATIC LIBRARY "raylib"
     ' Load samples data from wave as a 32bit float data array
     FUNCTION LoadWaveSamples~%& (wave AS Wave)
     ' Unload samples data loaded with LoadWaveSamples()
-    SUB UnloadWaveSamples (samples AS SINGLE)
+    SUB UnloadWaveSamples (BYVAL samples AS _UNSIGNED _OFFSET)
     ' Checks if a music stream is ready
     FUNCTION IsMusicReady%% (music AS Music)
     ' Unload music stream

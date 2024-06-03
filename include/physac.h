@@ -24,32 +24,32 @@ inline PhysicsBody __CreatePhysicsBodyPolygon(void *pos, float radius, int sides
     return CreatePhysicsBodyPolygon(*(Vector2 *)pos, radius, sides, density);
 }
 
-inline void __DestroyPhysicsBody(void *body)
+inline void __DestroyPhysicsBody(uintptr_t body)
 {
     DestroyPhysicsBody((PhysicsBody)body);
 }
 
-inline void __PhysicsAddForce(void *body, void *force)
+inline void __PhysicsAddForce(uintptr_t body, void *force)
 {
     PhysicsAddForce((PhysicsBody)body, *(Vector2 *)force);
 }
 
-inline void __PhysicsAddTorque(void *body, float amount)
+inline void __PhysicsAddTorque(uintptr_t body, float amount)
 {
     PhysicsAddTorque((PhysicsBody)body, amount);
 }
 
-inline void __PhysicsShatter(void *body, void *position, float force)
+inline void __PhysicsShatter(uintptr_t body, void *position, float force)
 {
     PhysicsShatter((PhysicsBody)body, *(Vector2 *)position, force);
 }
 
-inline void __SetPhysicsBodyRotation(void *body, float radians)
+inline void __SetPhysicsBodyRotation(uintptr_t body, float radians)
 {
     SetPhysicsBodyRotation((PhysicsBody)body, radians);
 }
 
-inline void __GetPhysicsShapeVertex(void *body, int vertex, void *retVal)
+inline void __GetPhysicsShapeVertex(uintptr_t body, int vertex, void *retVal)
 {
     *(Vector2 *)retVal = GetPhysicsShapeVertex((PhysicsBody)body, vertex);
 }

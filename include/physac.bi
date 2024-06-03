@@ -70,7 +70,7 @@ TYPE PhysicsBody
     AS PhysicsShape shape ' Physics body shape information (type, radius, vertices, transform)
 END TYPE
 
-DECLARE CUSTOMTYPE LIBRARY "physac"
+DECLARE STATIC LIBRARY "physac"
     SUB InitPhysics
     SUB UpdatePhysics
     SUB ResetPhysics

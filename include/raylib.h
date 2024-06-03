@@ -2144,72 +2144,72 @@ inline void RCopyMemory(uintptr_t dst, uintptr_t src, size_t count)
 /// @param p Pointer base
 /// @param o Offset from base
 /// @return BYTE value
-inline uint8_t PeekByte(uintptr_t p, uintptr_t o)
+inline int8_t PeekByte(uintptr_t p, uintptr_t o)
 {
-    return *((uint8_t *)p + o);
+    return *(reinterpret_cast<const int8_t *>(p) + o);
 }
 
 /// @brief Poke a BYTE (8-bits) value at p + o
 /// @param p Pointer base
 /// @param o Offset from base
 /// @param n BYTE value
-inline void PokeByte(uintptr_t p, uintptr_t o, uint8_t n)
+inline void PokeByte(uintptr_t p, uintptr_t o, int8_t n)
 {
-    *((uint8_t *)p + o) = n;
+    *(reinterpret_cast<int8_t *>(p) + o) = n;
 }
 
 /// @brief Peek an INTEGER (16-bits) value at p + o
 /// @param p Pointer base
 /// @param o Offset from base
 /// @return INTEGER value
-inline uint16_t PeekInteger(uintptr_t p, uintptr_t o)
+inline int16_t PeekInteger(uintptr_t p, uintptr_t o)
 {
-    return *((uint16_t *)p + o);
+    return *(reinterpret_cast<const int16_t *>(p) + o);
 }
 
 /// @brief Poke an INTEGER (16-bits) value at p + o
 /// @param p Pointer base
 /// @param o Offset from base
 /// @param n INTEGER value
-inline void PokeInteger(uintptr_t p, uintptr_t o, uint16_t n)
+inline void PokeInteger(uintptr_t p, uintptr_t o, int16_t n)
 {
-    *((uint16_t *)p + o) = n;
+    *(reinterpret_cast<int16_t *>(p) + o) = n;
 }
 
 /// @brief Peek a LONG (32-bits) value at p + o
 /// @param p Pointer base
 /// @param o Offset from base
 /// @return LONG value
-inline uint32_t PeekLong(uintptr_t p, uintptr_t o)
+inline int32_t PeekLong(uintptr_t p, uintptr_t o)
 {
-    return *((uint32_t *)p + o);
+    return *(reinterpret_cast<const int32_t *>(p) + o);
 }
 
 /// @brief Poke a LONG (32-bits) value at p + o
 /// @param p Pointer base
 /// @param o Offset from base
 /// @param n LONG value
-inline void PokeLong(uintptr_t p, uintptr_t o, uint32_t n)
+inline void PokeLong(uintptr_t p, uintptr_t o, int32_t n)
 {
-    *((uint32_t *)p + o) = n;
+    *(reinterpret_cast<int32_t *>(p) + o) = n;
 }
 
 /// @brief Peek a INTEGER64 (64-bits) value at p + o
 /// @param p Pointer base
 /// @param o Offset from base
 /// @return INTEGER64 value
-inline uint64_t PeekInteger64(uintptr_t p, uintptr_t o)
+inline int64_t PeekInteger64(uintptr_t p, uintptr_t o)
 {
-    return *((uint64_t *)p + o);
+    return *(reinterpret_cast<const int64_t *>(p) + o);
 }
 
 /// @brief Poke a INTEGER64 (64-bits) value at p + o
 /// @param p Pointer base
 /// @param o Offset from base
 /// @param n INTEGER64 value
-inline void PokeInteger64(uintptr_t p, uintptr_t o, uint64_t n)
+inline void PokeInteger64(uintptr_t p, uintptr_t o, int64_t n)
 {
-    *((uint64_t *)p + o) = n;
+    *(reinterpret_cast<int64_t *>(p) + o) = n;
 }
 
 /// @brief Peek a SINGLE (32-bits) value at p + o
@@ -2254,7 +2254,7 @@ inline void PokeDouble(uintptr_t p, uintptr_t o, double n)
 /// @return DOUBLE value
 inline uintptr_t PeekOffset(uintptr_t p, uintptr_t o)
 {
-    return *((uintptr_t *)p + o);
+    return *(reinterpret_cast<const uintptr_t *>(p) + o);
 }
 
 /// @brief Poke an OFFSET (32/64-bits) value at p + o
@@ -2263,7 +2263,7 @@ inline uintptr_t PeekOffset(uintptr_t p, uintptr_t o)
 /// @param n DOUBLE value
 inline void PokeOffset(uintptr_t p, uintptr_t o, uintptr_t n)
 {
-    *((uintptr_t *)p + o) = n;
+    *(reinterpret_cast<uintptr_t *>(p) + o) = n;
 }
 
 /// @brief Gets a UDT value from a pointer positon offset by o. Same as t = p[o]
@@ -3160,7 +3160,7 @@ inline void *LoadRandomSequence(unsigned int count, int min, int max)
 }
 
 // Unload random values sequence
-inline void UnloadRandomSequence(void *sequence)
+inline void UnloadRandomSequence(uintptr_t sequence)
 {
     _UnloadRandomSequence((int *)sequence);
 }
@@ -5682,7 +5682,7 @@ inline void *LoadWaveSamples(void *wave)
 }
 
 // Unload samples data loaded with LoadWaveSamples()
-inline void UnloadWaveSamples(void *samples)
+inline void UnloadWaveSamples(uintptr_t samples)
 {
     _UnloadWaveSamples((float *)samples);
 }
