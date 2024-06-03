@@ -9,42 +9,42 @@ $INCLUDEONCE
 
 CONST EPSILON! = 0.000001!
 
-DECLARE CUSTOMTYPE LIBRARY "raymath"
+DECLARE STATIC LIBRARY "raymath"
     ' Utils math
     FUNCTION Clamp! (BYVAL value AS SINGLE, BYVAL min AS SINGLE, BYVAL max AS SINGLE) ' Function specifiers definition Defines and Macros Get float vector for Matrix Get float vector for Vector3 Types and Structures Definition Vector2 type Vector3 type Vector4 type Quaternion type Matrix type (OpenGL style 4x4 - right handed, column major) NOTE: Helper types to be used instead of array return types for *ToFloat functions Clamp float value
     FUNCTION Lerp! (BYVAL rStart AS SINGLE, BYVAL rEnd AS SINGLE, BYVAL rAmount AS SINGLE) ' Calculate linear interpolation between two floats
     FUNCTION Normalize! (BYVAL rValue AS SINGLE, BYVAL rStart AS SINGLE, BYVAL rEnd AS SINGLE) ' Normalize input value within input range
     FUNCTION Remap! (BYVAL value AS SINGLE, BYVAL inputStart AS SINGLE, BYVAL inputEnd AS SINGLE, BYVAL outputStart AS SINGLE, BYVAL outputEnd AS SINGLE) ' Remap input value within input range to output range
     FUNCTION Wrap! (BYVAL value AS SINGLE, BYVAL min AS SINGLE, BYVAL max AS SINGLE) ' Wrap input value from min to max
-    FUNCTION FloatEquals& (BYVAL x AS SINGLE, BYVAL y AS SINGLE) ' Check whether two given floats are almost equal
+    FUNCTION FloatEquals& ALIAS "__FloatEquals" (BYVAL x AS SINGLE, BYVAL y AS SINGLE) ' Check whether two given floats are almost equal
 
     ' Vector2 math
-    'Vector2 Vector2Zero(void);                                                  ' Vector with components value 0.0f
-    'Vector2 Vector2One(void);                                                   ' Vector with components value 1.0f
-    'Vector2 Vector2Add(Vector2 v1, Vector2 v2);                                 ' Add two vectors (v1 + v2)
-    'Vector2 Vector2AddValue(Vector2 v, float add);                              ' Add vector and float value
-    'Vector2 Vector2Subtract(Vector2 v1, Vector2 v2);                            ' Subtract two vectors (v1 - v2)
-    'Vector2 Vector2SubtractValue(Vector2 v, float sub);                         ' Subtract vector by float value
-    'float Vector2Length(Vector2 v);                                             ' Calculate vector length
-    'float Vector2LengthSqr(Vector2 v);                                          ' Calculate vector square length
-    'float Vector2DotProduct(Vector2 v1, Vector2 v2);                            ' Calculate two vectors dot product
-    'float Vector2Distance(Vector2 v1, Vector2 v2);                              ' Calculate distance between two vectors
-    'float Vector2DistanceSqr(Vector2 v1, Vector2 v2);                           ' Calculate square distance between two vectors
-    'float Vector2Angle(Vector2 v1, Vector2 v2);                                 ' Calculate angle from two vectors
-    'Vector2 Vector2Scale(Vector2 v, float scale);                               ' Scale vector (multiply by value)
-    'Vector2 Vector2Multiply(Vector2 v1, Vector2 v2);                            ' Multiply vector by vector
-    'Vector2 Vector2Negate(Vector2 v);                                           ' Negate vector
-    'Vector2 Vector2Divide(Vector2 v1, Vector2 v2);                              ' Divide vector by vector
-    'Vector2 Vector2Normalize(Vector2 v);                                        ' Normalize provided vector
-    'Vector2 Vector2Transform(Vector2 v, Matrix mat);                            ' Transforms a Vector2 by a given Matrix
-    'Vector2 Vector2Lerp(Vector2 v1, Vector2 v2, float amount);                  ' Calculate linear interpolation between two vectors
-    'Vector2 Vector2Reflect(Vector2 v, Vector2 normal);                          ' Calculate reflected vector to normal
-    'Vector2 Vector2Rotate(Vector2 v, float angle);                              ' Rotate vector by angle
-    'Vector2 Vector2MoveTowards(Vector2 v, Vector2 target, float maxDistance);   ' Move Vector towards target
-    'Vector2 Vector2Invert(Vector2 v);                                           ' Invert the given vector
-    'Vector2 Vector2Clamp(Vector2 v, Vector2 min, Vector2 max);                  ' Clamp the components of the vector between min and max values specified by the given vectors
-    'Vector2 Vector2ClampValue(Vector2 v, float min, float max);                 ' Clamp the magnitude of the vector between two min and max values
-    'int Vector2Equals(Vector2 p, Vector2 q);                                    ' Check whether two given vectors are almost equal
+    SUB Vector2Zero ALIAS "__Vector2Zero" (v AS Vector2) ' Vector with components value 0.0f
+    SUB Vector2One ALIAS "__Vector2One" (v AS Vector2) ' Vector with components value 1.0f
+    SUB Vector2Add ALIAS "__Vector2Add" (v1 AS Vector2, v2 AS Vector2, result AS Vector2) ' Add two vectors (v1 + v2)
+    SUB Vector2AddValue ALIAS "__Vector2AddValue" (v AS Vector2, BYVAL value AS SINGLE, result AS Vector2) ' Add vector and float value
+    SUB Vector2Subtract ALIAS "__Vector2Subtract" (v1 AS Vector2, v2 AS Vector2, result AS Vector2) ' Subtract two vectors (v1 - v2)
+    SUB Vector2SubtractValue ALIAS "__Vector2SubtractValue" (v AS Vector2, BYVAL value AS SINGLE, result AS Vector2) ' Subtract vector by float value
+    FUNCTION Vector2Length! ALIAS "__Vector2Length" (v AS Vector2) ' Calculate vector length
+    FUNCTION Vector2LengthSqr! ALIAS "__Vector2LengthSqr" (v AS Vector2) ' Calculate vector square length
+    FUNCTION Vector2DotProduct! ALIAS "__Vector2DotProduct" (v1 AS Vector2, v2 AS Vector2) ' Calculate two vectors dot product
+    FUNCTION Vector2Distance! ALIAS "__Vector2Distance" (v1 AS Vector2, v2 AS Vector2) ' Calculate distance between two vectors
+    FUNCTION Vector2DistanceSqr! ALIAS "__Vector2DistanceSqr" (v1 AS Vector2, v2 AS Vector2) ' Calculate square distance between two vectors
+    FUNCTION Vector2Angle! ALIAS "__Vector2Angle" (v1 AS Vector2, v2 AS Vector2) ' Calculate angle from two vectors
+    SUB Vector2Scale ALIAS "__Vector2Scale" (v AS Vector2, BYVAL scale AS SINGLE, result AS Vector2) ' Scale vector (multiply by value)
+    SUB Vector2Multiply ALIAS "__Vector2Multiply" (v1 AS Vector2, v2 AS Vector2, result AS Vector2) ' Multiply vector by vector
+    SUB Vector2Negate ALIAS "__Vector2Negate" (v AS Vector2, result AS Vector2) ' Negate vector
+    SUB Vector2Divide ALIAS "__Vector2Divide" (v1 AS Vector2, v2 AS Vector2, result AS Vector2) ' Divide vector by vector
+    SUB Vector2Normalize ALIAS "__Vector2Normalize" (v AS Vector2, result AS Vector2) ' Normalize provided vector
+    SUB Vector2Transform ALIAS "__Vector2Transform" (v AS Vector2, mat AS Matrix, result AS Vector2) ' Transforms a Vector2 by a given Matrix
+    SUB Vector2Lerp ALIAS "__Vector2Lerp" (v1 AS Vector2, v2 AS Vector2, BYVAL amount AS SINGLE, result AS Vector2) ' Calculate linear interpolation between two vectors
+    SUB Vector2Reflect ALIAS "__Vector2Reflect" (v AS Vector2, normal AS Vector2, result AS Vector2) ' Calculate reflected vector to normal
+    SUB Vector2Rotate ALIAS "__Vector2Rotate" (v AS Vector2, BYVAL angle AS SINGLE, result AS Vector2) ' Rotate vector by angle
+    SUB Vector2MoveTowards ALIAS "__Vector2MoveTowards" (v AS Vector2, target AS Vector2, BYVAL maxDistance AS SINGLE, result AS Vector2) ' Move Vector towards target
+    SUB Vector2Invert ALIAS "__Vector2Invert" (v AS Vector2, result AS Vector2) ' Invert provided vector
+    SUB Vector2Clamp ALIAS "__Vector2Clamp" (v AS Vector2, min AS Vector2, max AS Vector2, result AS Vector2) ' Clamp vector between min and max vectors
+    SUB Vector2ClampValue ALIAS "__Vector2ClampValue" (v AS Vector2, BYVAL min AS SINGLE, BYVAL max AS SINGLE, result AS Vector2) ' Clamp the magnitude of the vector between two min and max values
+    FUNCTION Vector2Equals& ALIAS "__Vector2Equals" (v1 AS Vector2, v2 AS Vector2) ' Check whether two given vectors are almost equal
 
     ' Vector3 math
     'Vector3 Vector3Zero(void);                                                  ' Vector with components value 0.0f
