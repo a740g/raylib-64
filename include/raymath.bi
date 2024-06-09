@@ -84,27 +84,27 @@ DECLARE STATIC LIBRARY "raymath"
     SUB Vector3Refract ALIAS "__Vector3Refract" (v AS Vector3, n AS Vector3, BYVAL r AS SINGLE, result AS Vector3) ' Compute the direction of a refracted ray where v specifies the normalized direction of the incoming ray, n specifies the normalized normal vector of the interface of two optical media, and r specifies the ratio of the refractive index of the medium from where the ray comes to the refractive index of the medium on the other side of the surface
 
     ' Matrix math
-    'float MatrixDeterminant(Matrix mat);                                        ' Compute matrix determinant
-    'float MatrixTrace(Matrix mat);                                              ' Get the trace of the matrix (sum of the values along the diagonal)
-    'Matrix MatrixTranspose(Matrix mat);                                         ' Transposes provided matrix
-    'Matrix MatrixInvert(Matrix mat);                                            ' Invert provided matrix
-    'Matrix MatrixIdentity(void);                                                ' Get identity matrix
-    'Matrix MatrixAdd(Matrix left, Matrix right);                                ' Add two matrices
-    'Matrix MatrixSubtract(Matrix left, Matrix right);                           ' Subtract two matrices (left - right)
-    'Matrix MatrixMultiply(Matrix left, Matrix right);                           ' Get two matrix multiplication NOTE: When multiplying matrices... the order matters!
-    'Matrix MatrixTranslate(float x, float y, float z);                          ' Get translation matrix
-    'Matrix MatrixRotate(Vector3 axis, float angle);                             ' Create rotation matrix from axis and angle NOTE: Angle should be provided in radians
-    'Matrix MatrixRotateX(float angle);                                          ' Get x-rotation matrix NOTE: Angle must be provided in radians
-    'Matrix MatrixRotateY(float angle);                                          ' Get y-rotation matrix NOTE: Angle must be provided in radians
-    'Matrix MatrixRotateZ(float angle);                                          ' Get z-rotation matrix NOTE: Angle must be provided in radians
-    'Matrix MatrixRotateXYZ(Vector3 angle);                                      ' Get xyz-rotation matrix NOTE: Angle must be provided in radians
-    'Matrix MatrixRotateZYX(Vector3 angle);                                      ' Get zyx-rotation matrix NOTE: Angle must be provided in radians
-    'Matrix MatrixScale(float x, float y, float z);                              ' Get scaling matrix
-    'Matrix MatrixFrustum(double left, double right, double bottom, double top, double near, double far); ' Get perspective projection matrix
-    'Matrix MatrixPerspective(double fovy, double aspect, double near, double far); ' Get perspective projection matrix NOTE: Fovy angle must be provided in radians
-    'Matrix MatrixOrtho(double left, double right, double bottom, double top, double near, double far); ' Get orthographic projection matrix
-    'Matrix MatrixLookAt(Vector3 eye, Vector3 target, Vector3 up);               ' Get camera look-at matrix (view matrix)
-    'float16 MatrixToFloatV(Matrix mat);                                         ' Get float array of matrix data
+    FUNCTION MatrixDeterminant! ALIAS "__MatrixDeterminant" (mat AS Matrix) ' Compute matrix determinant
+    FUNCTION MatrixTrace! ALIAS "__MatrixTrace" (mat AS Matrix) ' Get the trace of the matrix (sum of the values along the diagonal)
+    SUB MatrixTranspose ALIAS "__MatrixTranspose" (mat AS Matrix, result AS Matrix) ' Transpose provided matrix
+    SUB MatrixInvert ALIAS "__MatrixInvert" (mat AS Matrix, result AS Matrix) ' Invert provided matrix
+    SUB MatrixIdentity ALIAS "__MatrixIdentity" (result AS Matrix) ' Get identity matrix
+    SUB MatrixAdd ALIAS "__MatrixAdd" (mat1 AS Matrix, mat2 AS Matrix, result AS Matrix) ' Add two matrices
+    SUB MatrixSubtract ALIAS "__MatrixSubtract" (mat1 AS Matrix, mat2 AS Matrix, result AS Matrix) ' Subtract two matrices
+    SUB MatrixMultiply ALIAS "__MatrixMultiply" (mat1 AS Matrix, mat2 AS Matrix, result AS Matrix) ' Multiply two matrices NOTE: when multiplying matrices... the order matters!
+    SUB MatrixTranslate ALIAS "__MatrixTranslate" (BYVAL x AS SINGLE, BYVAL y AS SINGLE, BYVAL z AS SINGLE, result AS Matrix) ' Get translation matrix
+    SUB MatrixRotate ALIAS "__MatrixRotate" (axis AS Vector3, BYVAL angle AS SINGLE, result AS Matrix) ' Get x-rotation matrix NOTE: Angle must be provided in radians
+    SUB MatrixRotateX ALIAS "__MatrixRotateX" (BYVAL angle AS SINGLE, result AS Matrix) ' Get x-rotation matrix NOTE: Angle must be provided in radians
+    SUB MatrixRotateY ALIAS "__MatrixRotateY" (BYVAL angle AS SINGLE, result AS Matrix) ' Get y-rotation matrix NOTE: Angle must be provided in radians
+    SUB MatrixRotateZ ALIAS "__MatrixRotateZ" (BYVAL angle AS SINGLE, result AS Matrix) ' Get z-rotation matrix NOTE: Angle must be provided in radians
+    SUB MatrixRotateXYZ ALIAS "__MatrixRotateXYZ" (angle AS Vector3, result AS Matrix) ' Get xyz-rotation matrix NOTE: Angle must be provided in radians
+    SUB MatrixRotateZYX ALIAS "__MatrixRotateZYX" (angle AS Vector3, result AS Matrix) ' Get zyx-rotation matrix NOTE: Angle must be provided in radians
+    SUB MatrixScale ALIAS "__MatrixScale" (BYVAL x AS SINGLE, BYVAL y AS SINGLE, BYVAL z AS SINGLE, result AS Matrix) ' Get scaling matrix
+    SUB MatrixFrustum ALIAS "__MatrixFrustum" (BYVAL r_left AS DOUBLE, BYVAL r_right AS DOUBLE, BYVAL r_bottom AS DOUBLE, BYVAL r_top AS DOUBLE, BYVAL r_near AS DOUBLE, BYVAL r_far AS DOUBLE, result AS Matrix) ' Get perspective projection matrix
+    SUB MatrixPerspective ALIAS "__MatrixPerspective" (BYVAL fovy AS DOUBLE, BYVAL aspect AS DOUBLE, BYVAL near AS DOUBLE, BYVAL far AS DOUBLE, result AS Matrix) ' Get perspective projection matrix NOTE: Fovy angle must be provided in radians
+    SUB MatrixOrtho ALIAS "__MatrixOrtho" (BYVAL r_left AS DOUBLE, BYVAL r_right AS DOUBLE, BYVAL r_bottom AS DOUBLE, BYVAL r_top AS DOUBLE, BYVAL r_near AS DOUBLE, BYVAL r_far AS DOUBLE, result AS Matrix) ' Get orthographic projection matrix
+    SUB MatrixLookAt ALIAS "__MatrixLookAt" (eye AS Vector3, target AS Vector3, up AS Vector3, result AS Matrix) ' Get camera look-at matrix (view matrix)
+    SUB MatrixToFloatV ALIAS "__MatrixToFloatV" (mat AS Matrix, result AS SINGLE) ' Get float array of matrix data (result). Example: MatrixToFloatV myMatrix, myFloatArray!(0)
 
     ' Quaternion math
     'Quaternion QuaternionAdd(Quaternion q1, Quaternion q2);                     ' Add two quaternions

@@ -313,3 +313,108 @@ inline void __Vector3Refract(void *v, void *n, float r, void *result)
 {
     *(Vector3 *)result = Vector3Refract(*(Vector3 *)v, *(Vector3 *)n, r);
 }
+
+inline float __MatrixDeterminant(void *mat)
+{
+    return MatrixDeterminant(*(Matrix *)mat);
+}
+
+inline float __MatrixTrace(void *mat)
+{
+    return MatrixTrace(*(Matrix *)mat);
+}
+
+inline void __MatrixTranspose(void *mat, void *result)
+{
+    *(Matrix *)result = MatrixTranspose(*(Matrix *)mat);
+}
+
+inline void __MatrixInvert(void *mat, void *result)
+{
+    *(Matrix *)result = MatrixInvert(*(Matrix *)mat);
+}
+
+inline void __MatrixIdentity(void *result)
+{
+    *(Matrix *)result = MatrixIdentity();
+}
+
+inline void __MatrixAdd(void *mat1, void *mat2, void *result)
+{
+    *(Matrix *)result = MatrixAdd(*(Matrix *)mat1, *(Matrix *)mat2);
+}
+
+inline void __MatrixSubtract(void *mat1, void *mat2, void *result)
+{
+    *(Matrix *)result = MatrixSubtract(*(Matrix *)mat1, *(Matrix *)mat2);
+}
+
+inline void __MatrixMultiply(void *mat1, void *mat2, void *result)
+{
+    *(Matrix *)result = MatrixMultiply(*(Matrix *)mat1, *(Matrix *)mat2);
+}
+
+inline void __MatrixTranslate(float x, float y, float z, void *result)
+{
+    *(Matrix *)result = MatrixTranslate(x, y, z);
+}
+
+inline void __MatrixRotate(void *axis, float angle, void *result)
+{
+    *(Matrix *)result = MatrixRotate(*(Vector3 *)axis, angle);
+}
+
+inline void __MatrixRotateX(float angle, void *result)
+{
+    *(Matrix *)result = MatrixRotateX(angle);
+}
+
+inline void __MatrixRotateY(float angle, void *result)
+{
+    *(Matrix *)result = MatrixRotateY(angle);
+}
+
+inline void __MatrixRotateZ(float angle, void *result)
+{
+    *(Matrix *)result = MatrixRotateZ(angle);
+}
+
+inline void __MatrixRotateXYZ(void *angle, void *result)
+{
+    *(Matrix *)result = MatrixRotateXYZ(*(Vector3 *)angle);
+}
+
+inline void __MatrixRotateZYX(void *angle, void *result)
+{
+    *(Matrix *)result = MatrixRotateZYX(*(Vector3 *)angle);
+}
+
+inline void __MatrixScale(float x, float y, float z, void *result)
+{
+    *(Matrix *)result = MatrixScale(x, y, z);
+}
+
+inline void __MatrixFrustum(double r_left, double r_right, double r_bottom, double r_top, double r_near, double r_far, void *result)
+{
+    *(Matrix *)result = MatrixFrustum(r_left, r_right, r_bottom, r_top, r_near, r_far);
+}
+
+inline void __MatrixPerspective(double fovy, double aspect, double nearPlane, double farPlane, void *result)
+{
+    *(Matrix *)result = MatrixPerspective(fovy, aspect, nearPlane, farPlane);
+}
+
+inline void __MatrixOrtho(double r_left, double r_right, double r_bottom, double r_top, double r_near, double r_far, void *result)
+{
+    *(Matrix *)result = MatrixOrtho(r_left, r_right, r_bottom, r_top, r_near, r_far);
+}
+
+inline void __MatrixLookAt(void *eye, void *target, void *up, void *result)
+{
+    *(Matrix *)result = MatrixLookAt(*(Vector3 *)eye, *(Vector3 *)target, *(Vector3 *)up);
+}
+
+inline void __MatrixToFloatV(void *mat, float *result)
+{
+    *(float16 *)result = MatrixToFloatV(*(Matrix *)mat);
+}
