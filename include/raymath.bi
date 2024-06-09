@@ -16,7 +16,7 @@ DECLARE STATIC LIBRARY "raymath"
     FUNCTION Normalize! (BYVAL rValue AS SINGLE, BYVAL rStart AS SINGLE, BYVAL rEnd AS SINGLE) ' Normalize input value within input range
     FUNCTION Remap! (BYVAL value AS SINGLE, BYVAL inputStart AS SINGLE, BYVAL inputEnd AS SINGLE, BYVAL outputStart AS SINGLE, BYVAL outputEnd AS SINGLE) ' Remap input value within input range to output range
     FUNCTION Wrap! (BYVAL value AS SINGLE, BYVAL min AS SINGLE, BYVAL max AS SINGLE) ' Wrap input value from min to max
-    FUNCTION FloatEquals& ALIAS "__FloatEquals" (BYVAL x AS SINGLE, BYVAL y AS SINGLE) ' Check whether two given floats are almost equal
+    FUNCTION FloatEquals%% ALIAS "__FloatEquals" (BYVAL x AS SINGLE, BYVAL y AS SINGLE) ' Check whether two given floats are almost equal
 
     ' Vector2 math
     SUB Vector2Zero ALIAS "__Vector2Zero" (v AS Vector2) ' Vector with components value 0.0f
@@ -44,44 +44,44 @@ DECLARE STATIC LIBRARY "raymath"
     SUB Vector2Invert ALIAS "__Vector2Invert" (v AS Vector2, result AS Vector2) ' Invert provided vector
     SUB Vector2Clamp ALIAS "__Vector2Clamp" (v AS Vector2, min AS Vector2, max AS Vector2, result AS Vector2) ' Clamp vector between min and max vectors
     SUB Vector2ClampValue ALIAS "__Vector2ClampValue" (v AS Vector2, BYVAL min AS SINGLE, BYVAL max AS SINGLE, result AS Vector2) ' Clamp the magnitude of the vector between two min and max values
-    FUNCTION Vector2Equals& ALIAS "__Vector2Equals" (v1 AS Vector2, v2 AS Vector2) ' Check whether two given vectors are almost equal
+    FUNCTION Vector2Equals%% ALIAS "__Vector2Equals" (v1 AS Vector2, v2 AS Vector2) ' Check whether two given vectors are almost equal
 
     ' Vector3 math
-    'Vector3 Vector3Zero(void);                                                  ' Vector with components value 0.0f
-    'Vector3 Vector3One(void);                                                   ' Vector with components value 1.0f
-    'Vector3 Vector3Add(Vector3 v1, Vector3 v2);                                 ' Add two vectors
-    'Vector3 Vector3AddValue(Vector3 v, float add);                              ' Add vector and float value
-    'Vector3 Vector3Subtract(Vector3 v1, Vector3 v2);                            ' Subtract two vectors
-    'Vector3 Vector3SubtractValue(Vector3 v, float sub);                         ' Subtract vector by float value
-    'Vector3 Vector3Scale(Vector3 v, float scalar);                              ' Multiply vector by scalar
-    'Vector3 Vector3Multiply(Vector3 v1, Vector3 v2);                            ' Multiply vector by vector
-    'Vector3 Vector3CrossProduct(Vector3 v1, Vector3 v2);                        ' Calculate two vectors cross product
-    'Vector3 Vector3Perpendicular(Vector3 v);                                    ' Calculate one vector perpendicular vector
-    'float Vector3Length(const Vector3 v);                                       ' Calculate vector length
-    'float Vector3LengthSqr(const Vector3 v);                                    ' Calculate vector square length
-    'float Vector3DotProduct(Vector3 v1, Vector3 v2);                            ' Calculate two vectors dot product
-    'float Vector3Distance(Vector3 v1, Vector3 v2);                              ' Calculate distance between two vectors
-    'float Vector3DistanceSqr(Vector3 v1, Vector3 v2);                           ' Calculate square distance between two vectors
-    'float Vector3Angle(Vector3 v1, Vector3 v2);                                 ' Calculate angle between two vectors
-    'Vector3 Vector3Negate(Vector3 v);                                           ' Negate provided vector (invert direction)
-    'Vector3 Vector3Divide(Vector3 v1, Vector3 v2);                              ' Divide vector by vector
-    'Vector3 Vector3Normalize(Vector3 v);                                        ' Normalize provided vector
-    'void Vector3OrthoNormalize(Vector3 *v1, Vector3 *v2);                       ' Orthonormalize provided vectors Makes vectors normalized and orthogonal to each other Gram-Schmidt function implementation
-    'Vector3 Vector3Transform(Vector3 v, Matrix mat);                            ' Transforms a Vector3 by a given Matrix
-    'Vector3 Vector3RotateByQuaternion(Vector3 v, Quaternion q);                 ' Transform a vector by quaternion rotation
-    'Vector3 Vector3RotateByAxisAngle(Vector3 v, Vector3 axis, float angle);     ' Rotates a vector around an axis
-    'Vector3 Vector3Lerp(Vector3 v1, Vector3 v2, float amount);                  ' Calculate linear interpolation between two vectors
-    'Vector3 Vector3Reflect(Vector3 v, Vector3 normal);                          ' Calculate reflected vector to normal
-    'Vector3 Vector3Min(Vector3 v1, Vector3 v2);                                 ' Get min value for each pair of components
-    'Vector3 Vector3Max(Vector3 v1, Vector3 v2);                                 ' Get max value for each pair of components
-    'Vector3 Vector3Barycenter(Vector3 p, Vector3 a, Vector3 b, Vector3 c);      ' Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c) NOTE: Assumes P is on the plane of the triangle
-    'Vector3 Vector3Unproject(Vector3 source, Matrix projection, Matrix view);   ' Projects a Vector3 from screen space into object space NOTE: We are avoiding calling other raymath functions despite available
-    'float3 Vector3ToFloatV(Vector3 v);                                          ' Get Vector3 as float array
-    'Vector3 Vector3Invert(Vector3 v);                                           ' Invert the given vector
-    'Vector3 Vector3Clamp(Vector3 v, Vector3 min, Vector3 max);                  ' Clamp the components of the vector between min and max values specified by the given vectors
-    'Vector3 Vector3ClampValue(Vector3 v, float min, float max);                 ' Clamp the magnitude of the vector between two values
-    'int Vector3Equals(Vector3 p, Vector3 q);                                    ' Check whether two given vectors are almost equal
-    'Vector3 Vector3Refract(Vector3 v, Vector3 n, float r);                      ' Compute the direction of a refracted ray where v specifies the normalized direction of the incoming ray, n specifies the normalized normal vector of the interface of two optical media, and r specifies the ratio of the refractive index of the medium from where the ray comes to the refractive index of the medium on the other side of the surface
+    SUB Vector3Zero ALIAS "__Vector3Zero" (v AS Vector3) ' Vector with components value 0.0f
+    SUB Vector3One ALIAS "__Vector3One" (v AS Vector3) ' Vector with components value 1.0f
+    SUB Vector3Add ALIAS "__Vector3Add" (v1 AS Vector3, v2 AS Vector3, result AS Vector3) ' Add two vectors (v1 + v2)
+    SUB Vector3AddValue ALIAS "__Vector3AddValue" (v AS Vector3, BYVAL value AS SINGLE, result AS Vector3) ' Add vector and float value
+    SUB Vector3Subtract ALIAS "__Vector3Subtract" (v1 AS Vector3, v2 AS Vector3, result AS Vector3) ' Subtract two vectors (v1 - v2)
+    SUB Vector3SubtractValue ALIAS "__Vector3SubtractValue" (v AS Vector3, BYVAL value AS SINGLE, result AS Vector3) ' Subtract vector and float value
+    SUB Vector3Scale ALIAS "__Vector3Scale" (v AS Vector3, BYVAL scalar AS SINGLE, result AS Vector3) ' Multiply vector by scalar
+    SUB Vector3Multiply ALIAS "__Vector3Multiply" (v1 AS Vector3, v2 AS Vector3, result AS Vector3) ' Multiply vector by vector
+    SUB Vector3CrossProduct ALIAS "__Vector3CrossProduct" (v1 AS Vector3, v2 AS Vector3, result AS Vector3) ' Calculate two vectors cross product
+    SUB Vector3Perpendicular ALIAS "__Vector3Perpendicular" (v AS Vector3, result AS Vector3) ' Calculate one vector perpendicular vector
+    FUNCTION Vector3Length! ALIAS "__Vector3Length" (v AS Vector3) ' Calculate vector length
+    FUNCTION Vector3LengthSqr! ALIAS "__Vector3LengthSqr" (v AS Vector3) ' Calculate vector square length
+    FUNCTION Vector3DotProduct! ALIAS "__Vector3DotProduct" (v1 AS Vector3, v2 AS Vector3) ' Calculate two vectors dot product
+    FUNCTION Vector3Distance! ALIAS "__Vector3Distance" (v1 AS Vector3, v2 AS Vector3) ' Calculate distance between two vectors
+    FUNCTION Vector3DistanceSqr! ALIAS "__Vector3DistanceSqr" (v1 AS Vector3, v2 AS Vector3) ' Calculate square distance between two vectors
+    FUNCTION Vector3Angle! ALIAS "__Vector3Angle" (v1 AS Vector3, v2 AS Vector3) ' Calculate angle between two vectors
+    SUB Vector3Negate ALIAS "__Vector3Negate" (v AS Vector3, result AS Vector3) ' Negate provided vector (invert direction)
+    SUB Vector3Divide ALIAS "__Vector3Divide" (v1 AS Vector3, v2 AS Vector3, result AS Vector3) ' Divide vector by vector
+    SUB Vector3Normalize ALIAS "__Vector3Normalize" (v AS Vector3, result AS Vector3) ' Normalize provided vector
+    SUB Vector3OrthoNormalize (v1 AS Vector3, v2 AS Vector3) ' Orthonormalize provided vectors (makes vectors normalized and orthogonal to each other Gram-Schmidt function implementation)
+    SUB Vector3Transform ALIAS "__Vector3Transform" (v AS Vector3, mat AS Matrix, result AS Vector3) ' Transforms a Vector3 by a given Matrix
+    SUB Vector3RotateByQuaternion ALIAS "__Vector3RotateByQuaternion" (v AS Vector3, q AS Vector4, result AS Vector3) ' Transform a vector by quaternion rotation
+    SUB Vector3RotateByAxisAngle ALIAS "__Vector3RotateByAxisAngle" (v AS Vector3, axis AS Vector3, BYVAL angle AS SINGLE, result AS Vector3) ' Rotates a vector around an axis
+    SUB Vector3Lerp ALIAS "__Vector3Lerp" (v1 AS Vector3, v2 AS Vector3, BYVAL amount AS SINGLE, result AS Vector3) ' Calculate linear interpolation between two vectors
+    SUB Vector3Reflect ALIAS "__Vector3Reflect" (v AS Vector3, normal AS Vector3, result AS Vector3) ' Calculate reflected vector to normal
+    SUB Vector3Min ALIAS "__Vector3Min" (v1 AS Vector3, v2 AS Vector3, result AS Vector3) ' Get min value for each pair of components
+    SUB Vector3Max ALIAS "__Vector3Max" (v1 AS Vector3, v2 AS Vector3, result AS Vector3) ' Get max value for each pair of components
+    SUB Vector3Barycenter ALIAS "__Vector3Barycenter" (p AS Vector3, a AS Vector3, b AS Vector3, c AS Vector3, result AS Vector3) ' Compute barycenter coordinates (u, v, w) for point p with respect to triangle (a, b, c). NOTE: Assumes P is on the plane of the triangle
+    SUB Vector3Unproject ALIAS "__Vector3Unproject" (source AS Vector3, projection AS Matrix, view AS Matrix, result AS Vector3) ' Projects a Vector3 from screen space into object space. NOTE: We are avoiding calling other raymath functions despite available
+    SUB Vector3ToFloatV ALIAS "__Vector3ToFloatV" (v AS Vector3, result AS SINGLE) ' Get Vector3 as float array (result). Example: Vector3ToFloatV myVector, myFloatArray!(0)
+    SUB Vector3Invert ALIAS "__Vector3Invert" (v AS Vector3, result AS Vector3) ' Invert provided vector
+    SUB Vector3Clamp ALIAS "__Vector3Clamp" (v AS Vector3, min AS Vector3, max AS Vector3, result AS Vector3) ' Clamp provided vector between min and max vectors
+    SUB Vector3ClampValue ALIAS "__Vector3ClampValue" (v AS Vector3, BYVAL min AS SINGLE, BYVAL max AS SINGLE, result AS Vector3) ' Clamp the magnitude of the vector between two min and max values
+    FUNCTION Vector3Equals%% ALIAS "__Vector3Equals" (v1 AS Vector3, v2 AS Vector3) ' Check whether two given vectors are almost equal
+    SUB Vector3Refract ALIAS "__Vector3Refract" (v AS Vector3, n AS Vector3, BYVAL r AS SINGLE, result AS Vector3) ' Compute the direction of a refracted ray where v specifies the normalized direction of the incoming ray, n specifies the normalized normal vector of the interface of two optical media, and r specifies the ratio of the refractive index of the medium from where the ray comes to the refractive index of the medium on the other side of the surface
 
     ' Matrix math
     'float MatrixDeterminant(Matrix mat);                                        ' Compute matrix determinant
