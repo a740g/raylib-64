@@ -97,7 +97,6 @@ I found a bug. How can I help?
 ## HELP NEEDED
 
 - Port all possible raylib examples from [raylib - examples](https://github.com/raysan5/raylib/tree/master/examples)
-- Bindings for raymath
 - Bindings for raygui
 
 ***Made with ❤️ by [a740g](https://github.com/a740g)***
