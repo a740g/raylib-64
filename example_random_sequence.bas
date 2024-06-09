@@ -114,7 +114,7 @@ SUB GenerateRandomColorRectSequence (rectCount AS SINGLE, rectWidth AS SINGLE, s
     DIM startX AS LONG: startX = (screenWidth - rectSeqWidth) * 0.5!
 
     DIM x AS LONG: FOR x = 0 TO rectCount - 1
-        DIM rectHeight AS LONG: rectHeight = Remap(PeekLong(seq, x), 0, rectCount - 1, 0, screenHeight)
+        DIM rectHeight AS LONG: rectHeight = Remap(ABS(PeekLong(seq, x)), 0, rectCount - 1, 0, screenHeight) ' ABS here is a hack to prevent negative values. See bug note on top!
         rectangles(x).c = GenerateRandomColor
         SetRectangle rectangles(x).r, startX + x * rectWidth, screenHeight - rectHeight, rectWidth, rectHeight
     NEXT x

@@ -18,6 +18,30 @@ DECLARE STATIC LIBRARY "raymath"
     FUNCTION Wrap! (BYVAL value AS SINGLE, BYVAL min AS SINGLE, BYVAL max AS SINGLE) ' Wrap input value from min to max
     FUNCTION FloatEquals%% ALIAS "__FloatEquals" (BYVAL x AS SINGLE, BYVAL y AS SINGLE) ' Check whether two given floats are almost equal
 
+    ' Support utils math
+    FUNCTION LongToSingle! ALIAS "float" (BYVAL x AS LONG)
+    FUNCTION Integer64ToSingle! ALIAS "float" (BYVAL x AS _INTEGER64)
+    FUNCTION LongToDouble# ALIAS "double" (BYVAL x AS LONG)
+    FUNCTION Integer64ToDouble# ALIAS "double" (BYVAL x AS _INTEGER64)
+    FUNCTION SingleToLong& ALIAS "int32_t" (BYVAL x AS SINGLE)
+    FUNCTION DoubleToLong& ALIAS "int32_t" (BYVAL x AS DOUBLE)
+    FUNCTION SingleToInteger64&& ALIAS "int64_t" (BYVAL x AS SINGLE)
+    FUNCTION DoubleToInteger64&& ALIAS "int64_t" (BYVAL x AS DOUBLE)
+    FUNCTION MaxSingle! ALIAS "fmaxf" (BYVAL a AS SINGLE, BYVAL b AS SINGLE)
+    FUNCTION MinSingle! ALIAS "fminf" (BYVAL a AS SINGLE, BYVAL b AS SINGLE)
+    FUNCTION MaxDouble# ALIAS "fmax" (BYVAL a AS DOUBLE, BYVAL b AS DOUBLE)
+    FUNCTION MinDouble# ALIAS "fmin" (BYVAL a AS DOUBLE, BYVAL b AS DOUBLE)
+    FUNCTION FMASingle! ALIAS "fmaf" (BYVAL x AS SINGLE, BYVAL y AS SINGLE, BYVAL z AS SINGLE)
+    FUNCTION FMADouble# ALIAS "fma" (BYVAL x AS DOUBLE, BYVAL y AS DOUBLE, BYVAL z AS DOUBLE)
+    FUNCTION PowerSingle! ALIAS "powf" (BYVAL b AS SINGLE, BYVAL e AS SINGLE)
+    FUNCTION PowerDouble# ALIAS "pow" (BYVAL b AS DOUBLE, BYVAL e AS DOUBLE)
+    FUNCTION Log10Single! ALIAS "log10f" (BYVAL n AS SINGLE)
+    FUNCTION Log10Double# ALIAS "log10" (BYVAL n AS DOUBLE)
+    FUNCTION Log2Single! ALIAS "log2f" (BYVAL n AS SINGLE)
+    FUNCTION Log2Double# ALIAS "log2" (BYVAL n AS DOUBLE)
+    FUNCTION CubeRootSingle! ALIAS "cbrtf" (BYVAL n AS SINGLE)
+    FUNCTION CubeRootDouble# ALIAS "cbrt" (BYVAL n AS DOUBLE)
+
     ' Vector2 math
     SUB Vector2Zero ALIAS "__Vector2Zero" (v AS Vector2) ' Vector with components value 0.0f
     SUB Vector2One ALIAS "__Vector2One" (v AS Vector2) ' Vector with components value 1.0f
@@ -107,27 +131,27 @@ DECLARE STATIC LIBRARY "raymath"
     SUB MatrixToFloatV ALIAS "__MatrixToFloatV" (mat AS Matrix, result AS SINGLE) ' Get float array of matrix data (result). Example: MatrixToFloatV myMatrix, myFloatArray!(0)
 
     ' Quaternion math
-    'Quaternion QuaternionAdd(Quaternion q1, Quaternion q2);                     ' Add two quaternions
-    'Quaternion QuaternionAddValue(Quaternion q, float add);                     ' Add quaternion and float value
-    'Quaternion QuaternionSubtract(Quaternion q1, Quaternion q2);                ' Subtract two quaternions
-    'Quaternion QuaternionSubtractValue(Quaternion q, float sub);                ' Subtract quaternion and float value
-    'Quaternion QuaternionIdentity(void);                                        ' Get identity quaternion
-    'float QuaternionLength(Quaternion q);                                       ' Computes the length of a quaternion
-    'Quaternion QuaternionNormalize(Quaternion q);                               ' Normalize provided quaternion
-    'Quaternion QuaternionInvert(Quaternion q);                                  ' Invert provided quaternion
-    'Quaternion QuaternionMultiply(Quaternion q1, Quaternion q2);                ' Calculate two quaternion multiplication
-    'Quaternion QuaternionScale(Quaternion q, float mul);                        ' Scale quaternion by float value
-    'Quaternion QuaternionDivide(Quaternion q1, Quaternion q2);                  ' Divide two quaternions
-    'Quaternion QuaternionLerp(Quaternion q1, Quaternion q2, float amount);      ' Calculate linear interpolation between two quaternions
-    'Quaternion QuaternionNlerp(Quaternion q1, Quaternion q2, float amount);     ' Calculate slerp-optimized interpolation between two quaternions
-    'Quaternion QuaternionSlerp(Quaternion q1, Quaternion q2, float amount);     ' Calculates spherical linear interpolation between two quaternions
-    'Quaternion QuaternionFromVector3ToVector3(Vector3 from, Vector3 to);        ' Calculate quaternion based on the rotation from one vector to another
-    'Quaternion QuaternionFromMatrix(Matrix mat);                                ' Get a quaternion for a given rotation matrix
-    'Matrix QuaternionToMatrix(Quaternion q);                                    ' Get a matrix for a given quaternion
-    'Quaternion QuaternionFromAxisAngle(Vector3 axis, float angle);              ' Get rotation quaternion for an angle and axis NOTE: Angle must be provided in radians
-    'void QuaternionToAxisAngle(Quaternion q, Vector3 *outAxis, float *outAngle); ' Get the rotation angle and axis for a given quaternion
-    'Quaternion QuaternionFromEuler(float pitch, float yaw, float roll);         ' Get the quaternion equivalent to Euler angles NOTE: Rotation order is ZYX
-    'Vector3 QuaternionToEuler(Quaternion q);                                    ' Get the Euler angles equivalent to quaternion (roll, pitch, yaw) NOTE: Angles are returned in a Vector3 struct in radians
-    'Quaternion QuaternionTransform(Quaternion q, Matrix mat);                   ' Transform a quaternion given a transformation matrix
-    'int QuaternionEquals(Quaternion p, Quaternion q);                           ' Check whether two given quaternions are almost equal
+    SUB QuaternionAdd ALIAS "__QuaternionAdd" (q1 AS Vector4, q2 AS Vector4, result AS Vector4) ' Add two quaternions
+    SUB QuaternionAddValue ALIAS "__QuaternionAddValue" (q AS Vector4, BYVAL value AS SINGLE, result AS Vector4) ' Add quaternion and float value
+    SUB QuaternionSubtract ALIAS "__QuaternionSubtract" (q1 AS Vector4, q2 AS Vector4, result AS Vector4) ' Subtract two quaternions
+    SUB QuaternionSubtractValue ALIAS "__QuaternionSubtractValue" (q AS Vector4, BYVAL value AS SINGLE, result AS Vector4) ' Subtract quaternion and float value
+    SUB QuaternionIdentity ALIAS "__QuaternionIdentity" (result AS Vector4) ' Get identity quaternion
+    FUNCTION QuaternionLength! ALIAS "__QuaternionLength" (q AS Vector4) ' Computes the length of a quaternion
+    SUB QuaternionNormalize ALIAS "__QuaternionNormalize" (q AS Vector4, result AS Vector4) ' Normalize provided quaternion
+    SUB QuaternionInvert ALIAS "__QuaternionInvert" (q AS Vector4, result AS Vector4) ' Invert provided quaternion
+    SUB QuaternionMultiply ALIAS "__QuaternionMultiply" (q1 AS Vector4, q2 AS Vector4, result AS Vector4) ' Calculate two quaternion multiplication
+    SUB QuaternionScale ALIAS "__QuaternionScale" (q AS Vector4, BYVAL mul AS SINGLE, result AS Vector4) ' Scale quaternion by float value
+    SUB QuaternionDivide ALIAS "__QuaternionDivide" (q1 AS Vector4, q2 AS Vector4, result AS Vector4) ' Divide two quaternions
+    SUB QuaternionLerp ALIAS "__QuaternionLerp" (q1 AS Vector4, q2 AS Vector4, BYVAL amount AS SINGLE, result AS Vector4) ' Calculate linear interpolation between two quaternions
+    SUB QuaternionNlerp ALIAS "__QuaternionNlerp" (q1 AS Vector4, q2 AS Vector4, BYVAL amount AS SINGLE, result AS Vector4) ' Calculate slerp-optimized interpolation between two quaternions
+    SUB QuaternionSlerp ALIAS "__QuaternionSlerp" (q1 AS Vector4, q2 AS Vector4, BYVAL amount AS SINGLE, result AS Vector4) ' Calculate spherical linear interpolation between two quaternions
+    SUB QuaternionFromVector3ToVector3 ALIAS "__QuaternionFromVector3ToVector3" (fromV3 AS Vector3, toV3 AS Vector3, result AS Vector4) ' Calculate quaternion based on the rotation from one vector to another
+    SUB QuaternionFromMatrix ALIAS "__QuaternionFromMatrix" (mat AS Matrix, result AS Vector4) ' Get a quaternion for a given rotation matrix
+    SUB QuaternionToMatrix ALIAS "__QuaternionToMatrix" (q AS Vector4, result AS Matrix) ' Get a matrix for a given quaternion
+    SUB QuaternionFromAxisAngle ALIAS "__QuaternionFromAxisAngle" (axis AS Vector3, BYVAL angle AS SINGLE, result AS Vector4) ' Get rotation quaternion for an angle and axis NOTE: Angle must be provided in radians
+    SUB QuaternionToAxisAngle ALIAS "__QuaternionToAxisAngle" (q AS Vector4, axis AS Vector3, angle AS SINGLE) ' Get the rotation angle and axis for a given quaternion
+    SUB QuaternionFromEuler ALIAS "__QuaternionFromEuler" (BYVAL pitch AS SINGLE, BYVAL yaw AS SINGLE, BYVAL roll AS SINGLE, result AS Vector4) ' Get the quaternion equivalent to Euler angles NOTE: Rotation order is ZYX
+    SUB QuaternionToEuler ALIAS "__QuaternionToEuler" (q AS Vector4, result AS Vector3) ' Transform a quaternion into Euler angles NOTE: Angles are returned in a Vector3 struct in radians
+    SUB QuaternionTransform ALIAS "__QuaternionTransform" (q AS Vector4, mat AS Matrix, result AS Vector4) ' Transform a quaternion given a transformation matrix
+    FUNCTION QuaternionEquals%% ALIAS "__QuaternionEquals" (q1 AS Vector4, q2 AS Vector4) ' Check whether two given quaternions are almost equal
 END DECLARE

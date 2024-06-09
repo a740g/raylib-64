@@ -418,3 +418,113 @@ inline void __MatrixToFloatV(void *mat, float *result)
 {
     *(float16 *)result = MatrixToFloatV(*(Matrix *)mat);
 }
+
+inline void __QuaternionAdd(void *q1, void *q2, void *result)
+{
+    *(Quaternion *)result = QuaternionAdd(*(Quaternion *)q1, *(Quaternion *)q2);
+}
+
+inline void __QuaternionAddValue(void *q, float add, void *result)
+{
+    *(Quaternion *)result = QuaternionAddValue(*(Quaternion *)q, add);
+}
+
+inline void __QuaternionSubtract(void *q1, void *q2, void *result)
+{
+    *(Quaternion *)result = QuaternionSubtract(*(Quaternion *)q1, *(Quaternion *)q2);
+}
+
+inline void __QuaternionSubtractValue(void *q, float sub, void *result)
+{
+    *(Quaternion *)result = QuaternionSubtractValue(*(Quaternion *)q, sub);
+}
+
+inline void __QuaternionIdentity(void *result)
+{
+    *(Quaternion *)result = QuaternionIdentity();
+}
+
+inline float __QuaternionLength(void *q)
+{
+    return QuaternionLength(*(Quaternion *)q);
+}
+
+inline void __QuaternionNormalize(void *q, void *result)
+{
+    *(Quaternion *)result = QuaternionNormalize(*(Quaternion *)q);
+}
+
+inline void __QuaternionInvert(void *q, void *result)
+{
+    *(Quaternion *)result = QuaternionInvert(*(Quaternion *)q);
+}
+
+inline void __QuaternionMultiply(void *q1, void *q2, void *result)
+{
+    *(Quaternion *)result = QuaternionMultiply(*(Quaternion *)q1, *(Quaternion *)q2);
+}
+
+inline void __QuaternionScale(void *q, float mul, void *result)
+{
+    *(Quaternion *)result = QuaternionScale(*(Quaternion *)q, mul);
+}
+
+inline void __QuaternionDivide(void *q1, void *q2, void *result)
+{
+    *(Quaternion *)result = QuaternionDivide(*(Quaternion *)q1, *(Quaternion *)q2);
+}
+
+inline void __QuaternionLerp(void *q1, void *q2, float amount, void *result)
+{
+    *(Quaternion *)result = QuaternionLerp(*(Quaternion *)q1, *(Quaternion *)q2, amount);
+}
+
+inline void __QuaternionNlerp(void *q1, void *q2, float amount, void *result)
+{
+    *(Quaternion *)result = QuaternionNlerp(*(Quaternion *)q1, *(Quaternion *)q2, amount);
+}
+
+inline void __QuaternionSlerp(void *q1, void *q2, float amount, void *result)
+{
+    *(Quaternion *)result = QuaternionSlerp(*(Quaternion *)q1, *(Quaternion *)q2, amount);
+}
+
+inline void __QuaternionFromVector3ToVector3(void *from, void *to, void *result)
+{
+    *(Quaternion *)result = QuaternionFromVector3ToVector3(*(Vector3 *)from, *(Vector3 *)to);
+}
+
+inline void __QuaternionToMatrix(void *q, void *result)
+{
+    *(Matrix *)result = QuaternionToMatrix(*(Quaternion *)q);
+}
+
+inline void __QuaternionFromAxisAngle(void *axis, float angle, void *result)
+{
+    *(Quaternion *)result = QuaternionFromAxisAngle(*(Vector3 *)axis, angle);
+}
+
+inline void __QuaternionToAxisAngle(void *q, void *outAxis, float *outAngle)
+{
+    QuaternionToAxisAngle(*(Quaternion *)q, (Vector3 *)outAxis, outAngle);
+}
+
+inline void __QuaternionFromEuler(float pitch, float yaw, float roll, void *result)
+{
+    *(Quaternion *)result = QuaternionFromEuler(pitch, yaw, roll);
+}
+
+inline void __QuaternionToEuler(void *q, void *result)
+{
+    *(Vector3 *)result = QuaternionToEuler(*(Quaternion *)q);
+}
+
+inline void __QuaternionTransform(void *q, void *mat, void *result)
+{
+    *(Quaternion *)result = QuaternionTransform(*(Quaternion *)q, *(Matrix *)mat);
+}
+
+inline qb_bool __QuaternionEquals(void *q1, void *q2)
+{
+    return TO_QB_BOOL(QuaternionEquals(*(Quaternion *)q1, *(Quaternion *)q2));
+}
