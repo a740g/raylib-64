@@ -769,8 +769,6 @@ DECLARE STATIC LIBRARY "raylib"
     FUNCTION ___init_raylib64%%
     ' Returns QB style bool
     FUNCTION ToQBBool%% (BYVAL x AS LONG)
-    ' Returns C style bool
-    FUNCTION ToCBool%% (BYVAL x AS LONG)
     ' Casts a QB64 _OFFSET to an unsigned integer64. Needed because QB64 does not allow converting or using _OFFSET in expressions (fully :()
     FUNCTION CLngPtr~&& ALIAS uintptr_t (BYVAL p AS _UNSIGNED _OFFSET)
     ' Casts a QB64 _OFFSET to a C string. QB64 does the right thing to convert this to a QB64 string

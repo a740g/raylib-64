@@ -114,6 +114,16 @@ inline void __Vector2Reflect(void *v, void *normal, void *result)
     *(Vector2 *)result = Vector2Reflect(*(Vector2 *)v, *(Vector2 *)normal);
 }
 
+inline void __Vector2Min(void *v1, void *v2, void *result)
+{
+    *(Vector2 *)result = Vector2Min(*(Vector2 *)v1, *(Vector2 *)v2);
+}
+
+inline void __Vector2Max(void *v1, void *v2, void *result)
+{
+    *(Vector2 *)result = Vector2Max(*(Vector2 *)v1, *(Vector2 *)v2);
+}
+
 inline void __Vector2Rotate(void *v, float angle, void *result)
 {
     *(Vector2 *)result = Vector2Rotate(*(Vector2 *)v, angle);
@@ -142,6 +152,11 @@ inline void __Vector2ClampValue(void *v, float min, float max, void *result)
 inline qb_bool __Vector2Equals(void *v1, void *v2)
 {
     return TO_QB_BOOL(Vector2Equals(*(Vector2 *)v1, *(Vector2 *)v2));
+}
+
+inline void __Vector2Refract(void *v, void *n, float r, void *result)
+{
+    *(Vector2 *)result = Vector2Refract(*(Vector2 *)v, *(Vector2 *)n, r);
 }
 
 inline void __Vector3Zero(void *result)
@@ -254,9 +269,19 @@ inline void __Vector3RotateByAxisAngle(void *v, void *axis, float angle, void *r
     *(Vector3 *)result = Vector3RotateByAxisAngle(*(Vector3 *)v, *(Vector3 *)axis, angle);
 }
 
+inline void __Vector3MoveTowards(void *v, void *target, float maxDistance, void *result)
+{
+    *(Vector3 *)result = Vector3MoveTowards(*(Vector3 *)v, *(Vector3 *)target, maxDistance);
+}
+
 inline void __Vector3Lerp(void *v1, void *v2, float amount, void *result)
 {
     *(Vector3 *)result = Vector3Lerp(*(Vector3 *)v1, *(Vector3 *)v2, amount);
+}
+
+inline void __Vector3CubicHermite(void *v1, void *tangent1, void *v2, void *tangent2, float amount, void *result)
+{
+    *(Vector3 *)result = Vector3CubicHermite(*(Vector3 *)v1, *(Vector3 *)tangent1, *(Vector3 *)v2, *(Vector3 *)tangent2, amount);
 }
 
 inline void __Vector3Reflect(void *v, void *normal, void *result)
@@ -312,6 +337,116 @@ inline qb_bool __Vector3Equals(void *v1, void *v2)
 inline void __Vector3Refract(void *v, void *n, float r, void *result)
 {
     *(Vector3 *)result = Vector3Refract(*(Vector3 *)v, *(Vector3 *)n, r);
+}
+
+inline void __Vector4Zero(void *result)
+{
+    *(Vector4 *)result = Vector4Zero();
+}
+
+inline void __Vector4One(void *result)
+{
+    *(Vector4 *)result = Vector4One();
+}
+
+inline void __Vector4Add(void *v1, void *v2, void *result)
+{
+    *(Vector4 *)result = Vector4Add(*(Vector4 *)v1, *(Vector4 *)v2);
+}
+
+inline void __Vector4AddValue(void *v, float add, void *result)
+{
+    *(Vector4 *)result = Vector4AddValue(*(Vector4 *)v, add);
+}
+
+inline void __Vector4Subtract(void *v1, void *v2, void *result)
+{
+    *(Vector4 *)result = Vector4Subtract(*(Vector4 *)v1, *(Vector4 *)v2);
+}
+
+inline void __Vector4SubtractValue(void *v, float sub, void *result)
+{
+    *(Vector4 *)result = Vector4SubtractValue(*(Vector4 *)v, sub);
+}
+
+inline float __Vector4Length(void *v)
+{
+    return Vector4Length(*(Vector4 *)v);
+}
+
+inline float __Vector4LengthSqr(void *v)
+{
+    return Vector4LengthSqr(*(Vector4 *)v);
+}
+
+inline float __Vector4DotProduct(void *v1, void *v2)
+{
+    return Vector4DotProduct(*(Vector4 *)v1, *(Vector4 *)v2);
+}
+
+inline float __Vector4Distance(void *v1, void *v2)
+{
+    return Vector4Distance(*(Vector4 *)v1, *(Vector4 *)v2);
+}
+
+inline float __Vector4DistanceSqr(void *v1, void *v2)
+{
+    return Vector4DistanceSqr(*(Vector4 *)v1, *(Vector4 *)v2);
+}
+
+inline void __Vector4Scale(void *v, float scale, void *result)
+{
+    *(Vector4 *)result = Vector4Scale(*(Vector4 *)v, scale);
+}
+
+inline void __Vector4Multiply(void *v1, void *v2, void *result)
+{
+    *(Vector4 *)result = Vector4Multiply(*(Vector4 *)v1, *(Vector4 *)v2);
+}
+
+inline void __Vector4Negate(void *v, void *result)
+{
+    *(Vector4 *)result = Vector4Negate(*(Vector4 *)v);
+}
+
+inline void __Vector4Divide(void *v1, void *v2, void *result)
+{
+    *(Vector4 *)result = Vector4Divide(*(Vector4 *)v1, *(Vector4 *)v2);
+}
+
+inline void __Vector4Normalize(void *v, void *result)
+{
+    *(Vector4 *)result = Vector4Normalize(*(Vector4 *)v);
+}
+
+inline void __Vector4Min(void *v1, void *v2, void *result)
+{
+    *(Vector4 *)result = Vector4Min(*(Vector4 *)v1, *(Vector4 *)v2);
+}
+
+inline void __Vector4Max(void *v1, void *v2, void *result)
+{
+    *(Vector4 *)result = Vector4Max(*(Vector4 *)v1, *(Vector4 *)v2);
+}
+
+inline void __Vector4Lerp(void *v1, void *v2, float amount, void *result)
+{
+    *(Vector4 *)result = Vector4Lerp(*(Vector4 *)v1, *(Vector4 *)v2, amount);
+}
+
+inline void __Vector4MoveTowards(void *v, void *target, float maxDistance, void *result)
+{
+    *(Vector4 *)result = Vector4MoveTowards(*(Vector4 *)v, *(Vector4 *)target, maxDistance);
+}
+
+inline void __Vector4Invert(void *v, void *result)
+{
+    *(Vector4 *)result = Vector4Invert(*(Vector4 *)v);
+}
+
+inline qb_bool __Vector4Equals(void *v1, void *v2)
+{
+    return TO_QB_BOOL(Vector4Equals(*(Vector4 *)v1, *(Vector4 *)v2));
 }
 
 inline float __MatrixDeterminant(void *mat)
@@ -489,6 +624,11 @@ inline void __QuaternionSlerp(void *q1, void *q2, float amount, void *result)
     *(Quaternion *)result = QuaternionSlerp(*(Quaternion *)q1, *(Quaternion *)q2, amount);
 }
 
+inline void __QuaternionCubicHermiteSpline(void *q1, void *outTangent1, void *q2, void *inTangent2, float t, void *result)
+{
+    *(Quaternion *)result = QuaternionCubicHermiteSpline(*(Quaternion *)q1, *(Quaternion *)outTangent1, *(Quaternion *)q2, *(Quaternion *)inTangent2, t);
+}
+
 inline void __QuaternionFromVector3ToVector3(void *from, void *to, void *result)
 {
     *(Quaternion *)result = QuaternionFromVector3ToVector3(*(Vector3 *)from, *(Vector3 *)to);
@@ -527,4 +667,9 @@ inline void __QuaternionTransform(void *q, void *mat, void *result)
 inline qb_bool __QuaternionEquals(void *q1, void *q2)
 {
     return TO_QB_BOOL(QuaternionEquals(*(Quaternion *)q1, *(Quaternion *)q2));
+}
+
+inline void __MatrixDecompose(void *mat, void *translation, void *rotation, void *scale)
+{
+    MatrixDecompose(*(Matrix *)mat, (Vector3 *)translation, (Quaternion *)rotation, (Vector3 *)scale);
 }

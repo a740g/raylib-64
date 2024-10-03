@@ -53,11 +53,9 @@ SetTargetFPS 60 ' Set our game to run at 60 frames-per-second
 WHILE NOT WindowShouldClose ' Detect window close button or ESC key
     ' Update
     '----------------------------------------------------------------------------------
-    UpdatePhysics ' Update physics system
-
     IF IsKeyPressed(KEY_R) THEN ' Reset physics system
-
-        ResetPhysics
+        ClosePhysics
+        InitPhysics
 
         vec.x = screenWidth / 2!: vec.y = screenHeight
         floor = CreatePhysicsBodyRectangle(vec, 500, 100, 10)

@@ -26,10 +26,8 @@ typedef int8_t qb_bool;
 #ifndef QB_FALSE
 #define QB_FALSE 0
 #endif
-// This one is just for safety just in case someone is doing _exp_ == 1 inside raylib
-#define TO_C_BOOL(_exp_) ((_exp_) != false)
 // We have to do this for the QB64 side
-#define TO_QB_BOOL(_exp_) ((qb_bool)(-TO_C_BOOL(_exp_)))
+#define TO_QB_BOOL(_exp_) (qb_bool(-(bool(_exp_))))
 
 // Opaque structs declaration
 // NOTE: Actual structs are defined internally in raudio module
@@ -2113,14 +2111,6 @@ qb_bool ___init_raylib64()
 inline qb_bool ToQBBool(int32_t x)
 {
     return TO_QB_BOOL(x);
-}
-
-/// @brief Returns C style bool
-/// @param x Any number
-/// @return 0 when x is 0 and 1 when x is non-zero
-inline bool ToCBool(int32_t x)
-{
-    return TO_C_BOOL(x);
 }
 
 /// @brief Casts a QB64 _OFFSET to a C string. QB64 does the right thing to convert this to a QB64 string

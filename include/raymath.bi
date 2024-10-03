@@ -63,12 +63,15 @@ DECLARE STATIC LIBRARY "raymath"
     SUB Vector2Transform ALIAS "__Vector2Transform" (v AS Vector2, mat AS Matrix, result AS Vector2) ' Transforms a Vector2 by a given Matrix
     SUB Vector2Lerp ALIAS "__Vector2Lerp" (v1 AS Vector2, v2 AS Vector2, BYVAL amount AS SINGLE, result AS Vector2) ' Calculate linear interpolation between two vectors
     SUB Vector2Reflect ALIAS "__Vector2Reflect" (v AS Vector2, normal AS Vector2, result AS Vector2) ' Calculate reflected vector to normal
+    SUB Vector2Min ALIAS "__Vector2Min" (v1 AS Vector2, v2 AS Vector2, result AS Vector2) ' Get min value for each pair of components
+    SUB Vector2Max ALIAS "__Vector2Max" (v1 AS Vector2, v2 AS Vector2, result AS Vector2) ' Get max value for each pair of components
     SUB Vector2Rotate ALIAS "__Vector2Rotate" (v AS Vector2, BYVAL angle AS SINGLE, result AS Vector2) ' Rotate vector by angle
     SUB Vector2MoveTowards ALIAS "__Vector2MoveTowards" (v AS Vector2, target AS Vector2, BYVAL maxDistance AS SINGLE, result AS Vector2) ' Move Vector towards target
     SUB Vector2Invert ALIAS "__Vector2Invert" (v AS Vector2, result AS Vector2) ' Invert provided vector
     SUB Vector2Clamp ALIAS "__Vector2Clamp" (v AS Vector2, min AS Vector2, max AS Vector2, result AS Vector2) ' Clamp vector between min and max vectors
     SUB Vector2ClampValue ALIAS "__Vector2ClampValue" (v AS Vector2, BYVAL min AS SINGLE, BYVAL max AS SINGLE, result AS Vector2) ' Clamp the magnitude of the vector between two min and max values
     FUNCTION Vector2Equals%% ALIAS "__Vector2Equals" (v1 AS Vector2, v2 AS Vector2) ' Check whether two given vectors are almost equal
+    SUB Vector2Refract ALIAS "__Vector2Refract" (v AS Vector2, normal AS Vector2, BYVAL r AS SINGLE, result AS Vector2) ' Calculate vector refraction
 
     ' Vector3 math
     SUB Vector3Zero ALIAS "__Vector3Zero" (v AS Vector3) ' Vector with components value 0.0f
@@ -94,7 +97,9 @@ DECLARE STATIC LIBRARY "raymath"
     SUB Vector3Transform ALIAS "__Vector3Transform" (v AS Vector3, mat AS Matrix, result AS Vector3) ' Transforms a Vector3 by a given Matrix
     SUB Vector3RotateByQuaternion ALIAS "__Vector3RotateByQuaternion" (v AS Vector3, q AS Vector4, result AS Vector3) ' Transform a vector by quaternion rotation
     SUB Vector3RotateByAxisAngle ALIAS "__Vector3RotateByAxisAngle" (v AS Vector3, axis AS Vector3, BYVAL angle AS SINGLE, result AS Vector3) ' Rotates a vector around an axis
+    SUB Vector3MoveTowards ALIAS "__Vector3MoveTowards" (v AS Vector3, target AS Vector3, BYVAL maxDistance AS SINGLE, result AS Vector3) ' Move Vector towards target
     SUB Vector3Lerp ALIAS "__Vector3Lerp" (v1 AS Vector3, v2 AS Vector3, BYVAL amount AS SINGLE, result AS Vector3) ' Calculate linear interpolation between two vectors
+    SUB Vector3CubicHermite ALIAS "__Vector3CubicHermite" (v1 AS Vector3, tangent1 AS Vector3, v2 AS Vector3, tangent2 AS Vector3, amount AS SINGLE, result AS Vector3) ' Hermite interpolation between two vectors
     SUB Vector3Reflect ALIAS "__Vector3Reflect" (v AS Vector3, normal AS Vector3, result AS Vector3) ' Calculate reflected vector to normal
     SUB Vector3Min ALIAS "__Vector3Min" (v1 AS Vector3, v2 AS Vector3, result AS Vector3) ' Get min value for each pair of components
     SUB Vector3Max ALIAS "__Vector3Max" (v1 AS Vector3, v2 AS Vector3, result AS Vector3) ' Get max value for each pair of components
@@ -130,6 +135,30 @@ DECLARE STATIC LIBRARY "raymath"
     SUB MatrixLookAt ALIAS "__MatrixLookAt" (eye AS Vector3, target AS Vector3, up AS Vector3, result AS Matrix) ' Get camera look-at matrix (view matrix)
     SUB MatrixToFloatV ALIAS "__MatrixToFloatV" (mat AS Matrix, result AS SINGLE) ' Get float array of matrix data (result). Example: MatrixToFloatV myMatrix, myFloatArray!(0)
 
+    ' Vector4 math
+    SUB Vector4Zero ALIAS "__Vector4Zero" (result AS Vector4) ' Get zero vector
+    SUB Vector4One ALIAS "__Vector4One" (result AS Vector4) ' Get one vector
+    SUB Vector4Add ALIAS "__Vector4Add" (v1 AS Vector4, v2 AS Vector4, result AS Vector4) ' Add two vectors
+    SUB Vector4AddValue ALIAS "__Vector4AddValue" (v AS Vector4, BYVAL value AS SINGLE, result AS Vector4) ' Add vector and float value
+    SUB Vector4Subtract ALIAS "__Vector4Subtract" (v1 AS Vector4, v2 AS Vector4, result AS Vector4) ' Subtract two vectors
+    SUB Vector4SubtractValue ALIAS "__Vector4SubtractValue" (v AS Vector4, BYVAL value AS SINGLE, result AS Vector4) ' Subtract vector and float value
+    FUNCTION Vector4Length! ALIAS "__Vector4Length" (v AS Vector4) ' Get vector length
+    FUNCTION Vector4LengthSqr! ALIAS "__Vector4LengthSqr" (v AS Vector4) ' Get vector square length
+    FUNCTION Vector4DotProduct! ALIAS "__Vector4DotProduct" (v1 AS Vector4, v2 AS Vector4) ' Get two vectors dot product
+    FUNCTION Vector4Distance! ALIAS "__Vector4Distance" (v1 AS Vector4, v2 AS Vector4) ' Get distance between two vectors
+    FUNCTION Vector4DistanceSqr! ALIAS "__Vector4DistanceSqr" (v1 AS Vector4, v2 AS Vector4) ' Get square distance between two vectors
+    SUB Vector4Scale ALIAS "__Vector4Scale" (v AS Vector4, BYVAL scale AS SINGLE, result AS Vector4) ' Scale vector
+    SUB Vector4Multiply ALIAS "__Vector4Multiply" (v1 AS Vector4, v2 AS Vector4, result AS Vector4) ' Multiply vector by vector
+    SUB Vector4Negate ALIAS "__Vector4Negate" (v AS Vector4, result AS Vector4) ' Negate vector
+    SUB Vector4Divide ALIAS "__Vector4Divide" (v1 AS Vector4, v2 AS Vector4, result AS Vector4) ' Divide vector by vector
+    SUB Vector4Normalize ALIAS "__Vector4Normalize" (v AS Vector4, result AS Vector4) ' Normalize provided vector
+    SUB Vector4Min ALIAS "__Vector4Min" (v1 AS Vector4, v2 AS Vector4, result AS Vector4) ' Get min vector
+    SUB Vector4Max ALIAS "__Vector4Max" (v1 AS Vector4, v2 AS Vector4, result AS Vector4) ' Get max vector
+    SUB Vector4Lerp ALIAS "__Vector4Lerp" (v1 AS Vector4, v2 AS Vector4, BYVAL amount AS SINGLE, result AS Vector4) ' Calculate linear interpolation between two vectors
+    SUB Vector4MoveTowards ALIAS "__Vector4MoveTowards" (v AS Vector4, target AS Vector4, BYVAL maxDistance AS SINGLE, result AS Vector4) ' Move Vector towards target
+    SUB Vector4Invert ALIAS "__Vector4Invert" (v AS Vector4, result AS Vector4) ' Invert provided vector
+    FUNCTION Vector4Equals%% ALIAS "__Vector4Equals" (v1 AS Vector4, v2 AS Vector4) ' Check whether two given vectors are almost equal
+
     ' Quaternion math
     SUB QuaternionAdd ALIAS "__QuaternionAdd" (q1 AS Vector4, q2 AS Vector4, result AS Vector4) ' Add two quaternions
     SUB QuaternionAddValue ALIAS "__QuaternionAddValue" (q AS Vector4, BYVAL value AS SINGLE, result AS Vector4) ' Add quaternion and float value
@@ -145,6 +174,7 @@ DECLARE STATIC LIBRARY "raymath"
     SUB QuaternionLerp ALIAS "__QuaternionLerp" (q1 AS Vector4, q2 AS Vector4, BYVAL amount AS SINGLE, result AS Vector4) ' Calculate linear interpolation between two quaternions
     SUB QuaternionNlerp ALIAS "__QuaternionNlerp" (q1 AS Vector4, q2 AS Vector4, BYVAL amount AS SINGLE, result AS Vector4) ' Calculate slerp-optimized interpolation between two quaternions
     SUB QuaternionSlerp ALIAS "__QuaternionSlerp" (q1 AS Vector4, q2 AS Vector4, BYVAL amount AS SINGLE, result AS Vector4) ' Calculate spherical linear interpolation between two quaternions
+    SUB QuaternionCubicHermiteSpline ALIAS "__QuaternionCubicHermiteSpline" (q0 AS Vector4, t0 AS Vector4, q1 AS Vector4, t1 AS Vector4, t AS SINGLE, result AS Vector4) ' Interpolate using spherical cubic hermite spline
     SUB QuaternionFromVector3ToVector3 ALIAS "__QuaternionFromVector3ToVector3" (fromV3 AS Vector3, toV3 AS Vector3, result AS Vector4) ' Calculate quaternion based on the rotation from one vector to another
     SUB QuaternionFromMatrix ALIAS "__QuaternionFromMatrix" (mat AS Matrix, result AS Vector4) ' Get a quaternion for a given rotation matrix
     SUB QuaternionToMatrix ALIAS "__QuaternionToMatrix" (q AS Vector4, result AS Matrix) ' Get a matrix for a given quaternion
@@ -154,4 +184,6 @@ DECLARE STATIC LIBRARY "raymath"
     SUB QuaternionToEuler ALIAS "__QuaternionToEuler" (q AS Vector4, result AS Vector3) ' Transform a quaternion into Euler angles NOTE: Angles are returned in a Vector3 struct in radians
     SUB QuaternionTransform ALIAS "__QuaternionTransform" (q AS Vector4, mat AS Matrix, result AS Vector4) ' Transform a quaternion given a transformation matrix
     FUNCTION QuaternionEquals%% ALIAS "__QuaternionEquals" (q1 AS Vector4, q2 AS Vector4) ' Check whether two given quaternions are almost equal
+
+    SUB MatrixDecompose ALIAS "__MatrixDecompose" (mat AS Matrix, translation AS Vector3, rotationQuaternion AS Vector4, scale AS Vector3) ' Decompose a transformation matrix into its rotational, translational and scaling components
 END DECLARE
